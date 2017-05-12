@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block main_content %}
+    <!-- Chore Add/Edit -->
+
+    <section id="chores">
+      <div class="container mt-4 text-center">
+        <h1 class="mt-4 text-primary">Your Tasks</h1>
+      </div>
+
+      {% if messages %}
+      <div class="container text-center">
+        <div class="row">
+          <div class="col-sm-8 offset-sm-2">
+            {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}" role="alert" >
+              <h4>{{ message }}</h4>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+      {% endif %}
+
+
+      <div class="container">
+        <hr class="hr-charcoal" />
+        <div class="container m-0 p-0">
+          <div class="row card-group">
+
+            {% for chore in chores %}
+              <!-- A Card -->
+              <div class="card col-12 col-md-2 m-0 p-0" data-toggle="modal" data-target="#myModal">
+                <a data-toggle="modal" data-target="#detailModal" onclick="find_modal('{% url "chore-detail" chore.pk %}')">
+
+                <div class="row m-0 p-0">
+
+
+                      <div class="imgDiv col-4 col-sm-12 text-center">
+
+                        <img src="{% static ''|add:chore.chore_icon %}" alt="">
+                      </div>
+                      <div class="card-block col-8 col-md-12">
+                        <div class="cardTitle">
+                          <h3 class="card-title text-center">{{ chore.task }}</h3>
+                        </div>
+
+                        <hr class="hr-cream"/>
+                        <div class="row">
+                          <div class="col-6 text-center">
+                            <h6 class="text-muted">Freq:</h6>
+                            <h6 class="cardFrequency">{{ chore.interval }}</h6>
+                          </div>
+                          <div class="col-6 text-center">
+                            <h6 class="text-muted">Dur:</h6>
+                            <h6 class="cardDuration">{{ chore.duration }}</h6>
+                          </div>
+                        </div>
+
+                      </div>
+
+
+                </div>
+            </a>
+              </div> <!-- /A Card -->
+            {% endfor %}
+
+
+
+              <!-- Create Chore Card -->
+              <div id="newCard" class="card col-12 col-md-2 m-0 p-0">
+                <a data-toggle="modal" data-target="#createModal" onclick="find_modal('{% url "chore-create" %}')">
+                <div class="row m-0 p-0">
+                  <div class="imgDiv col-4 col-sm-12 text-center">
+                    <img src="{% static 'wac/styles/images/icons/red_icons/New.png' %}" alt="Create a Chore">
+                  </div>
+                  <div class="card-block col-8 col-md-12">
+                    <h3 class="card-title text-primary text-center">Create New Chore</h3>
+
+                  </div>
+                </div>
+                </a>
+              </div> <!-- /A Card -->
+
+            </div>
+          </div>
+        </div>
+    </section>
+
+    <div class="modal" id="createModal"></div>
+    <div class="modal" id="detailModal"></div>
+    <div class="modal" id="deleteModal"></div>
+
+    <script>
+        function find_modal(theUrl) {
+            var modal = $('.modal');
+            console.log(modal);
+            $.ajax({
+                url: theUrl,
+                context: document.body
+            }).done(function(response) {
+                modal.html(response);
+            });
+        }
+    </script>
+
+    {% endblock %}

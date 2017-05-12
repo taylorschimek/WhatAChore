@@ -22,6 +22,7 @@ from . import views
 urlpatterns = [
     url(r'^$', views.LandingView.as_view(), name='landing'),
     url(r'^useraccounts/', include('useraccounts.urls')),
+    url(r'^wac/', include('wac.urls')),
     url(r'^admin/', admin.site.urls),
 
 ]

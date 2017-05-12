@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block main_content %}
+
+<!-- People Add/Edit -->
+<section id="people">
+  <div class="container mt-4 text-center">
+    <h1 class="mt-4 text-primary">Your Team</h1>
+  </div>
+
+  {% if messages %}
+     <div class="container text-center">
+       <div class="row">
+         <div class="col-sm-8 offset-sm-2">
+           {% for message in messages %}
+           <div class="alert alert-{{ message.tags }}" role="alert" >
+             <h4>{{ message }}</h4>
+           </div>
+           {% endfor %}
+         </div>
+       </div>
+     </div>
+  {% endif %}
+
+
+  <div class="container">
+    <hr />
+    <div class="container m-0 p-0">
+      <div class="row card-group">
+
+        {% for person in people %}
+        <!-- A Card -->
+        <div class="col-xs-4 col-md-4 card m-0 p-0">
+          <a data-toggle="modal" data-target="#personDetailModal" onclick="which_modal('{% url "person-detail" person.pk %}')">
+          <img src="{% static ''|add:person.person_pic %}" />
+          <div class="card-block text-center">
+            <h3 class="card-title">{{ person.name }}</h3>
+            <hr class="hidden-sm-down" style="margin: 0; padding: 0;" />
+            <div class="row hidden-sm-down">
+              <div class="col-6 card-text text-center">
+                <small><label for="age" class="text-muted">Age</label></small>
+                <h6 id="age">{{ person.age }}</h6>
+              </div>
+              <div class="col-6 card-text text-center">
+                <small><label for="daysoff" class="text-muted">Days Off</label></small>
+                <h6 id="daysoff">{{ person.day_off }}</h6>
+              </div>
+            </div>
+            <hr class="hidden-sm-down" style="margin: 0; padding: 0;" />
+            <div class="row hidden-sm-down">
+              <div class="col-6 card-text mr-auto">
+                <button class="btn btn-danger mt-2" type="button">Email</button>
+              </div>
+
+            </div>
+          </div>
+        </a>
+        </div> <!-- /A Card -->
+        {% endfor %}
+
+
+        <!-- Create Person Card -->
+        <div id="newPerson" class="card col-xs-4 col-md-2 m-0 p-0">
+          <a data-toggle="modal" data-target="#newPersonModal" onclick='which_modal("{% url 'person-create' %}")' >
+            <div class="container text-center">
+              <div class="imgDiv text-center">
+                <img src="{% static 'wac/styles/images/icons/red_icons/New.png' %}" alt="Create a worker">
+              </div>
+              <div class="card-block m-0 p-0">
+                <h3 class="card-title text-primary text-center mt-5">Enter a New Worker</h3>
+              </div>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</section> <!-- /People Add/Edit -->
+
+<div class="modal" id="newPersonModal"></div>
+<div class="modal" id="personDetailModal"></div>
+<div class="modal" id="deletePersonModal"></div>
+
+<script>
+  function which_modal(theUrl) {
+    var modal = $('.modal');
+    $.ajax({
+      url: theUrl,
+      context: document.body
+    }).done(function(response) {
+      modal.html(response);
+    })
+  }
+</script>
+
+{% endblock %}

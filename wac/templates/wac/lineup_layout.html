@@ -1,0 +1,192 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block main_content %}
+    <!-- Lineup -->
+    <section id="lineup">
+
+      <div class="container mt-5 mb-4 text-center">
+        <h1 class="mt-4 text-primary"><strong>Your Weekly Lineup</strong></h1>
+      </div>
+
+      <div class="container">
+        <div class="row card-deck">
+
+          <!-- Sunday -->
+          <div class="card card-outline-danger p-0 mb-2 col-xs-12 col-md-3">
+            <div class="card-header bg-primary text-center">
+              <h3 class="card-title text-seconary">Sunday</h3>
+            </div>
+            <div class="card-block text-info">
+              <h6 class="text-primary text-center">Taylor</h6>
+              <ul class="list-group">
+                <li class="list-group-item">
+                    <div>
+                      <p class="mb-0">Mow the Lawn</p>
+                    </div>
+                    <div class="myBorder">
+                      <img src="{% static 'wac/styles/images/icons/utility/completedNO.png' %}" alt="">
+                      <!-- <p class="m-0 px-1">✓</p> -->
+                    </div>
+                </li>
+                <li class="list-group-item">
+                  <div>
+                    <p class="mb-0">Dishes</p>
+                  </div>
+                  <div class="myBorder">
+                    <img src="{% static 'wac/styles/images/icons/utility/completedYES.png' %}" alt="">
+                  </div>
+                </li>
+              </ul>
+              <hr />
+              <h6 class="text-primary text-center">Petra</h6>
+              <ul class="list-group">
+                <li class="list-group-item">Sweep the porch</li>
+              </ul>
+              <hr />
+              <h6 class="text-primary text-center">Erika</h6>
+              <ul class="list-group">
+                <li class="list-group-item">Dinner</li>
+                <li class="list-group-item">Bathe the boy</li>
+              </ul>
+
+            </div>
+          </div>
+
+          <!-- Monday -->
+          <div class="card card-outline-danger p-0 mb-2 col-12 col-md-3">
+            <div class="card-header bg-primary text-center">
+              <h3 class="card-title text-seconary">Monday</h3>
+            </div>
+            <div class="card-block text-info">
+              <h6 class="text-primary text-center">Erika</h6>
+              <ul class="list-group">
+                <li class="list-group-item">Dinner</li>
+                <li class="list-group-item">Bathe the boy</li>
+              </ul>
+
+            </div>
+          </div>
+
+          <!-- Tuesday -->
+          <div class="card card-outline-danger p-0 mb-2 col-12 col-md-3">
+            <div class="card-header bg-primary text-center">
+              <h3 class="card-title text-seconary">Tuesday</h3>
+            </div>
+            <div class="card-block text-info">
+
+              <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+              <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+            </div>
+          </div>
+
+          <!-- Wednesday -->
+          <div class="card card-outline-danger p-0 mb-2 col-12 col-md-3">
+            <div class="card-header bg-primary text-center">
+              <h3 class="card-title text-seconary">Wednesday</h3>
+            </div>
+            <div class="card-block text-info">
+
+              <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+              <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+      <div class="container">
+        <div class="row card-deck mt-2">
+
+          <!-- Thursday -->
+          <div class="card card-outline-danger p-0 mb-2 col-12 col-md-3">
+            <div class="card-header bg-primary text-center">
+              <h3 class="card-title text-seconary">Thursday</h3>
+            </div>
+            <div class="card-block text-info">
+
+              <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+              <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+            </div>
+          </div>
+
+          <!-- Friday -->
+          <div class="card card-outline-danger p-0 mb-2 col-12 col-md-3">
+            <div class="card-header bg-primary text-center">
+              <h3 class="card-title text-seconary">Friday</h3>
+            </div>
+            <div class="card-block text-info">
+
+              <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+              <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+            </div>
+          </div>
+
+          <!-- Saturday -->
+          <div class="card card-outline-danger p-0 mb-2 col-12 col-md-3">
+            <div class="card-header bg-primary text-center">
+              <h3 class="card-title text-seconary">Saturday</h3>
+            </div>
+            <div class="card-block text-info">
+
+              <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+              <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+            </div>
+          </div>
+
+          <!-- Summary -->
+          <div class="card bg-warning card-outline-primary p-0 mb-2 col-xs-12 col-md-3">
+            <div class="card-header bg-info text-center">
+              <h3 class="card-title text-secondary">Summary</h3>
+            </div>
+            <div class="card-block bg-warning text-info">
+
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>Member</th>
+                    <th>Chores</th>
+                    <th>Time</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th scope="row">Taylor</th>
+                    <td><span class="badge badge-primary">2</span></td>
+                    <td><span class="badge badge-primary">80</span></td>
+
+                  </tr>
+                  <tr>
+                    <th scope="row">Erika</th>
+                    <td><span class="badge badge-primary">4</span></td>
+                    <td><span class="badge badge-primary">80</span></td>
+
+                  </tr>
+                  <tr>
+                    <th scope="row">Destiny</th>
+                    <td><span class="badge badge-info">0</span></td>
+                    <td><span class="badge badge-info">0</span></td>
+
+                  </tr>
+                  <tr>
+                    <th scope="row">Petra</th>
+                    <td><span class="badge badge-primary">1</span></td>
+                    <td><span class="badge badge-primary">30</span></td>
+
+                  </tr>
+                  <tr>
+                    <th scope="row">Silas</th>
+                    <td><span class="badge badge-info">0</span></td>
+                    <td><span class="badge badge-info">0</span></td>
+
+                  </tr>
+                </tbody>
+              </table>
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section> <!-- /Lineup -->
+
+{% endblock %}
