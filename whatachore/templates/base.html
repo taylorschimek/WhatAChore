@@ -9,7 +9,7 @@
 
     <!-- Main CSS -->
     {% load static %}
-    <link rel="stylesheet" href="{% static 'whatachore/styles/css/app.css' %}" />
+    <link rel="stylesheet" href="{% static 'wac/styles/css/app.css' %}" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   </head>
   <body>
@@ -19,7 +19,7 @@
           <span class="navbar-toggler-icon"></span>
         </button>
         <a class="navbar-brand" href="#">
-          <img class="nav-logo" src="{% static 'whatachore/styles/images/Logo_cream.png' %}" alt="What A Chore Logo" />
+          <img class="nav-logo" src="{% static 'wac/styles/images/Logo_cream.png' %}" alt="What A Chore Logo" />
           What A Chore
         </a>
 
@@ -40,9 +40,9 @@
                   <a class="nav-link" href="../../wac/lineup/">Assignments<span class="sr-only">Assignments</span></a>
                 </li>
 
-                <li class="nav-item"><a class="nav-link" href="{% url 'logout' %}?next={{ request.path }}">Logout - {{ user.get_username }}</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'logout' %}?next={% url 'landing' %}">Logout - {{ user.get_username }}</a></li>
             {% else %}
-                <li class="nav-item"><a class="nav-link" href="{% url 'login' %}?next={{request.path}}">Login</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'login' %}?next={% url 'chore-list' %}">Login</a></li>
                 <li class="nav-item"><a href="#registration" class="nav-link">Register</a></li>
             {% endif %}
           </ul>
@@ -61,9 +61,9 @@
 
       <!-- jQuery first, then Bootstrap JS. -->
       <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
-      <script src="{% static 'whatachore/js/bootstrap.js' %}"></script>
+      <script src="{% static 'wac/js/bootstrap.js' %}"></script>
       <script src="http://malsup.github.com/jquery.form.js"></script>
-      <script src="{% static 'whatachore/js/app.js' %}"></script>
+      <script src="{% static 'wac/js/app.js' %}"></script>
   </body>
 
 </html>

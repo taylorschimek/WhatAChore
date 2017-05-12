@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'widget_tweaks',
     'useraccounts',
     'wac',
 ]
@@ -58,8 +59,8 @@ ROOT_URLCONF = 'whatachore.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ['/Users/HOME/Developer2/WAC/whatachore/useraccounts/templates/useraccounts',
-                 '/Users/HOME/Developer2/WAC/whatachore/whatachore/templates'
+        'DIRS': ['/Users/HOME/Developer/WAC/whatachore/useraccounts/templates/useraccounts',
+                 '/Users/HOME/Developer/WAC/whatachore/whatachore/templates'
         ],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -127,5 +128,6 @@ STATIC_URL = '/static/'
 
 PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))
 STATICFILES_DIRS = [
-    os.path.join(PROJECT_ROOT, 'static')
+    # os.path.join(PROJECT_ROOT, 'static'),
+    '/Users/HOME/Developer/WAC/whatachore/wac'
 ]

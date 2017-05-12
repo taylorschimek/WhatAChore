@@ -1,0 +1,100 @@
+// 1 - Load project variables.
+// 2 - Load bootstrap sass files.
+// 3 - Load custom app sass files.
+
+// --------------------------------------------------------
+//  Import in the default bootstrap variables.
+//  Then override bootstrap default with project specific values.
+// --------------------------------------------------------
+
+@import "/Users/HOME/dev/bootstrap-4.0.0-alpha.6/scss/variables.scss";
+@import "variables";
+
+// --------------------------------------------------------
+// Import required bootstrap sass files needed for this project.
+// Uncomment any bootstrap functionality required for this project.
+// The idea is to keep this as small as possible.
+// --------------------------------------------------------*/
+
+/* --------------------------------------------------------
+   Core mixins
+   -------------------------------------------------------- */
+
+@import "/Users/HOME/dev/bootstrap-4.0.0-alpha.6/scss/mixins";
+// @import "/Users/HOME/dev/bootstrap-4.0.0-alpha.6/scss/custom";
+
+
+
+/* --------------------------------------------------------
+   Reset and dependencies
+   -------------------------------------------------------- */
+
+@import "/Users/HOME/dev/bootstrap-4.0.0-alpha.6/scss/normalize";
+@import "/Users/HOME/dev/bootstrap-4.0.0-alpha.6/scss/print";
+
+
+
+/* --------------------------------------------------------
+   Core CSS
+   -------------------------------------------------------- */
+
+@import "/Users/HOME/dev/bootstrap-4.0.0-alpha.6/scss/reboot";
+@import "/Users/HOME/dev/bootstrap-4.0.0-alpha.6/scss/type";
+@import "/Users/HOME/dev/bootstrap-4.0.0-alpha.6/scss/images";
+@import "/Users/HOME/dev/bootstrap-4.0.0-alpha.6/scss/code";
+@import "/Users/HOME/dev/bootstrap-4.0.0-alpha.6/scss/grid";
+@import "/Users/HOME/dev/bootstrap-4.0.0-alpha.6/scss/tables";
+@import "/Users/HOME/dev/bootstrap-4.0.0-alpha.6/scss/forms";
+@import "/Users/HOME/dev/bootstrap-4.0.0-alpha.6/scss/buttons";
+
+
+
+/* --------------------------------------------------------
+   Components
+   -------------------------------------------------------- */
+
+@import "/Users/HOME/dev/bootstrap-4.0.0-alpha.6/scss/transitions";
+@import "/Users/HOME/dev/bootstrap-4.0.0-alpha.6/scss/dropdown";
+// @import "/Users/HOME/dev/bootstrap-4.0.0-alpha.6/scss/button-group";
+@import "/Users/HOME/dev/bootstrap-4.0.0-alpha.6/scss/input-group";
+@import "/Users/HOME/dev/bootstrap-4.0.0-alpha.6/scss/custom-forms";
+@import "/Users/HOME/dev/bootstrap-4.0.0-alpha.6/scss/nav";
+@import "/Users/HOME/dev/bootstrap-4.0.0-alpha.6/scss/navbar";
+@import "/Users/HOME/dev/bootstrap-4.0.0-alpha.6/scss/card";
+// @import "/Users/HOME/dev/bootstrap-4.0.0-alpha.6/scss/breadcrumb";
+// @import "/Users/HOME/dev/bootstrap-4.0.0-alpha.6/scss/pagination";
+@import "/Users/HOME/dev/bootstrap-4.0.0-alpha.6/scss/badge";
+@import "/Users/HOME/dev/bootstrap-4.0.0-alpha.6/scss/jumbotron";
+@import "/Users/HOME/dev/bootstrap-4.0.0-alpha.6/scss/alert";
+// @import "/Users/HOME/dev/bootstrap-4.0.0-alpha.6/scss/progress";
+// @import "/Users/HOME/dev/bootstrap-4.0.0-alpha.6/scss/media";
+@import "/Users/HOME/dev/bootstrap-4.0.0-alpha.6/scss/list-group";
+@import "/Users/HOME/dev/bootstrap-4.0.0-alpha.6/scss/responsive-embed";
+// @import "/Users/HOME/dev/bootstrap-4.0.0-alpha.6/scss/close";
+
+
+
+/* --------------------------------------------------------
+   Components w/ JavaScript
+   -------------------------------------------------------- */
+
+@import "/Users/HOME/dev/bootstrap-4.0.0-alpha.6/scss/modal";
+// @import "/Users/HOME/dev/bootstrap-4.0.0-alpha.6/scss/tooltip";
+@import "/Users/HOME/dev/bootstrap-4.0.0-alpha.6/scss/popover";
+// @import "/Users/HOME/dev/bootstrap-4.0.0-alpha.6/scss/carousel";
+
+
+
+/* --------------------------------------------------------
+   Utility classes
+   -------------------------------------------------------- */
+
+@import "/Users/HOME/dev/bootstrap-4.0.0-alpha.6/scss/utilities";
+
+
+
+/* --------------------------------------------------------
+   Custom application specific styles
+   -------------------------------------------------------- */
+
+@import "base";

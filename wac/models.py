@@ -49,11 +49,11 @@ class Chore(models.Model):
     last_assigned = models.DateField(blank=True, null=True)
     age_restriction = models.IntegerField()
     chore_icon_location = models.FilePathField(default='Chore_Default.png',
-                                      path='/Users/HOME/Developer/WAC/what_a_chore/wac/static/wac/styles/images/Icons/cream_icons'
+                                      path='/Users/HOME/Developer/WAC/whatachore/wac/static/wac/styles/images/Icons/cream_icons'
     )
 
     def __str__(self):
-        return self.name
+        return self.task
 
     @property
     def chore_icon(self):
@@ -89,7 +89,7 @@ class Person(models.Model):
                                default='None'
     )
     pic_location = models.FilePathField(default='No-Current-Image.png',
-                                        path='/Users/HOME/Developer/WAC/what_a_chore/wac/static/wac/styles/images/people'
+                                        path='/Users/HOME/Developer/WAC/whatachore/wac/static/wac/styles/images/people'
     )
 
     def __str__(self):
