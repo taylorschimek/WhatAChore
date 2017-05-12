@@ -35,7 +35,7 @@
                 <button type="button"
                         class="btn btn-warning float-left mr-auto"
                         data-toggle="modal"
-                        onclick='which_modal("{% url 'person-delete' person.pk %}")'>Delete {{ person.name }}</button>
+                        onclick='find_modal("{% url 'person-delete' person.pk %}")'>Delete {{ person.name }}</button>
                 <button type="button" class="btn btn-info" data-dismiss="modal">Close</button>
                 <input type="submit" class="btn btn-secondary" value="Save" />
             </div>

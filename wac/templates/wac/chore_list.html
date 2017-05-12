@@ -35,10 +35,7 @@
                 <a data-toggle="modal" data-target="#detailModal" onclick="find_modal('{% url "chore-detail" chore.pk %}')">
 
                 <div class="row m-0 p-0">
-
-
                       <div class="imgDiv col-4 col-sm-12 text-center">
-
                         <img src="{% static ''|add:chore.chore_icon %}" alt="">
                       </div>
                       <div class="card-block col-8 col-md-12">
@@ -47,6 +44,7 @@
                         </div>
 
                         <hr class="hr-cream"/>
+
                         <div class="row">
                           <div class="col-6 text-center">
                             <h6 class="text-muted">Freq:</h6>
@@ -57,10 +55,7 @@
                             <h6 class="cardDuration">{{ chore.duration }}</h6>
                           </div>
                         </div>
-
                       </div>
-
-
                 </div>
             </a>
               </div> <!-- /A Card -->
@@ -91,18 +86,5 @@
     <div class="modal" id="createModal"></div>
     <div class="modal" id="detailModal"></div>
     <div class="modal" id="deleteModal"></div>
-
-    <script>
-        function find_modal(theUrl) {
-            var modal = $('.modal');
-            console.log(modal);
-            $.ajax({
-                url: theUrl,
-                context: document.body
-            }).done(function(response) {
-                modal.html(response);
-            });
-        }
-    </script>
 
     {% endblock %}

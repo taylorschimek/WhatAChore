@@ -32,7 +32,7 @@
         {% for person in people %}
         <!-- A Card -->
         <div class="col-xs-4 col-md-4 card m-0 p-0">
-          <a data-toggle="modal" data-target="#personDetailModal" onclick="which_modal('{% url "person-detail" person.pk %}')">
+          <a data-toggle="modal" data-target="#personDetailModal" onclick="find_modal('{% url "person-detail" person.pk %}')">
           <img src="{% static ''|add:person.person_pic %}" />
           <div class="card-block text-center">
             <h3 class="card-title">{{ person.name }}</h3>
@@ -62,7 +62,7 @@
 
         <!-- Create Person Card -->
         <div id="newPerson" class="card col-xs-4 col-md-2 m-0 p-0">
-          <a data-toggle="modal" data-target="#newPersonModal" onclick='which_modal("{% url 'person-create' %}")' >
+          <a data-toggle="modal" data-target="#newPersonModal" onclick='find_modal("{% url 'person-create' %}")' >
             <div class="container text-center">
               <div class="imgDiv text-center">
                 <img src="{% static 'wac/styles/images/icons/red_icons/New.png' %}" alt="Create a worker">
@@ -83,16 +83,6 @@
 <div class="modal" id="personDetailModal"></div>
 <div class="modal" id="deletePersonModal"></div>
 
-<script>
-  function which_modal(theUrl) {
-    var modal = $('.modal');
-    $.ajax({
-      url: theUrl,
-      context: document.body
-    }).done(function(response) {
-      modal.html(response);
-    })
-  }
-</script>
+
 
 {% endblock %}
