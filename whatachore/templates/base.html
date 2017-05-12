@@ -1,0 +1,69 @@
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>What A Chore</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Main CSS -->
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'whatachore/styles/css/app.css' %}" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  </head>
+  <body>
+      <!-- Nav Bar -->
+      <nav id="myNav" class="navbar navbar-toggleable-md navbar-light">
+        <button id="nav-toggle-btn" class="navbar-toggler navbar-toggler-right btn btn-secondary" type="button" data-toggle="collapse" data-target="#togglemenu" aria-controls="togglemenu" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <a class="navbar-brand" href="#">
+          <img class="nav-logo" src="{% static 'whatachore/styles/images/Logo_cream.png' %}" alt="What A Chore Logo" />
+          What A Chore
+        </a>
+
+        <div class="collapse navbar-collapse" id="togglemenu">
+          <hr style="padding: 0; margin: 0;" />
+          <ul class="navbar-nav mr-auto">
+            {% if user.is_authenticated %}
+                <li class="nav-item active">
+                  <a class="nav-link" href="../home/">Home <span class="sr-only">Home</span></a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../../wac/people/">People<span class="sr-only">People</span></a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../../wac/chores/">Chores<span class="sr-only">Chores</span></a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../../wac/lineup/">Assignments<span class="sr-only">Assignments</span></a>
+                </li>
+
+                <li class="nav-item"><a class="nav-link" href="{% url 'logout' %}?next={{ request.path }}">Logout - {{ user.get_username }}</a></li>
+            {% else %}
+                <li class="nav-item"><a class="nav-link" href="{% url 'login' %}?next={{request.path}}">Login</a></li>
+                <li class="nav-item"><a href="#registration" class="nav-link">Register</a></li>
+            {% endif %}
+          </ul>
+          <form class="form-inline my-2 my-lg-0">
+            <input class="form-control mr-sm-2" type="text" placeholder="Search">
+            <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
+          </form>
+        </div>
+      </nav> <!-- /Nav Bar -->
+
+      {% block main_content %}
+      {% endblock %}
+
+      {% block modal_content %}
+      {% endblock %}
+
+      <!-- jQuery first, then Bootstrap JS. -->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+      <script src="{% static 'whatachore/js/bootstrap.js' %}"></script>
+      <script src="http://malsup.github.com/jquery.form.js"></script>
+      <script src="{% static 'whatachore/js/app.js' %}"></script>
+  </body>
+
+</html>
