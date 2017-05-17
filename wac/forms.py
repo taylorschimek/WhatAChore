@@ -35,9 +35,9 @@ class PersonEditForm(forms.ModelForm):
         model = models.Person
         fields = [
             'name',
-            'age',
+            'birth_year',
             'phone_number',
             'email',
             'day_off',
-            'pic_location'
+            'mugshot',
         ]

@@ -1,7 +1,7 @@
 {% load i18n widget_tweaks %}
 
 <div class="modal-dialog modal-lg" role="document">
-    <form action="{% url 'person-create' %}" method="post" id="person_create" class="form">
+    <form action="{% url 'person-create' %}" method="post" enctype="multipart/form-data" id="person_create" class="form">
         {% csrf_token %}
         <div class="modal-content">
             <div class="modal-header">
@@ -17,6 +17,9 @@
                     <fieldset class="form-group">
                         <label for="">
                             {{ field.label_tag }}
+                            {% if field.field.required %}
+                                <span class="required" style="color: #C63D0F; font-size: 1.5rem;">*</span>
+                            {% endif %}
                         </label>
                         {{ field|attr:"class:form-control" }}
                     </fieldset>

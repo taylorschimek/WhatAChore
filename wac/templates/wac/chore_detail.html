@@ -19,7 +19,6 @@
           <span aria-hidden="true">x</span>
           <span class="sr-only">Close</span>
         </button>
-
       </div>
 
       <div class="modal-body">
@@ -37,7 +36,7 @@
       <div class="modal-footer">
         <button type="button"
                 class="btn btn-warning float-left mr-auto"
-
+                
                 data-toggle="modal"
                 onclick='find_modal("{% url 'chore-delete' chore.pk %}")'>Delete {{ chore.name }}</button>
         <button type="button" class="btn btn-info" data-dismiss="modal">Close</button>

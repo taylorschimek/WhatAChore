@@ -6903,6 +6903,8 @@ body {
       #myNav .navbar-brand {
         font-size: 2rem;
         margin-right: 0; } }
+  #myNav li {
+    cursor: pointer; }
   #myNav a {
     color: #FDF3E7; }
     #myNav a:hover {
@@ -6972,6 +6974,8 @@ body {
   @media screen and (max-width: 767px) {
     #people h3 {
       font-size: 4vw; } }
+  #people .card {
+    cursor: pointer; }
   #people .col-centered {
     float: none;
     margin: 0 auto; }
@@ -7011,6 +7015,8 @@ body {
   @media screen and (min-width: 767px) {
     #chores img {
       border: none; } }
+#chores .card {
+  cursor: pointer; }
 #chores .hr-cream {
   border-color: #FDF3E7; }
 #chores .hr-charcoal {

@@ -135,9 +135,17 @@ class PersonCreateView(SuccessMessageMixin, CreateView):
     def form_valid(self, form):
         self.object = form.save(commit=False)
         self.object.user = self.request.user
+        for object in self.request.FILES:
+            print(object)
+        self.object.mugshot = ""
+        self.object.save()
+        self.object.mugshot = self.request.FILES['mugshot']
         self.object.save()
         messages.success(self.request, self.object.name + " was added successfully!")
         return HttpResponseRedirect(reverse('people-list'))
+
+
+
 
 class PersonDetailView(FormMixin, DetailView):
     model = Person
@@ -155,16 +163,16 @@ class PersonDetailView(FormMixin, DetailView):
     def get(self, request, *args, **kwargs):
         form = PersonEditForm(instance=self.person,
                               initial={'name': self.person.name,
-                                       'age': self.person.age,
+                                       'birth_year': self.person.birth_year,
                                        'phone_number': self.person.phone_number,
                                        'email': self.person.email,
                                        'day_off': self.person.day_off,
-                                       'pic_location': self.person.pic_location})
+                                       'mugshot': self.person.mugshot})
         return render(request, 'wac/person_detail.html', {'form': form, 'person': self.person})
 
     def post(self, request, *args, **kwargs):
         self.object = self.get_object()
-        form = PersonEditForm(request.POST, instance=self.person)
+        form = PersonEditForm(request.POST, request.FILES, instance=self.person)
 
         if form.is_valid():
             return self.form_valid(form)

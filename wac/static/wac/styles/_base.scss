@@ -74,6 +74,10 @@ body {
         }
     }
 
+    li {
+        cursor: pointer;
+    }
+
     a {
         color: $cream;
         &:hover {
@@ -190,6 +194,10 @@ body {
         }
     }
 
+    .card {
+        cursor: pointer;
+    }
+
     .col-centered {
         float: none;
         margin: 0 auto;
@@ -223,8 +231,8 @@ body {
             top: 50%;
             transform: translateY(-50%);
         }
-    }
 
+    }
 
 }
 
@@ -243,6 +251,10 @@ body {
         @media screen and (min-width: 767px) {
             border: none;
         }
+    }
+
+    .card {
+        cursor: pointer;
     }
 
     .hr-cream {

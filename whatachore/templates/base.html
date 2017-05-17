@@ -11,6 +11,7 @@
     {% load static %}
     <link rel="stylesheet" href="{% static 'wac/styles/css/app.css' %}" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
   </head>
 
   <body>
@@ -29,7 +30,7 @@
           <ul class="navbar-nav mr-auto">
             {% if user.is_authenticated %}
                 <li class="nav-item active">
-                  <a class="nav-link" href="../home/">Home <span class="sr-only">Home</span></a>
+                  <a class="nav-link" href="{% url 'home-view' %}">Home <span class="sr-only">Home</span></a>
                 </li>
                 <li class="nav-item">
                   <a class="nav-link" href="../../wac/people/">People<span class="sr-only">People</span></a>
@@ -43,16 +44,20 @@
 
                 <li class="nav-item"><a class="nav-link" href="{% url 'logout' %}?next={% url 'landing' %}">Logout - {{ user.get_username }}</a></li>
             {% else %}
-                <li class="nav-item"><a class="nav-link" href="{% url 'login' %}?next={% url 'chore-list' %}">Login</a></li>
+                <li class="nav-item"><a class="nav-link" data-toggle="modal" data-target="#loginModal" onclick="find_modal('{% url "login" %}')">Login</a></li>
                 <li class="nav-item"><a href="#registration" class="nav-link">Register</a></li>
             {% endif %}
           </ul>
           <form class="form-inline my-2 my-lg-0">
             <input class="form-control mr-sm-2" type="text" placeholder="Search">
             <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
+            <input type="hidden" name="next" value="{% url 'landing' %}">
           </form>
         </div>
       </nav> <!-- /Nav Bar -->
+
+      <div class="modal" id="loginModal"></div>
+      <div class="modal" id="passResetModal"></div>
 
       {% block main_content %}
       {% endblock %}
@@ -66,5 +71,4 @@
       <script src="http://malsup.github.com/jquery.form.js"></script>
       <script src="{% static 'wac/js/app.js' %}"></script>
   </body>
-
 </html>

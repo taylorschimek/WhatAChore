@@ -23,7 +23,6 @@
       </div>
       {% endif %}
 
-
       <div class="container">
         <hr class="hr-charcoal" />
         <div class="container m-0 p-0">
@@ -31,8 +30,8 @@
 
             {% for chore in chores %}
               <!-- A Card -->
-              <div class="card col-12 col-md-2 m-0 p-0" data-toggle="modal" data-target="#myModal">
-                <a data-toggle="modal" data-target="#detailModal" onclick="find_modal('{% url "chore-detail" chore.pk %}')">
+              <div class="card col-12 col-md-2 m-0 p-0">
+                <a data-toggle="modal" data-target="#choreModal" onclick="find_modal('{% url "chore-detail" chore.pk %}')">
 
                 <div class="row m-0 p-0">
                       <div class="imgDiv col-4 col-sm-12 text-center">
@@ -65,7 +64,7 @@
 
               <!-- Create Chore Card -->
               <div id="newCard" class="card col-12 col-md-2 m-0 p-0">
-                <a data-toggle="modal" data-target="#createModal" onclick="find_modal('{% url "chore-create" %}')">
+                <a data-toggle="modal" data-target="#choreModal" onclick="find_modal('{% url "chore-create" %}')">
                 <div class="row m-0 p-0">
                   <div class="imgDiv col-4 col-sm-12 text-center">
                     <img src="{% static 'wac/styles/images/icons/red_icons/New.png' %}" alt="Create a Chore">
@@ -83,8 +82,7 @@
         </div>
     </section>
 
-    <div class="modal" id="createModal"></div>
-    <div class="modal" id="detailModal"></div>
-    <div class="modal" id="deleteModal"></div>
+    <div class="modal" id="choreModal"></div>
+
 
     {% endblock %}
