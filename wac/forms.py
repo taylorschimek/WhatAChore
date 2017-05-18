@@ -1,4 +1,6 @@
 from django import forms
+from django.utils.translation import ugettext_lazy as _
+
 
 from . import models
 
@@ -35,9 +37,13 @@ class PersonEditForm(forms.ModelForm):
         model = models.Person
         fields = [
             'name',
-            'birth_year',
+            'birthday',
             'phone_number',
             'email',
             'day_off',
             'mugshot',
         ]
+        help_texts = {
+            'birthday': _('YYYY-MM-DD - used only to assign correct chores to younger workers.'),
+            'day_off': _('Specific day a worker would rather not or cannot have chores.')
+        }

@@ -129,7 +129,7 @@ class PersonCreateView(SuccessMessageMixin, CreateView):
     model = Person
     # success_url = '/success/'
     # success_message = "%(name)s was created successfully"
-    fields = '__all__'
+    form_class = PersonEditForm
     template_name_suffix = '_create_form'
 
     def form_valid(self, form):
@@ -163,7 +163,7 @@ class PersonDetailView(FormMixin, DetailView):
     def get(self, request, *args, **kwargs):
         form = PersonEditForm(instance=self.person,
                               initial={'name': self.person.name,
-                                       'birth_year': self.person.birth_year,
+                                       'birthday': self.person.birthday,
                                        'phone_number': self.person.phone_number,
                                        'email': self.person.email,
                                        'day_off': self.person.day_off,

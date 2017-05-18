@@ -5,7 +5,7 @@
         {% csrf_token %}
         <div class="modal-content">
             <div class="modal-header">
-                <h3 class="modalt-title text-primary"><strong>Enter New Worker</strong></h3>
+                <h3 class="modal-title text-primary"><strong>Enter New Worker</strong></h3>
                 <button type="button" class="close btn btn-info" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">x</span>
                     <span class="sr-only">Close</span>
@@ -15,12 +15,13 @@
                 {{ form.media }}
                 {% for field in form.visible_fields %}
                     <fieldset class="form-group">
-                        <label for="">
+                        <label class="m-0 p-0" for="">
                             {{ field.label_tag }}
                             {% if field.field.required %}
                                 <span class="required" style="color: #C63D0F; font-size: 1.5rem;">*</span>
                             {% endif %}
                         </label>
+                        <p class="ml-5 mb-0 p-0 d-inline-block helptext text-warning"><small>{{ field.help_text }}</small></p>
                         {{ field|attr:"class:form-control" }}
                     </fieldset>
                 {% endfor %}

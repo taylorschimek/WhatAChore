@@ -1,4 +1,5 @@
 import os
+from datetime import date
 
 from django.conf import settings
 from django.contrib.auth.models import User
@@ -86,9 +87,16 @@ class Person(models.Model):
         new_name = str(instance.id) + '_' + filename
         return os.path.join('people_mugs', new_name)
 
+    def get_age(self):
+        today = date.today()
+        age = today.year - self.birthday.year - ((today.month, today.day) < (self.birthday.month, self.birthday.day))
+        print(age)
+        return age
+
     user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name="people", editable=False)
     name = models.CharField(max_length=20)
-    birth_year = models.IntegerField()
+    birthday = models.DateField(default=date.today)
+    age = property(get_age)
     phone_regex = RegexValidator(regex=r'^\+?1?\d{9,15}$', message="Phone number must be entered in the format: '+999999999'. Up to 15 digits allowed.")
     phone_number = models.CharField(max_length=15,
                                     validators=[phone_regex],
