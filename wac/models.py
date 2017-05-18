@@ -94,7 +94,7 @@ class Person(models.Model):
         return age
 
     user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name="people", editable=False)
-    name = models.CharField(max_length=20)
+    name = models.CharField(max_length=25)
     birthday = models.DateField(default=date.today)
     age = property(get_age)
     phone_regex = RegexValidator(regex=r'^\+?1?\d{9,15}$', message="Phone number must be entered in the format: '+999999999'. Up to 15 digits allowed.")
@@ -132,3 +132,11 @@ class Person(models.Model):
 def person_delete(sender, instance, **kwargs):
     if instance.mugshot:
         instance.mugshot.delete(False)
+
+
+class Week(models.Model):
+    pass
+
+
+class Assignment(models.Model):
+    pass

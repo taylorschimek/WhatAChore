@@ -84,10 +84,21 @@ WSGI_APPLICATION = 'whatachore.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+#     }
+# }
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'wac_db',
+        'USER': 'postgres',
+        'PASSWORD': 'monugget1',
+        'HOST': 'localhost',
+        'PORT': '5432',
     }
 }
 
