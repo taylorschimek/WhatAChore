@@ -28,6 +28,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+AUTH_USER_MODEL = 'useraccounts.User'
+
 
 # Application definition
 
@@ -51,9 +53,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'wac.get_username.RequestMiddleware',
 ]
-
-AUTH_USER_MODEL = 'useraccounts.User'
 
 ROOT_URLCONF = 'whatachore.urls'
 

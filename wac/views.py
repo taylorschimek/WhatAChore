@@ -9,15 +9,17 @@ from django.urls import reverse, reverse_lazy
 from django.views.generic import CreateView, DetailView, ListView, TemplateView, DeleteView
 from django.views.generic.edit import FormMixin
 
-from wac.models import Chore, Person
+from wac.models import Chore, Person, Week
 
 from .forms import ChoreEditForm, PersonEditForm
+
 
 
 
 #=============== LINEUP ==================#
 #=========================================#
 def lineup(request):
+    new_week = Week.objects.create()
     return render(request, 'wac/lineup_layout.html')
 
 
@@ -38,7 +40,8 @@ class ChoreCreateView(SuccessMessageMixin, CreateView):
     model = Chore
     # success_url = '/success/'
     # success_message = "%(name)s was created successfully"
-    fields = '__all__'
+    # fields = '__all__'
+    form_class = ChoreEditForm
     template_name_suffix = '_create_form'
 
     def form_valid(self, form):
@@ -82,7 +85,7 @@ class ChoreDetailView(FormMixin, DetailView):
                                       'age_restriction': self.chore.age_restriction,
                                       'last_assigned': self.chore.last_assigned,
                                       'chore_icon_location': self.chore.chore_icon_location})
-        return render(request, 'wac/chore_detail.html', {'form': form, 'chore': self.chore})
+        return render(request, 'wac/chore_detail.html', {'form': form, 'chore': self.chore, 'gobble': "Create New Chore"})
 
     def post(self, request, *args, **kwargs):
         print('post')

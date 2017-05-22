@@ -13,10 +13,8 @@ class LandingView(FormView):
 
 class HomeView(TemplateView):
     model = Person
-
     template_name = 'home.html'
 
     def profiled(self):
         theUser = Person.objects.filter(email__exact=self.request.user.email)
-        print(theUser[0].name)
         return theUser[0]

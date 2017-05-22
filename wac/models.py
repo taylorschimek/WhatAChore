@@ -1,43 +1,57 @@
 import os
+import datetime
 from datetime import date
 
 from django.conf import settings
-from django.contrib.auth.models import User
-from django.core.files.storage import FileSystemStorage
 from django.core.validators import RegexValidator
 from django.db import models
-from django.db.models.signals import pre_delete
+from django.db.models.signals import pre_delete, post_save
 from django.dispatch.dispatcher import receiver
+
+from wac.get_username import get_username
+from useraccounts.models import User
+
+
+INTERVAL_CHOICES = [
+    ('Daily', 'Daily'),
+    ('Every 2 Days', 'Every 2 Days'),
+    ('Every 3 Days', 'Every 3 Days'),
+    ('Weekly', 'Weekly'),
+    ('Every 2 Weeks', 'Every 2 Weeks'),
+    ('Monthly', 'Monthly'),
+    ('Every 2 Months', 'Every 2 Months'),
+    ('Quarterly', 'Quarterly'),
+    ('Yearly', 'Yearly')
+]
+
+SUB_INTERVAL_CHOICES = [
+    ('Random', 'Random'),
+    ('1st', '1st of the month'),
+    ('15th', '15th of the month'),
+    ('Weekday', 'Weekday'),
+    ('Weekend', 'Weekend'),
+    ('Sunday', 'Sunday'),
+    ('Monday', 'Monday'),
+    ('Tueday', 'Tuesday'),
+    ('Wednesday', 'Wednesday'),
+    ('Thursday', 'Thursday'),
+    ('Friday', 'Friday'),
+    ('Saturday', 'Saturday')
+]
+
+DAY_OFF_CHOICES = [
+    ('None', 'None'),
+    ('Sun', 'Sunday'),
+    ('Mon', 'Monday'),
+    ('Tue', 'Tuesday'),
+    ('Wed', 'Wednesday'),
+    ('Thur', 'Thursday'),
+    ('Fri', 'Friday'),
+    ('Sat', 'Saturday')
+]
 
 
 class Chore(models.Model):
-
-    INTERVAL_CHOICES = [
-        ('Daily', 'Daily'),
-        ('Every 2 Days', 'Every 2 Days'),
-        ('Every 3 Days', 'Every 3 Days'),
-        ('Weekly', 'Weekly'),
-        ('Every 2 Weeks', 'Every 2 Weeks'),
-        ('Monthly', 'Monthly'),
-        ('Every 2 Months', 'Every 2 Months'),
-        ('Quarterly', 'Quarterly'),
-        ('Yearly', 'Yearly')
-    ]
-
-    SUB_INTERVAL_CHOICES = [
-        ('Random', 'Random'),
-        ('1st', '1st of the month'),
-        ('15th', '15th of the month'),
-        ('Weekday', 'Weekday'),
-        ('Weekend', 'Weekend'),
-        ('Sunday', 'Sunday'),
-        ('Monday', 'Monday'),
-        ('Tueday', 'Tuesday'),
-        ('Wednesday', 'Wednesday'),
-        ('Thursday', 'Thursday'),
-        ('Friday', 'Friday'),
-        ('Saturday', 'Saturday')
-    ]
 
     user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name="chores", editable=False)
     task = models.CharField(max_length=25)
@@ -72,16 +86,8 @@ class Chore(models.Model):
 
 class Person(models.Model):
 
-    DAY_OFF_CHOICES = [
-        ('None', 'None'),
-        ('Sun', 'Sunday'),
-        ('Mon', 'Monday'),
-        ('Tue', 'Tuesday'),
-        ('Wed', 'Wednesday'),
-        ('Thur', 'Thursday'),
-        ('Fri', 'Friday'),
-        ('Sat', 'Saturday')
-    ]
+    class Meta:
+        verbose_name_plural = "people"
 
     def get_image_path(instance, filename):
         new_name = str(instance.id) + '_' + filename
@@ -90,7 +96,6 @@ class Person(models.Model):
     def get_age(self):
         today = date.today()
         age = today.year - self.birthday.year - ((today.month, today.day) < (self.birthday.month, self.birthday.day))
-        print(age)
         return age
 
     user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name="people", editable=False)
@@ -113,10 +118,8 @@ class Person(models.Model):
     # )
     mugshot = models.ImageField(blank=True, upload_to=get_image_path, null=True)
 
-
     def __str__(self):
         return self.name
-
 
     @property
     def person_pic(self):
@@ -124,19 +127,42 @@ class Person(models.Model):
         # return '/wac/styles/images/Icons/cream_icons/' + self.chore_icon_location.replace(settings.BASE_DIR, '')
         return self.pic_location.replace(remove, '')
 
-    class Meta:
-        verbose_name_plural = "people"
+# @receiver(pre_delete, sender=Person)
+# def person_delete(sender, instance, **kwargs):
+#     if instance.mugshot:
+#         instance.mugshot.delete(False)
 
-
-@receiver(pre_delete, sender=Person)
-def person_delete(sender, instance, **kwargs):
-    if instance.mugshot:
-        instance.mugshot.delete(False)
 
 
 class Week(models.Model):
-    pass
+
+    user = models.ForeignKey(User, related_name="created_by", editable=False, default=1)
+    start_date = models.DateField(blank=True, null=True)
+    end_date = models.DateField(blank=True, null=True)
+    is_current = models.BooleanField(default=False)
+
+    def save(self, **kwargs):
+        if not self.pk:
+            todays_date = datetime.date.today()
+            idx = (todays_date.weekday() + 1) % 7
+            if todays_date.weekday() is not 0:
+                self.start_date = todays_date - datetime.timedelta(idx)
+            else:
+                self.start_date = todays_date
+            self.end_date = self.start_date + datetime.timedelta(days=7)
+            super(Week, self).save(**kwargs)
+
+
+    def __str__(self):
+        return "{}'s week with pk of {}".format(self.user, self.pk)
 
 
 class Assignment(models.Model):
-    pass
+
+    def __str__(self):
+        return "{} on {}".format(self.what, self.when)
+
+    week = models.ForeignKey(Week, on_delete=models.CASCADE, null=True)
+    what = models.ForeignKey(Chore, on_delete=models.CASCADE, null=True)
+    when = models.DateField(null=True)
+    who = models.ForeignKey(Person, on_delete=models.CASCADE, null=True)

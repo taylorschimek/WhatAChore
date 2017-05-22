@@ -20,7 +20,8 @@
         <button id="nav-toggle-btn" class="navbar-toggler navbar-toggler-right btn btn-secondary" type="button" data-toggle="collapse" data-target="#togglemenu" aria-controls="togglemenu" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
-        <a class="navbar-brand" href="#">
+        <a class="navbar-brand" href="{% url 'admin:index' %}">
+          {% load admin_urls %}
           <img class="nav-logo" src="{% static 'wac/styles/images/Logo_cream.png' %}" alt="What A Chore Logo" />
           What A Chore
         </a>
