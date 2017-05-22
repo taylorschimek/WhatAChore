@@ -2,7 +2,7 @@ import datetime
 from random import randint
 
 from django.dispatch import receiver
-from django.db.models.signals import post_save, pre_delete
+from django.db.models.signals import post_save, pre_delete, pre_save
 from wac.get_username import get_username
 
 from wac.models import Assignment, Chore, Person, Week
@@ -19,6 +19,14 @@ def person_delete(sender, instance, **kwargs):
 
 
 # Concerning Weeks and Assignments
+
+@receiver(pre_save, sender=Week)
+def obsolete_old_weeks(sender, instance, **kwargs):
+    print("obsolete_old_weeks called")
+    old_weeks = Week.objects.filter(
+        user__exact=instance.user
+    ).update(is_current=False)
+
 
 THIS_WEEK = None
 
@@ -53,7 +61,7 @@ def create_repeating_assignments(chore, date, increment):
 def once(chore):
     print("method once")
 
-def daily(self, chore):
+def daily(chore):
     print("method daily")
     create_repeating_assignments(chore, THIS_WEEK.start_date, 1)
 
@@ -70,8 +78,12 @@ def weekly(chore):
     if chore.sub_interval == "Random":
         number_of_days = randint(0, 6)
         print(number_of_days)
-        date = THIS_WEEK.start_date + datetime.timedelta(days=number_of_days)
-        create_assignment(chore, date)
+    else:
+        number_of_days = randint(0, 1)
+    date = THIS_WEEK.start_date + datetime.timedelta(days=number_of_days)
+    create_assignment(chore, date)
+
+
 
 def every2weeks(chore):
     print("method every 2 weeks")
@@ -110,6 +122,9 @@ def get_chores_for_this_week():
                 method_name = choice[0].replace(' ', '').lower()
                 assigning_methods[method_name](chore)
 
+def assign_people_to_chores():
+    print('assigning people')
+
 @receiver(post_save, sender=Week)
 def week_post_save(sender, instance, **kwargs):
     print('='*20)
@@ -117,9 +132,9 @@ def week_post_save(sender, instance, **kwargs):
     print('='*20)
     global THIS_WEEK
     THIS_WEEK = instance
-    print(THIS_WEEK.start_date)
-    print(THIS_WEEK.end_date)
-    # TEMP - delete all chores per user.
+
+    # TEMP - delete all assignments per user.
     Assignment.objects.exclude(week=THIS_WEEK).delete()
 
     get_chores_for_this_week()
+    assign_people_to_chores()

@@ -39,6 +39,8 @@ urlpatterns = [
 
     url(r'^register/', views.register, name='register-user'),
 
-    url(r'^welcome/', views.ProfileCreateFormView.as_view(), name='welcom-new')
+    url(r'^welcome/', views.ProfileCreateFormView.as_view(), name='welcome-new'),
+
+    url(r'^useraccounts/home/$', views.HomeView.as_view(), name='home-view'),
 
 ]

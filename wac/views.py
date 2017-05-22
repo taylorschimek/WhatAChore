@@ -10,6 +10,7 @@ from django.views.generic import CreateView, DetailView, ListView, TemplateView,
 from django.views.generic.edit import FormMixin
 
 from wac.models import Chore, Person, Week
+from wac.get_username import get_username
 
 from .forms import ChoreEditForm, PersonEditForm
 
@@ -19,7 +20,8 @@ from .forms import ChoreEditForm, PersonEditForm
 #=============== LINEUP ==================#
 #=========================================#
 def lineup(request):
-    new_week = Week.objects.create()
+    new_week = Week.create(current_user=request.user)
+    
     return render(request, 'wac/lineup_layout.html')
 
 

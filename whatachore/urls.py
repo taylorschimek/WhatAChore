@@ -26,7 +26,6 @@ urlpatterns = [
     url(r'^$', views.LandingView.as_view(), name='landing'),
     url(r'^useraccounts/', include('useraccounts.urls')),
     url(r'^wac/', include('wac.urls')),
-    url(r'^home/', views.HomeView.as_view(), name='home-view'),
     url(r'^admin/', admin.site.urls),
 ]
 

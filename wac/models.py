@@ -3,6 +3,7 @@ import datetime
 from datetime import date
 
 from django.conf import settings
+from django.contrib.auth import get_user_model
 from django.core.validators import RegexValidator
 from django.db import models
 from django.db.models.signals import pre_delete, post_save
@@ -136,22 +137,32 @@ class Person(models.Model):
 
 class Week(models.Model):
 
-    user = models.ForeignKey(User, related_name="created_by", editable=False, default=1)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name="created_by", default=1)
     start_date = models.DateField(blank=True, null=True)
     end_date = models.DateField(blank=True, null=True)
     is_current = models.BooleanField(default=False)
 
+    def prior_monday(self):
+        the_date = datetime.date.today()
+        idx = (the_date.weekday()) % 7
+        a_monday = the_date - datetime.timedelta(idx)
+        if idx == 0:
+            last_monday = a_monday - datetime.timedelta(days=7)
+            return last_monday
+        return a_monday
+
+    @classmethod
+    def create(cls, current_user):
+        week = cls(user=current_user)
+        week.save()
+
     def save(self, **kwargs):
         if not self.pk:
-            todays_date = datetime.date.today()
-            idx = (todays_date.weekday() + 1) % 7
-            if todays_date.weekday() is not 0:
-                self.start_date = todays_date - datetime.timedelta(idx)
-            else:
-                self.start_date = todays_date
+            self.start_date = self.prior_monday()
             self.end_date = self.start_date + datetime.timedelta(days=7)
-            super(Week, self).save(**kwargs)
+            self.is_current = True
 
+            super(Week, self).save(**kwargs)
 
     def __str__(self):
         return "{}'s week with pk of {}".format(self.user, self.pk)
