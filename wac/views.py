@@ -9,7 +9,7 @@ from django.urls import reverse, reverse_lazy
 from django.views.generic import CreateView, DetailView, ListView, TemplateView, DeleteView
 from django.views.generic.edit import FormMixin
 
-from wac.models import Chore, Person, Week
+from wac.models import Assignment, Chore, Person, Week
 from wac.get_username import get_username
 
 from .forms import ChoreEditForm, PersonEditForm
@@ -21,8 +21,19 @@ from .forms import ChoreEditForm, PersonEditForm
 #=========================================#
 def lineup(request):
     new_week = Week.create(current_user=request.user)
-    
+
     return render(request, 'wac/lineup_layout.html')
+
+class AssignmentListView(LoginRequiredMixin, ListView):
+    context_object_name = 'assignments'
+    model = Assignment
+
+    def get_queryset(self):
+        return Assignment.objects.filter(
+            week__user=self.request.user
+        ).filter(
+            week__is_current=True
+        )
 
 
 

@@ -118,6 +118,7 @@ class Person(models.Model):
     #                                     path='/Users/HOME/Developer/WAC/whatachore/wac/static/wac/styles/images/people'
     # )
     mugshot = models.ImageField(blank=True, upload_to=get_image_path, null=True)
+    weekly_minutes = models.IntegerField(blank=True, null=True, editable=False)
 
     def __str__(self):
         return self.name
@@ -141,6 +142,7 @@ class Week(models.Model):
     start_date = models.DateField(blank=True, null=True)
     end_date = models.DateField(blank=True, null=True)
     is_current = models.BooleanField(default=False)
+    total_time = models.IntegerField(default=0)
 
     def prior_monday(self):
         the_date = datetime.date.today()
@@ -160,9 +162,8 @@ class Week(models.Model):
         if not self.pk:
             self.start_date = self.prior_monday()
             self.end_date = self.start_date + datetime.timedelta(days=7)
-            self.is_current = True
 
-            super(Week, self).save(**kwargs)
+        super(Week, self).save(**kwargs)
 
     def __str__(self):
         return "{}'s week with pk of {}".format(self.user, self.pk)
@@ -171,7 +172,7 @@ class Week(models.Model):
 class Assignment(models.Model):
 
     def __str__(self):
-        return "{} on {}".format(self.what, self.when)
+        return "{} by {}".format(self.what, self.who)
 
     week = models.ForeignKey(Week, on_delete=models.CASCADE, null=True)
     what = models.ForeignKey(Chore, on_delete=models.CASCADE, null=True)
