@@ -118,6 +118,7 @@ class Person(models.Model):
     #                                     path='/Users/HOME/Developer/WAC/whatachore/wac/static/wac/styles/images/people'
     # )
     mugshot = models.ImageField(blank=True, upload_to=get_image_path, null=True)
+    number_of_chores = models.IntegerField(blank=True, null=True, editable=False)
     weekly_minutes = models.IntegerField(blank=True, null=True, editable=False)
 
     def __str__(self):
@@ -172,9 +173,10 @@ class Week(models.Model):
 class Assignment(models.Model):
 
     def __str__(self):
-        return "{} by {}".format(self.what, self.who)
+        return "{}'s {} - {}".format(self.when, self.what, self.done)
 
     week = models.ForeignKey(Week, on_delete=models.CASCADE, null=True)
     what = models.ForeignKey(Chore, on_delete=models.CASCADE, null=True)
     when = models.DateField(null=True)
     who = models.ForeignKey(Person, on_delete=models.CASCADE, null=True)
+    done = models.BooleanField(default=False)

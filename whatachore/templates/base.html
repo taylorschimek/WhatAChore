@@ -40,7 +40,7 @@
                   <a class="nav-link" href="../../wac/chores/">Chores<span class="sr-only">Chores</span></a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="../../wac/lineup/">Assignments<span class="sr-only">Assignments</span></a>
+                  <a class="nav-link" href="{% url 'lineup-make' %}">Assignments<span class="sr-only">Assignments</span></a>
                 </li>
 
                 <li class="nav-item"><a class="nav-link" href="{% url 'logout' %}?next={% url 'landing' %}">Logout - {{ user.get_username }}</a></li>

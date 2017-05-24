@@ -22,7 +22,7 @@ def person_delete(sender, instance, **kwargs):
 
 #########################################################################
 # Concerning Weeks and Assignments
-#########################################################################
+
 
 @receiver(pre_save, sender=Week)
 def obsolete_old_weeks(sender, instance, **kwargs):
@@ -130,11 +130,17 @@ def assign_people_to_chores():
     people = Person.objects.filter(user__exact=THIS_WEEK.user)
     to_dos = Assignment.objects.filter(week__exact=THIS_WEEK)
 
+    for person in people:
+        person.weekly_minutes = 0
+
     number_of_people = len(people)
     for to_do in to_dos:
         person = randint(0, number_of_people-1)
         to_do.who = people[person]
         to_do.save(update_fields=['who'])
+        print("to_do.what.duration = {}".format(to_do.what.duration))
+        people[person].weekly_minutes += to_do.what.duration
+        people[person].save(update_fields=['weekly_minutes'])
 
 
 

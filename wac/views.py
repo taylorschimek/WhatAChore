@@ -3,8 +3,9 @@ import datetime
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib import messages
-from django.http import HttpResponseRedirect
-from django.shortcuts import get_object_or_404, render, render_to_response
+from django.http import HttpResponse, HttpResponseRedirect
+from django.shortcuts import get_object_or_404, render, render_to_response, redirect
+from django.template.loader import render_to_string
 from django.urls import reverse, reverse_lazy
 from django.views.generic import CreateView, DetailView, ListView, TemplateView, DeleteView
 from django.views.generic.edit import FormMixin
@@ -20,20 +21,71 @@ from .forms import ChoreEditForm, PersonEditForm
 #=============== LINEUP ==================#
 #=========================================#
 def lineup(request):
-    new_week = Week.create(current_user=request.user)
+    if request.is_ajax():
+        print("is_ajax() happened")
 
-    return render(request, 'wac/lineup_layout.html')
+        # Update done field on assignment
+        assignment = Assignment.objects.get(pk=request.POST['pk'])
+        people = Person.objects.filter(user=assignment.week.user)
 
-class AssignmentListView(LoginRequiredMixin, ListView):
+        person = people.get(
+            name=assignment.who
+        )
+
+        if assignment.done is True:
+            assignment.done = False
+            person.weekly_minutes += assignment.what.duration
+            # person.number_of_chores += 1
+        else:
+            assignment.done = True
+            person.weekly_minutes -= assignment.what.duration
+            # person.number_of_chores -= 1
+        assignment.save(update_fields=['done'])
+        person.save(update_fields=['weekly_minutes'])
+        html = render_to_string('wac/assignments_list_sub.html', {'people': people})
+        return HttpResponse(html)
+    else:
+        print('uh oh')
+        new_week = Week.create(current_user=request.user)
+
+    return redirect(reverse('lineup'))
+
+class AssignmentListView(LoginRequiredMixin, TemplateView):
     context_object_name = 'assignments'
     model = Assignment
+    template_name = 'wac/assignments_list.html'
 
-    def get_queryset(self):
-        return Assignment.objects.filter(
+    def get_context_data(self, **kwargs):
+        current_week = Week.objects.filter(
+            user = self.request.user
+        ).filter(
+            is_current = True
+        )
+
+        dates = []
+
+        monday = current_week[0].start_date
+        print(monday)
+        for i in range(7):
+            dates.append(monday + datetime.timedelta(days=i))
+
+        context = super(AssignmentListView, self).get_context_data(**kwargs)
+
+        context['people'] = Person.objects.filter(
+            user = self.request.user
+        )
+
+        context['assignments'] = Assignment.objects.filter(
             week__user=self.request.user
         ).filter(
             week__is_current=True
         )
+
+        context['dates'] = dates
+
+        return context
+
+
 
 
 
