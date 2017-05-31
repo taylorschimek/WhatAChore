@@ -14,6 +14,7 @@ from useraccounts.models import User
 
 
 INTERVAL_CHOICES = [
+    ('Once', 'Once'),
     ('Daily', 'Daily'),
     ('Every 2 Days', 'Every 2 Days'),
     ('Every 3 Days', 'Every 3 Days'),
@@ -26,6 +27,7 @@ INTERVAL_CHOICES = [
 ]
 
 SUB_INTERVAL_CHOICES = [
+    ('None', 'None'),
     ('Random', 'Random'),
     ('1st', '1st of the month'),
     ('15th', '15th of the month'),

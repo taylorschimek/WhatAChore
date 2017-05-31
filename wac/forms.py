@@ -4,11 +4,25 @@ from django.utils.translation import ugettext_lazy as _
 
 from . import models
 
+class AssignmentForm(forms.ModelForm):
+
+    def __init__(self, *args, **kwargs):
+        super(AssignmentForm, self).__init__(*args, **kwargs)
+
+    class Meta:
+        model = models.Assignment
+        fields = [
+            'who',
+            'when'
+        ]
+
 
 class ChoreEditForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(ChoreEditForm, self).__init__(*args, **kwargs)
+        self.fields['interval'].widget.attrs['class'] = 'hideController'
+        self.fields['sub_interval'].widget.attrs['class'] = 'hiddenSub'
 
         for key in self.fields:
             self.fields[key].required = False

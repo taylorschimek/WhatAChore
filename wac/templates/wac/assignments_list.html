@@ -28,7 +28,9 @@
                         {% if ass.who == person and ass.when == dates.0 %}
                         <li class="list-group-item">
                             <div>
+                            <a data-toggle="modal" data-target="#assignmentModal" onclick="find_modal('{% url "assignment-detail" ass.pk %}')">
                               <p class="mb-0">{{ ass.what }}</p>
+                            </a>
                             </div>
                             {% if ass.done is True %}
                             <div id="{{ ass.id }}" style="width: 24px; height: 24px; background-image:url({% static 'wac/styles/images/icons/utility/completedYES.png' %});" onclick="assignmentDone({{ ass.id }})" class="myBorder">
@@ -283,4 +285,7 @@
         </div>
       </div>
     </section> <!-- /Lineup -->
+
+    <div class="modal" id="assignmentModal"></div>
+
 {% endblock %}

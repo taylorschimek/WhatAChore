@@ -12,7 +12,6 @@
 }
 
 
-
 html,
 body {
     background-color: $cream;
@@ -292,6 +291,16 @@ body {
     }
 }
 
+.form-group:disabled {
+    color: lighten($lightgray, 20%);
+}
+
+.form-control:disabled {
+    background: $cream;
+    color: lighten($lightgray, 20%);
+    border-color: lighten($lightgray, 20%);
+}
+
 
 /* ----------------------
     lineup Page
@@ -316,5 +325,12 @@ body {
         left: 90%;
 
         // border: 1px solid $red;
+    }
+
+    a {
+        &:hover {
+            color: $charcoal;
+            cursor: pointer;
+        }
     }
 }

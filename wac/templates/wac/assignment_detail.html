@@ -1,0 +1,41 @@
+{% load i18n widget_tweaks %}
+<<script>
+    {% if messages %}
+        {% for message in messages %}
+            alert(message);
+        {% endfor %}
+    {% endif %}
+</script>
+
+<div class="modal-dialog modal-md" role="document">
+    <form action="{% url 'assignment-detail' assignment.pk %}" method="post" id="assignment_detail" class="form">
+        {% csrf_token %}
+        {{ form.errors }}
+        {{ form.non_field_errors }}
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title text-primary"><strong>{{ assignment.what }} on {{ assignment.when }}</strong></h3>
+                <button type="button" class="close btn btn-info" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">x</span>
+                  <span class="sr-only">Close</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                {{ form.media }}
+
+                    {% for field in form.visible_fields %}
+                    <fieldset class="form-group">
+                        {{ field.errors }}{{ field.label_tag }}
+                        {{ field|attr:"class:form-control" }}
+                    </fieldset>
+                    {% endfor %}
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-info" data-dismiss="modal">Close</button>
+                <input type="submit" class="btn btn-secondary" value="Save">
+            </div>
+        </div>
+    </form>
+</div>

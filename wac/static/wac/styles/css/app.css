@@ -7039,6 +7039,14 @@ body {
     top: 50%;
     transform: translateY(-50%); }
 
+.form-group:disabled {
+  color: #b4beb3; }
+
+.form-control:disabled {
+  background: #FDF3E7;
+  color: #b4beb3;
+  border-color: #b4beb3; }
+
 /* ----------------------
     lineup Page
 -----------------------*/
@@ -7052,5 +7060,8 @@ body {
 #lineup .myBorder {
   position: absolute;
   left: 90%; }
+#lineup a:hover {
+  color: #3B3738;
+  cursor: pointer; }
 
 /*# sourceMappingURL=app.css.map */

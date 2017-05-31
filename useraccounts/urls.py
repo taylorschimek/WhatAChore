@@ -41,6 +41,6 @@ urlpatterns = [
 
     url(r'^welcome/', views.ProfileCreateFormView.as_view(), name='welcome-new'),
 
-    url(r'^useraccounts/home/$', views.HomeView.as_view(), name='home-view'),
+    url(r'^home/$', views.HomeView.as_view(), name='home-view'),
 
 ]

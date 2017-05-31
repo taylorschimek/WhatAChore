@@ -22,13 +22,15 @@
       </div>
 
       <div class="modal-body">
-
         {{ form.media }}
-
             {% for field in form.visible_fields %}
-              <fieldset class="form-group">
+            {% if field.auto_id == "id_sub_interval" %}
+                 <fieldset class="form-group hiddenSub">
+                 {% else %}
+                 <fieldset class="form-group">
+                 {% endif %}
                   {{ field.errors }}{{ field.label_tag }}
-                {{ field|attr:"class:form-control" }}
+                {{ field|add_class:"form-control" }}
               </fieldset>
               {% endfor %}
       </div>
@@ -36,7 +38,7 @@
       <div class="modal-footer">
         <button type="button"
                 class="btn btn-warning float-left mr-auto"
-                
+
                 data-toggle="modal"
                 onclick='find_modal("{% url 'chore-delete' chore.pk %}")'>Delete {{ chore.name }}</button>
         <button type="button" class="btn btn-info" data-dismiss="modal">Close</button>
@@ -46,8 +48,31 @@
   </form>
 </div> <!-- /.modal-dialog -->
 
+<script>
+function check_field_value(new_val) {
+    console.log("function ran");
+    console.log(new_val);
+    if (new_val === 'Once' ||
+        new_val === 'Daily' ||
+        new_val === 'Every 2 Days' ||
+        new_val === 'Every 3 Days') {
+            // Hide id_subinterval
+            $('.hiddenSub').prop('disabled', true);
+    } else {
+            // Show id_subinterval
+            $('.hiddenSub').prop('disabled', false);
+    }
+}
 
-<!-- <script>
-    var form_options = { target: '#modal', success: function(response) {} };
-    $('#chore_edit').ajaxForm(form_options);
-</script> -->
+
+$(document).ready(function() {
+    let jenk = $('.hideController option:selected').val();
+    console.log(jenk);
+    check_field_value(jenk);
+
+    $('.hideController').on('change', function(e) {
+        console.log(e.currentTarget.value);
+        check_field_value(e.currentTarget.value);
+    });
+})
+</script>

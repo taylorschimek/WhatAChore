@@ -3,6 +3,10 @@
     <th scope="row">{{ person.name }}</th>
     <td><span class="badge badge-primary">{{ person.number_of_chores }}</span></td>
     <td><span class="badge badge-primary">{{ person.weekly_minutes }}</span></td>
-
   </tr>
 {% endfor %}
+  <tr>
+    <th scope="row">Total</th>
+    <td><span class="badge badge-info">blah</span></td>
+    <td><span class="badge badge-info">{{ week.total_time }}</span></td>
+  </tr>

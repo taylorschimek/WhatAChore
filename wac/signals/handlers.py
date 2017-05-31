@@ -1,3 +1,4 @@
+import calendar
 import datetime
 from random import randint
 
@@ -27,7 +28,7 @@ def person_delete(sender, instance, **kwargs):
 @receiver(pre_save, sender=Week)
 def obsolete_old_weeks(sender, instance, **kwargs):
     if not instance.pk:
-        print("obsolete_old_weeks called")
+        # print("obsolete_old_weeks called")
         old_weeks = Week.objects.filter(
             user__exact=instance.user
         ).update(is_current=False)
@@ -37,6 +38,7 @@ THIS_WEEK = None
 TOTAL_MINUTES_GATHERED = 0
 
 INTERVAL_CHOICES = [
+    ('Once', 'Once'),
     ('Daily', 'Daily'),
     ('Every 2 Days', 'Every 2 Days'),
     ('Every 3 Days', 'Every 3 Days'),
@@ -65,6 +67,7 @@ def create_repeating_assignments(chore, date, increment):
         date = date + datetime.timedelta(days=increment)
 
 def once(chore):
+    # Factor subinterval
     print("method once")
 
 def daily(chore):
@@ -81,12 +84,14 @@ def every3days(chore):
 
 def weekly(chore):
     print("method weekly")
+    # need to check last_assigned and make sure new date is at least 5 days later
     if chore.sub_interval == "Random":
         number_of_days = randint(0, 6)
-        print(number_of_days)
     else:
         number_of_days = randint(0, 1)
     date = THIS_WEEK.start_date + datetime.timedelta(days=number_of_days)
+    chore.last_assigned = date
+    chore.save(update_fields=['last_assigned'])
     create_assignment(chore, date)
 
 def every2weeks(chore):
@@ -132,13 +137,24 @@ def assign_people_to_chores():
 
     for person in people:
         person.weekly_minutes = 0
+        person.save(update_fields=['weekly_minutes'])
 
-    number_of_people = len(people)
     for to_do in to_dos:
-        person = randint(0, number_of_people-1)
+        working = True
+        tried = [False] * len(people)
+        while working:
+            person = randint(0, len(people)-1)
+            tried[person] = True
+
+            if people[person].age >= to_do.what.age_restriction and people[person].day_off != calendar.day_abbr[to_do.when.weekday()]:
+                working = False
+                # print('+'*30)
+            if all(tried):
+                working = False
+                print('Does age_restriction trump day_off or the other way around?')
         to_do.who = people[person]
         to_do.save(update_fields=['who'])
-        print("to_do.what.duration = {}".format(to_do.what.duration))
+        # print("to_do.what.duration = {}".format(to_do.what.duration))
         people[person].weekly_minutes += to_do.what.duration
         people[person].save(update_fields=['weekly_minutes'])
 
@@ -163,9 +179,12 @@ def week_post_save(sender, instance, created, **kwargs):
         assign_people_to_chores()
 
         THIS_WEEK.is_current = True
+        # print(TOTAL_MINUTES_GATHERED)
+        # print(THIS_WEEK.total_time)
         THIS_WEEK.total_time = TOTAL_MINUTES_GATHERED
         THIS_WEEK.save()
-        print(Assignment.objects.filter(week=THIS_WEEK))
+        # print(THIS_WEEK.total_time)
+        # print(Assignment.objects.filter(week=THIS_WEEK))
 
         # TEMP
-        print(THIS_WEEK.total_time)
+        # print(THIS_WEEK.total_time)

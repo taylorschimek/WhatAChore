@@ -8,6 +8,8 @@ function find_modal(theUrl) {
     }).done(function(response) {
         modal.html(response);
     });
+    console.log('yep');
+
 }
 
 

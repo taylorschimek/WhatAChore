@@ -1,3 +1,4 @@
+import calendar
 import datetime
 
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -13,7 +14,7 @@ from django.views.generic.edit import FormMixin
 from wac.models import Assignment, Chore, Person, Week
 from wac.get_username import get_username
 
-from .forms import ChoreEditForm, PersonEditForm
+from .forms import AssignmentForm, ChoreEditForm, PersonEditForm
 
 
 
@@ -27,7 +28,6 @@ def lineup(request):
         # Update done field on assignment
         assignment = Assignment.objects.get(pk=request.POST['pk'])
         people = Person.objects.filter(user=assignment.week.user)
-
         person = people.get(
             name=assignment.who
         )
@@ -42,10 +42,10 @@ def lineup(request):
             # person.number_of_chores -= 1
         assignment.save(update_fields=['done'])
         person.save(update_fields=['weekly_minutes'])
-        html = render_to_string('wac/assignments_list_sub.html', {'people': people})
+        html = render_to_string('wac/assignments_list_sub.html', {'people': people, 'week': assignment.week})
         return HttpResponse(html)
     else:
-        print('uh oh')
+        # print('uh oh')
         new_week = Week.create(current_user=request.user)
 
     return redirect(reverse('lineup'))
@@ -65,7 +65,6 @@ class AssignmentListView(LoginRequiredMixin, TemplateView):
         dates = []
 
         monday = current_week[0].start_date
-        print(monday)
         for i in range(7):
             dates.append(monday + datetime.timedelta(days=i))
 
@@ -82,8 +81,47 @@ class AssignmentListView(LoginRequiredMixin, TemplateView):
         )
 
         context['dates'] = dates
+        context['week'] = current_week[0]
 
         return context
+
+
+class AssignmentDetailView(FormMixin, DetailView):
+    model = Assignment
+    form_class = AssignmentForm
+
+    def dispatch(self, request, *args, **kwargs):
+        self.assignment = Assignment.objects.get(pk=self.kwargs['pk'])
+        return super(AssignmentDetailView, self).dispatch(request, *args, **kwargs)
+
+    def get_context_data(self, request, *args, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['form'] = self.get_form()
+        return context
+
+    def get(self, request, *args, **kwargs):
+        form = AssignmentForm(instance=self.assignment,
+                              initial={'when': self.assignment.when})
+        form.fields['who'].queryset = Person.objects.filter(user=request.user)
+        form.fields['who'].initial = self.assignment.who.name
+        return render(request, 'wac/assignment_detail.html', {'form': form, 'assignment': self.assignment})
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        form = AssignmentForm(request.POST, request.FILES, instance=self.assignment)
+
+        if form.is_valid():
+            return self.form_valid(form)
+        else:
+            return self.from_invalid(form)
+
+    def form_valid(self, form):
+        form.save()
+        messages.success(self.request, self.object.what.task + ' was updated successfully!')
+        return HttpResponseRedirect(reverse('lineup'))
+
+    def form_invalid(self, form):
+        return render(self.request, 'wav/assignment_detail.html', {'form': form, 'assignment': self.assignment})
 
 
 
