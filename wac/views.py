@@ -125,11 +125,20 @@ class AssignmentDetailView(FormMixin, DetailView):
             return self.from_invalid(form)
 
     def form_valid(self, form):
+        print("Valid")
+        print(self.request.POST['fromUrl'])
+        remove = 'http://localhost:8000/'
+        nextFull = self.request.POST['fromUrl'].replace(remove, '')
+        if nextFull == 'useraccounts/home/':
+            next = 'home-view'
+        else:
+            next = 'lineup'
         form.save()
         messages.success(self.request, self.object.what.task + ' was updated successfully!')
-        return HttpResponseRedirect(reverse('lineup'))
+        return HttpResponseRedirect(reverse(next))
 
     def form_invalid(self, form):
+        print("INVALID")
         return render(self.request, 'wav/assignment_detail.html', {'form': form, 'assignment': self.assignment})
 
 
@@ -254,16 +263,19 @@ class PersonCreateView(SuccessMessageMixin, CreateView):
         for object in self.request.FILES:
             print(object)
 
-        self.object.mugshot = ""
-        self.object.save()
+        if form.cleaned_data['x'] is not None:
+            print("P Create beginning of if form.cleaned_data['x'] is not None")
+            self.object.mugshot = ""
+            self.object.save()
 
-        image = form.crop_image()
-        f= BytesIO()
-        try:
-            image.save(f, format='png')
-            print(self.object.name)
-            self.object.mugshot.save(self.object.name + '.png', ContentFile(f.getvalue()))
-        finally: f.close()
+            image = form.crop_image()
+            f= BytesIO()
+            try:
+                image.save(f, format='png')
+                print(self.object.name)
+                self.object.mugshot.save(self.object.name + '.png', ContentFile(f.getvalue()))
+            finally: f.close()
+            print("P Create end of if form.cleaned_data['x'] is not None")
 
         self.object.save()
 
@@ -316,7 +328,10 @@ class PersonDetailView(FormMixin, DetailView):
             f= BytesIO()
             try:
                 image.save(f, format='png')
-                os.remove(settings.MEDIA_ROOT + current_image)
+                if self.object.mugshot == self.object.name + '.png':
+                    print("self.object.mugshot is not None")
+                    print(self.object.mugshot)
+                    os.remove(settings.MEDIA_ROOT + current_image)
                 self.object.mugshot.save(self.object.name + '.png', ContentFile(f.getvalue()))
             finally: f.close()
 

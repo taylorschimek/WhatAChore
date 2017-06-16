@@ -7053,6 +7053,10 @@ body {
 /* ----------------------
     lineup Page
 -----------------------*/
+#lineup a:hover,
+#home a:hover,
+#home-display a:hover {
+  cursor: pointer; }
 #lineup table,
 #home table,
 #home-display table {

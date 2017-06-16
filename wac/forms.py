@@ -10,6 +10,8 @@ from .widgets import CustomClearableFileInput
 
 class AssignmentForm(forms.ModelForm):
 
+    fromUrl = forms.URLField(widget=forms.HiddenInput(), required=False)
+
     def __init__(self, *args, **kwargs):
         super(AssignmentForm, self).__init__(*args, **kwargs)
 
@@ -62,17 +64,6 @@ class PersonEditForm(forms.ModelForm):
             self.fields['name'].required = True
             self.fields['birthday'].required = True
             self.fields['day_off'].required = True
-
-        # print(kwargs)
-        #
-        # if 'initial' in kwargs:
-        #     if kwargs['initial']['mugshot']:
-        #         print("True")
-        #         self.fields['mugshot'].widget.is_initial(False)
-        #     else:
-        #         print("False")
-        #         self.fields['mugshot'].widget.is_initial(True)
-
 
     class Meta:
         model = models.Person

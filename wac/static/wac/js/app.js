@@ -1,7 +1,4 @@
 
-
-
-
 $(".alert").fadeTo(3500, 0).slideUp(500, function(){
     $(this).remove();
 });
@@ -61,12 +58,17 @@ function assignmentDone(theAssPK) {
 
 function find_modal(theUrl) {
     var modal = $('.modal');
+    var url = window.location.href;
+    console.log(url);
     console.log(modal);
     $.ajax({
         url: theUrl,
         context: document.body
     }).done(function(response) {
         modal.html(response);
+        if ($(modal).find('#id_fromUrl')) {
+            $(modal).find('#id_fromUrl').val(url);
+        }
     });
     console.log('yep');
 

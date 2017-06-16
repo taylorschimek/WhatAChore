@@ -30,6 +30,9 @@
                         {{ field|attr:"class:form-control" }}
                     </fieldset>
                     {% endfor %}
+                    {% for hidden in form.hidden_fields %}
+                    {{ hidden }}
+                    {% endfor %}
             </div>
 
             <div class="modal-footer">

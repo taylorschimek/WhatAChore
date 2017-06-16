@@ -10,6 +10,20 @@
         <h1 class="mt-4 text-primary"><strong>Your Weekly Lineup</strong></h1>
       </div>
 
+      {% if messages %}
+         <div class="container text-center">
+           <div class="row">
+             <div class="col-sm-8 offset-sm-2">
+               {% for message in messages %}
+               <div class="alert alert-{{ message.tags }}" role="alert" >
+                 <h4>{{ message }}</h4>
+               </div>
+               {% endfor %}
+             </div>
+           </div>
+         </div>
+      {% endif %}
+
       <div class="container">
         <div class="row card-deck">
 
@@ -26,19 +40,21 @@
 
                     {% for ass in assignments %}
                         {% if ass.who == person and ass.when == dates.0 %}
-                        <li class="list-group-item">
-                            <div>
-                            <a data-toggle="modal" data-target="#assignmentModal" onclick="find_modal('{% url "assignment-detail" ass.pk %}')">
-                              <p class="mb-0">{{ ass.what }}</p>
-                            </a>
-                            </div>
-                            {% if ass.done is True %}
-                            <div id="{{ ass.id }}" style="width: 24px; height: 24px; background-image:url({% static 'wac/styles/images/icons/utility/completedYES.png' %});" onclick="assignmentDone({{ ass.id }})" class="myBorder">
-                            {% elif ass.done is False %}
-                            <div id="{{ ass.id }}" style="width: 24px; height: 24px; background-image:url({% static 'wac/styles/images/icons/utility/completedNO.png' %});" onclick="assignmentDone({{ ass.id }})" class="myBorder">
-                            {% endif %}
-                            </div>
-                        </li>
+                        <div class="container">
+                            <li class="list-group-item">
+                                <a data-toggle="modal" data-target="#assignmentModal" onclick="find_modal('{% url "assignment-detail" ass.pk %}')">
+                                    <div>
+                                      <p class="mb-0">{{ ass.what }}</p>
+                                    </div>
+                                </a>
+                                {% if ass.done is True %}
+                                <div id="{{ ass.id }}" style="width: 24px; height: 24px; background-image:url({% static 'wac/styles/images/icons/utility/completedYES.png' %});" onclick="assignmentDone({{ ass.id }})" class="myBorder">
+                                {% elif ass.done is False %}
+                                <div id="{{ ass.id }}" style="width: 24px; height: 24px; background-image:url({% static 'wac/styles/images/icons/utility/completedNO.png' %});" onclick="assignmentDone({{ ass.id }})" class="myBorder">
+                                {% endif %}
+                                </div>
+                            </li>
+                        </div>
                         {% endif %}
                     {% endfor %}
 
@@ -62,10 +78,12 @@
 
                     {% for ass in assignments %}
                         {% if ass.who == person and ass.when == dates.1 %}
+                        <a data-toggle="modal" data-target="#assignmentModal" onclick="find_modal('{% url "assignment-detail" ass.pk %}')">
                         <li class="list-group-item">
                             <div>
                               <p class="mb-0">{{ ass.what }}</p>
                             </div>
+                        </a>
                             {% if ass.done is True %}
                             <div id="{{ ass.id }}" style="width: 24px; height: 24px; background-image:url({% static 'wac/styles/images/icons/utility/completedYES.png' %});" onclick="assignmentDone({{ ass.id }})" class="myBorder">
                             {% elif ass.done is False %}
@@ -96,10 +114,12 @@
 
                     {% for ass in assignments %}
                         {% if ass.who == person and ass.when == dates.2 %}
+                        <a data-toggle="modal" data-target="#assignmentModal" onclick="find_modal('{% url "assignment-detail" ass.pk %}')">
                         <li class="list-group-item">
                             <div>
                               <p class="mb-0">{{ ass.what }}</p>
                             </div>
+                        </a>
                             {% if ass.done is True %}
                             <div id="{{ ass.id }}" style="width: 24px; height: 24px; background-image:url({% static 'wac/styles/images/icons/utility/completedYES.png' %});" onclick="assignmentDone({{ ass.id }})" class="myBorder">
                             {% elif ass.done is False %}
@@ -130,10 +150,12 @@
 
                     {% for ass in assignments %}
                         {% if ass.who == person and ass.when == dates.3 %}
+                        <a data-toggle="modal" data-target="#assignmentModal" onclick="find_modal('{% url "assignment-detail" ass.pk %}')">
                         <li class="list-group-item">
                             <div>
                               <p class="mb-0">{{ ass.what }}</p>
                             </div>
+                        </a>
                             {% if ass.done is True %}
                             <div id="{{ ass.id }}" style="width: 24px; height: 24px; background-image:url({% static 'wac/styles/images/icons/utility/completedYES.png' %});" onclick="assignmentDone({{ ass.id }})" class="myBorder">
                             {% elif ass.done is False %}
@@ -169,10 +191,12 @@
 
                     {% for ass in assignments %}
                         {% if ass.who == person and ass.when == dates.4 %}
+                        <a data-toggle="modal" data-target="#assignmentModal" onclick="find_modal('{% url "assignment-detail" ass.pk %}')">
                         <li class="list-group-item">
                             <div>
                               <p class="mb-0">{{ ass.what }}</p>
                             </div>
+                        </a>
                             {% if ass.done is True %}
                             <div id="{{ ass.id }}" style="width: 24px; height: 24px; background-image:url({% static 'wac/styles/images/icons/utility/completedYES.png' %});" onclick="assignmentDone({{ ass.id }})" class="myBorder">
                             {% elif ass.done is False %}
@@ -203,10 +227,12 @@
 
                     {% for ass in assignments %}
                         {% if ass.who == person and ass.when == dates.5 %}
+                        <a data-toggle="modal" data-target="#assignmentModal" onclick="find_modal('{% url "assignment-detail" ass.pk %}')">
                         <li class="list-group-item">
                             <div>
                               <p class="mb-0">{{ ass.what }}</p>
                             </div>
+                        </a>
                             {% if ass.done is True %}
                             <div id="{{ ass.id }}" style="width: 24px; height: 24px; background-image:url({% static 'wac/styles/images/icons/utility/completedYES.png' %});" onclick="assignmentDone({{ ass.id }})" class="myBorder">
                             {% elif ass.done is False %}
@@ -237,10 +263,12 @@
 
                     {% for ass in assignments %}
                         {% if ass.who == person and ass.when == dates.6 %}
+                        <a data-toggle="modal" data-target="#assignmentModal" onclick="find_modal('{% url "assignment-detail" ass.pk %}')">
                         <li class="list-group-item">
                             <div>
                               <p class="mb-0">{{ ass.what }}</p>
                             </div>
+                        </a>
                             {% if ass.done is True %}
                             <div id="{{ ass.id }}" style="width: 24px; height: 24px; background-image:url({% static 'wac/styles/images/icons/utility/completedYES.png' %});" onclick="assignmentDone({{ ass.id }})" class="myBorder">
                             {% elif ass.done is False %}

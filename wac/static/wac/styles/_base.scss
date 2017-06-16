@@ -317,6 +317,11 @@ body {
 #lineup,
 #home,
 #home-display {
+    a {
+        &:hover {
+            cursor: pointer;
+        }
+    }
     table {
         color: $cream;
         text-align: center;

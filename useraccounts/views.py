@@ -19,7 +19,7 @@ from wac.forms import PersonEditForm
 from .forms import EmailLoginForm, RegistrationForm
 
 from wac.views import PersonCreateView
-from wac.models import Assignment, Person, Week
+from wac.models import Assignment, Person, User, Week
 from .models import User
 
 
@@ -41,13 +41,25 @@ def register(request):
 class ProfileCreateFormView(PersonCreateView):
     template_name = 'welcomeNew.html'
 
+    def get(self, request, *args, **kwargs):
+        theUser = request.user
+        form = PersonEditForm(initial={'email': theUser.email,})
+
+        return render(request, 'useraccounts/welcomeNew.html', {'form': form})
+
+
+
 
 class HomeView(TemplateView):
-    model = Person
+    model = User
     template_name = 'home.html'
 
     def profiled(self):
-        theUser = Person.objects.filter(email__exact=self.request.user.email)
+        theUser = Person.objects.filter(
+            user = self.request.user
+        ).filter(
+            email__exact=self.request.user.email
+        )
         print(theUser)
         return theUser[0]
 

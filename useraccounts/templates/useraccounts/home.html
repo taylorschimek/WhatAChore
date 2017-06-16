@@ -45,10 +45,12 @@
                         <ul class="list_group m-0 p-0">
                             {% for ass in assignments %}
                             {% if ass.who == person %}
+                            <a data-toggle="modal" data-target="#assignmentModal" onclick="find_modal('{% url "assignment-detail" ass.pk %}')">
                             <li class="list-group-item">
                                 <div>
                                     <p class="mb-0">{{ ass.what }}</p>
                                 </div>
+                            </a>
                                 {% if ass.done is True %}
                                 <div id="{{ ass.id }}" style="width: 24px; height: 24px; background-image:url({% static 'wac/styles/images/icons/utility/completedYES.png' %});" onclick="assignmentDone({{ ass.id }})" class="myBorder"></div>
                                 {% elif ass.done is False %}
@@ -133,6 +135,6 @@
 </section>
 
 <div class="modal" id="homeModal"></div>
-
+<div class="modal" id="assignmentModal"></div>
 
 {% endblock %}
