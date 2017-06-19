@@ -10,14 +10,29 @@
         </div>
 
         <div class="modal-body">
-            <h1 class="text-info">Suck on This!!!</h1>
+            <h4 class="text-info">Not many settings just yet.  More to come.</h4>
+            <div class="container">
+                <form action="" method="POST">
+                    <div class="form-check d-inline">
+                        <label class="form-check-label">
+                            <input type="checkbox" class="form-check-input">
+                            Do not send email updates or announcements.
+                        </label>
+                    </div>
+                    <button type="submit" class="d-inline btn btn-primary">Submit</button>
+                </form>
+            </div>
         </div>
 
         <div class="modal-footer">
-            <button type="button"
-                    class="btn btn-warning float-left mr-auto"
-
-                    onclick='find_modal("{% url 'password_change' %}")'>Change Password</button>
+            <div class="float-left mr-auto">
+                <button type="button"
+                        class="btn btn-warning float-left mr-auto"
+                        onclick='find_modal("{% url 'password_change' %}")'>Change Password</button>
+                <button type="button"
+                        class="btn btn-warning ml-2"
+                        onclick='alert("Change Email")'>Change Email</button>
+            </div>
             <button type="button" class="btn btn-info" data-dismiss="modal">Close</button>
         </div>
     </div>
