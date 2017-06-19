@@ -1,0 +1,48 @@
+<div class="modal-dialog passed container" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3 class="modal-title text-primary"><strong>Week Starting {{ week.start_date }}</strong></h3>
+            <button type="button" class="close btn btn-info" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">x</span>
+              <span class="sr-only">Close</span>
+            </button>
+        </div>
+
+        <div class="modal-body container">
+            <table class="table table-sm">
+                <thead class="bg-info text-success text-center">
+                    <tr>
+                        <th id="what"scope="col">Chore</th>
+                        <th id="who" scope="col">Person</th>
+                        <th id="done" scope="col">Completed</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for date in dates %}
+                        <tr>
+                            <th id="mon" class="span bg-warning text-success" colspan="4" scope="colgroup">{{ date|date:'l' }} ----</th>
+                        </tr>
+                        {% for ass in assignments %}
+                        {% if ass.when == date %}
+                            {% if ass.done is False %}
+                            <tr style="color: #C63D0F;">
+                            {% else %}
+                            <tr>
+                            {% endif %}
+                                <th headers="mon" id="monspan">{{ ass.what }}</th>
+                                <td headers="mon monspan who">{{ ass.who }}</td>
+                                <td headers="mon monspan done">{{ ass.done }}</td>
+                            </tr>
+                        {% endif %}
+                        {% endfor %}
+                    {% endfor %}
+                </tbody>
+            </table>
+            <hr>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-info" data-dismiss="modal">Close</button>
+        </div>
+    </div>
+</div>

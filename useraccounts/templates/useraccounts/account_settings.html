@@ -1,0 +1,24 @@
+{% load i18n widget_tweaks %}
+<div class="modal-dialog modal-lg container" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3 class="modal-title text-primary"><strong>Account Settings</strong></h3>
+            <button type="button" class="close btn btn-info" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">x</span>
+              <span class="sr-only">Close</span>
+            </button>
+        </div>
+
+        <div class="modal-body">
+            <h1 class="text-info">Suck on This!!!</h1>
+        </div>
+
+        <div class="modal-footer">
+            <button type="button"
+                    class="btn btn-warning float-left mr-auto"
+
+                    onclick='find_modal("{% url 'password_change' %}")'>Change Password</button>
+            <button type="button" class="btn btn-info" data-dismiss="modal">Close</button>
+        </div>
+    </div>
+</div>

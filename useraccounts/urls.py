@@ -2,23 +2,26 @@ from django.conf.urls import include, url
 from django.contrib.auth import views as auth_views
 
 from . import views
+from .forms import EmailLoginForm
 
 urlpatterns = [
     # Registration and Login URLs
     url(r'^login/$',
-        auth_views.LoginView.as_view(),
-        name='login'),
+        views.EmailLoginView.as_view(),
+        # views.ajax_login,
+        name='login',
+        kwargs={"form": EmailLoginForm}),
 
     url(r'^logout/$',
         auth_views.LogoutView.as_view(),
         name='logout'),
 
-    url(r'^password_change/$',
-        auth_views.PasswordChangeView.as_view(),
+    url(r'password_change/$',
+        views.ChangePasswordView.as_view(),
         name='password_change'),
 
     url(r'^password_change/done/$',
-        auth_views.PasswordChangeDoneView.as_view(),
+        views.change_password_done,
         name='password_change_done'),
 
     url(r'^password_reset/$',
@@ -43,4 +46,7 @@ urlpatterns = [
 
     url(r'^home/$', views.HomeView.as_view(), name='home-view'),
 
+    url(r'home/(?P<pk>\d+)$', views.OldWeekView.as_view(), name='passed-week'),
+
+    url(r'home/account/(?P<pk>\d+)$', views.AccountSettings.as_view(), name='account-settings'),
 ]

@@ -1,9 +1,11 @@
 import calendar
 import datetime
 
+from whatachore.tasks import add
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib import messages
+from django.core.mail import send_mail
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render, render_to_response, redirect
 from django.template.loader import render_to_string
@@ -18,10 +20,10 @@ from .forms import AssignmentForm, ChoreEditForm, PersonEditForm
 
 
 
-
 #=============== LINEUP ==================#
 #=========================================#
 def lineup(request):
+    # add.delay(3, 5)
     if request.is_ajax():
         print("is_ajax() happened")
 
@@ -47,6 +49,7 @@ def lineup(request):
     else:
         # print('uh oh')
         new_week = Week.create(current_user=request.user)
+        send_mail('test', 'testing this nonsense', 'noreply@taylorschimek.com', ['ruof@yahoo.com'])
 
     return redirect(reverse('lineup'))
 

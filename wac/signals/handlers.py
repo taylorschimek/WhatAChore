@@ -20,7 +20,6 @@ def person_delete(sender, instance, **kwargs):
 
 
 
-
 #########################################################################
 # Concerning Weeks and Assignments
 
@@ -28,12 +27,148 @@ def person_delete(sender, instance, **kwargs):
 @receiver(pre_save, sender=Week)
 def obsolete_old_weeks(sender, instance, **kwargs):
     if not instance.pk:
-        # print("obsolete_old_weeks called")
         old_weeks = Week.objects.filter(
             user__exact=instance.user
-        ).update(is_current=False)
+        )
+
+        if len(old_weeks) != 0:
+            old_weeks.update(is_current=False)
+
+        if len(old_weeks) == 5:
+            oldest = old_weeks.order_by("start_date")[0]
+            oldest.delete()
 
 
+
+#========================================================================
+SUB_INTERVAL_CHOICES = [
+    ('None', 'None'),
+    ('Random', 'Random'),
+    ('1st', '1st of the month'),
+    ('15th', '15th of the month'),
+    ('Weekday', 'Weekday'),
+    ('Weekend', 'Weekend'),
+    ('Sunday', 'Sunday'),
+    ('Monday', 'Monday'),
+    ('Tueday', 'Tuesday'),
+    ('Wednesday', 'Wednesday'),
+    ('Thursday', 'Thursday'),
+    ('Friday', 'Friday'),
+    ('Saturday', 'Saturday')
+]
+
+def random(chore):
+    print(chore.sub_interval)
+    number_of_days = randint(0, 6)
+    date = THIS_WEEK.start_date + datetime.timedelta(days=number_of_days)
+    print(date)
+    return date
+
+
+def first(chore):
+    print(chore.sub_interval)
+
+
+def fifteenth(chore):
+    print(chore.sub_interval)
+
+
+def weekday(chore):
+    print(chore.sub_interval)
+    number_of_days = randint(0, 4)
+    date = THIS_WEEK.start_date + datetime.timedelta(days=number_of_days)
+    print(date)
+    return date
+
+
+def weekend(chore):
+    print(chore.sub_interval)
+    number_of_days = randint(5, 6)
+    date = THIS_WEEK.start_date + datetime.timedelta(days=number_of_days)
+    print(date)
+    return date
+
+
+def sunday(chore):
+    print(chore.sub_interval)
+    number_of_days = 6
+    date = THIS_WEEK.start_date + datetime.timedelta(days=number_of_days)
+    print(date)
+    return date
+
+def monday(chore):
+    print(chore.sub_interval)
+    number_of_days = 0
+    date = THIS_WEEK.start_date + datetime.timedelta(days=number_of_days)
+    print(date)
+    return date
+
+
+def tuesday(chore):
+    print(chore.sub_interval)
+    number_of_days = 1
+    date = THIS_WEEK.start_date + datetime.timedelta(days=number_of_days)
+    print(date)
+    return date
+
+
+def wednesday(chore):
+    print(chore.sub_interval)
+    number_of_days = 2
+    date = THIS_WEEK.start_date + datetime.timedelta(days=number_of_days)
+    print(date)
+    return date
+
+
+def thursday(chore):
+    print(chore.sub_interval)
+    number_of_days = 3
+    date = THIS_WEEK.start_date + datetime.timedelta(days=number_of_days)
+    print(date)
+    return date
+
+
+def friday(chore):
+    print(chore.sub_interval)
+    number_of_days = 4
+    date = THIS_WEEK.start_date + datetime.timedelta(days=number_of_days)
+    print(date)
+    return date
+
+
+def saturday(chore):
+    print(chore.sub_interval)
+    number_of_days = 5
+    date = THIS_WEEK.start_date + datetime.timedelta(days=number_of_days)
+    print(date)
+    return date
+
+
+
+subinterval_methods = {
+    'random': random,
+    '1st': first,
+    '15th': fifteenth,
+    'weekday': weekday,
+    'weekend': weekend,
+    'sunday': sunday,
+    'monday': monday,
+    'tuesday': tuesday,
+    'wednesday': wednesday,
+    'thursday': thursday,
+    'friday': friday,
+    'saturday': saturday,
+}
+
+def get_date_from_subInterval(chore):
+    for choice in SUB_INTERVAL_CHOICES:
+        if chore.sub_interval == choice[0]:
+            method_name = choice[0].replace(' ', '').lower()
+            date = subinterval_methods[method_name](chore)
+            return date
+
+
+#========================================================================
 THIS_WEEK = None
 TOTAL_MINUTES_GATHERED = 0
 
@@ -65,6 +200,8 @@ def create_repeating_assignments(chore, date, increment):
     for d in range(0, 7, increment):
         create_assignment(chore, date)
         date = date + datetime.timedelta(days=increment)
+    chore.last_assigned = date
+    chore.save(update_fields=['last_assigned'])
 
 def once(chore):
     # Factor subinterval
@@ -85,30 +222,39 @@ def every3days(chore):
 def weekly(chore):
     print("method weekly")
     # need to check last_assigned and make sure new date is at least 5 days later
-    if chore.sub_interval == "Random":
-        number_of_days = randint(0, 6)
-    else:
-        number_of_days = randint(0, 1)
-    date = THIS_WEEK.start_date + datetime.timedelta(days=number_of_days)
-    chore.last_assigned = date
+    new_date = get_date_from_subInterval(chore)
+    print(new_date)
+    chore.last_assigned = new_date
     chore.save(update_fields=['last_assigned'])
-    create_assignment(chore, date)
+    create_assignment(chore, new_date)
 
 def every2weeks(chore):
     print("method every 2 weeks")
+    new_date = get_date_from_subInterval(chore)
+    print(new_date)
 
 def monthly(chore):
     print("method monthly")
+    new_date = get_date_from_subInterval(chore)
+    print(new_date)
 
 def every2months(chore):
     print("method every 2 months")
+    new_date = get_date_from_subInterval(chore)
+    print(new_date)
 
 def quarterly(chore):
     print("method quarterly")
+    new_date = get_date_from_subInterval(chore)
+    print(new_date)
 
 def yearly(chore):
     print("method yearly")
+    new_date = get_date_from_subInterval(chore)
+    print(new_date)
 
+
+#========================================================================
 assigning_methods = {
     'once': once,
     'daily': daily,
@@ -129,11 +275,13 @@ def get_chores_for_this_week():
                 method_name = choice[0].replace(' ', '').lower()
                 assigning_methods[method_name](chore)
 
-
+#========================================================================
 def assign_people_to_chores():
     print('assigning people')
     people = Person.objects.filter(user__exact=THIS_WEEK.user)
     to_dos = Assignment.objects.filter(week__exact=THIS_WEEK)
+    global TOTAL_MINUTES_GATHERED
+    minute_limit = (TOTAL_MINUTES_GATHERED / len(people)) + (TOTAL_MINUTES_GATHERED / len(to_dos))
 
     for person in people:
         person.weekly_minutes = 0
@@ -143,24 +291,28 @@ def assign_people_to_chores():
         working = True
         tried = [False] * len(people)
         while working:
-            person = randint(0, len(people)-1)
-            tried[person] = True
+            choice = randint(0, len(people)-1)
+            tried[choice] = True
 
-            if people[person].age >= to_do.what.age_restriction and people[person].day_off != calendar.day_abbr[to_do.when.weekday()]:
+            if (
+                    people[choice].age >= to_do.what.age_restriction and
+                    people[choice].day_off != calendar.day_abbr[to_do.when.weekday()] and
+                    people[choice].weekly_minutes < minute_limit
+               ):
                 working = False
                 # print('+'*30)
             if all(tried):
                 working = False
                 print('Does age_restriction trump day_off or the other way around?')
-        to_do.who = people[person]
+        to_do.who = people[choice]
         to_do.save(update_fields=['who'])
         # print("to_do.what.duration = {}".format(to_do.what.duration))
-        people[person].weekly_minutes += to_do.what.duration
-        people[person].save(update_fields=['weekly_minutes'])
+        people[choice].weekly_minutes += to_do.what.duration
+        people[choice].save(update_fields=['weekly_minutes'])
 
 
 
-
+#========================================================================
 @receiver(post_save, sender=Week)
 def week_post_save(sender, instance, created, **kwargs):
     if created:
@@ -172,19 +324,20 @@ def week_post_save(sender, instance, created, **kwargs):
         global THIS_WEEK
         THIS_WEEK = instance
 
-        # TEMP - delete all assignments per user.
-        Assignment.objects.exclude(week=THIS_WEEK).delete()
+        # # TEMP - delete all assignments per user.
+        # Assignment.objects.filter(
+        #     week__user = instance.user
+        # ).exclude(
+        #     week=THIS_WEEK
+        # ).delete()
 
         get_chores_for_this_week()
         assign_people_to_chores()
 
         THIS_WEEK.is_current = True
-        # print(TOTAL_MINUTES_GATHERED)
-        # print(THIS_WEEK.total_time)
+
         THIS_WEEK.total_time = TOTAL_MINUTES_GATHERED
         THIS_WEEK.save()
-        # print(THIS_WEEK.total_time)
-        # print(Assignment.objects.filter(week=THIS_WEEK))
 
         # TEMP
         # print(THIS_WEEK.total_time)

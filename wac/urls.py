@@ -4,6 +4,7 @@ from django.conf.urls.static import static
 from . import views
 
 
+
 urlpatterns = [
     url(r'^chores/$', views.ChoreListView.as_view(), name='chore-list'),
     url(r'^chores/create/$', views.ChoreCreateView.as_view(), name='chore-create'),

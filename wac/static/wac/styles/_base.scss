@@ -131,6 +131,14 @@ body {
     }
 }
 
+#login-modal {
+    a {
+        &:hover {
+            cursor: pointer;
+        }
+    }
+}
+
 .register {
     font-family: Georgia, sans-serif;
     text-align: center;
@@ -306,13 +314,19 @@ body {
     lineup Page
 -----------------------*/
 
-#lineup {
+#lineup,
+#home,
+#home-display {
     table {
         color: $cream;
         text-align: center;
 
+        th {
+            text-align: center;
+        }
+
         td {
-            font-size: 1.3rem;
+            font-size: 1rem;
         }
     }
 
@@ -327,7 +341,25 @@ body {
         // border: 1px solid $red;
     }
 
-    a {
+    hr {
+        border-color: $lightgray;
+        opacity: 0.5;
+    }
+
+    // h6.p-name {
+    //     position: absolute;
+    //     top: 50%;
+    //     transform: translateY(-50%);
+    // }
+    .p-name {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+}
+
+#home-control {
+    a.dropdown-item {
         &:hover {
             color: $charcoal;
             cursor: pointer;

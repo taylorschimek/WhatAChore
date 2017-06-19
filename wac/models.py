@@ -151,9 +151,9 @@ class Week(models.Model):
         the_date = datetime.date.today()
         idx = (the_date.weekday()) % 7
         a_monday = the_date - datetime.timedelta(idx)
-        if idx == 0:
-            last_monday = a_monday - datetime.timedelta(days=7)
-            return last_monday
+        # if idx == 0:
+        #     last_monday = a_monday - datetime.timedelta(days=7)
+        #     return last_monday
         return a_monday
 
     @classmethod

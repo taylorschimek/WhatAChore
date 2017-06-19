@@ -1,13 +1,13 @@
 {% load i18n widget_tweaks %}
-<div class="modal-dialog modal-sm" role="document">
+<div id="loginModal" class="modal-dialog modal-sm" role="document">
 {% if form.errors %}
 <p>Your username and password didn't match.  Please try again.</p>
 {% endif %}
 
 
 
-<form method="post" action="{% url 'login' %}" class="form">
-<div class="modal-content">
+<form method="post" action="{% url 'login' %}" class="form login-form">
+<div id="login-modal" class="modal-content">
     <div class="modal-header">
         <h2 class="modal-title text-primary"><strong>Login</strong></h2>
         <button type="button" class="close btn btn-info" data-dismiss="modal" aria-label="Close">
@@ -21,12 +21,12 @@
         {% csrf_token %}
         {{ form.media }}
         {% for field in form.visible_fields %}
-            <fieldset class="form-group">
+            <fieldset class="form-group {{ field.name }}">
                 {{ field.errors }}{{ field.label_tag }}
                 {{ field|attr:"class:form-control" }}
             </fieldset>
         {% endfor %}
-        <a class="text-info text-muted" data-toggle="modal" onclick="find_modal('{% url 'password_reset' %}')">Forgot your password?</a>
+        <a class="forgot text-info text-muted" data-toggle="modal" onclick="find_modal('{% url 'password_reset' %}')">Forgot your password?</a>
     </div>
     <div class="modal-footer">
         <input type="submit" class="btn btn-secondary" value="Login">

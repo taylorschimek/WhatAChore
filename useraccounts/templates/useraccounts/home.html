@@ -1,31 +1,138 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block main_content %}
+{% csrf_token %}
 
-<section class="header">
+<section id="home" class="header">
     <div class="container text-center">
         <div class="row">
             <h1 class="col-md-6 mt-md-4 text-primary">{{ view.profiled.name }}</h1>
-            <h1 class="col-md-6 mt-md-4 text-primary">{% now 'l' %} the {% now 'd' %}</h1>
+            <h1 class="col-md-6 mt-md-4 text-primary">{% now 'l' %} {% now 'm' %}/{% now 'd' %}</h1>
         </div>
-        <hr class="hr-charcoal" />
-        <div class="row">
-            <div class="container">
-            <div class="card-deck">
-                <div class="card col-12 col-md-6 m-0 p-0">
-                    <h3 class="card-title mt-3">Personal Info</h3>
-                </div>
-                <div class="card col-12 col-md-6 m-0 p-0">
-                    <h3 class="card-title mt-3">Assignments</h3>
-                </div>
-            </div>
-            </div>
-        </div>
-
+        <hr />
     </div>
 </section>
 
+{% if messages %}
+<div class="container text-center">
+  <div class="row">
+    <div class="col-sm-8 offset-sm-2">
+      {% for message in messages %}
+      <div class="alert alert-{{ message.tags }}" role="alert" >
+        <h4>{{ message }}</h4>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+{% endif %}
 
+<section id="home-display" class="header">
+    <div class="container">
+
+        <div class="row card-deck text-center">
+
+            <div class="card card-outline-danger p-0 m-0 col-12 col-md-6 push-md-6">
+                <h3 class="card-title mt-3 text-primary">Assignments for Today</h3>
+                <hr />
+                {% for person in people %}
+                <div class="row container m-0 p-0">
+                    <div class="col-3 p-name m-0 p-0">
+                        <h6 class="text-primary text-center m-0 p-0">{{ person.name }}</h6>
+                    </div>
+                    <div class="col-9 bg-success">
+                        <ul class="list_group m-0 p-0">
+                            {% for ass in assignments %}
+                            {% if ass.who == person %}
+                            <li class="list-group-item">
+                                <div>
+                                    <p class="mb-0">{{ ass.what }}</p>
+                                </div>
+                                {% if ass.done is True %}
+                                <div id="{{ ass.id }}" style="width: 24px; height: 24px; background-image:url({% static 'wac/styles/images/icons/utility/completedYES.png' %});" onclick="assignmentDone({{ ass.id }})" class="myBorder"></div>
+                                {% elif ass.done is False %}
+                                <div id="{{ ass.id }}" style="width: 24px; height: 24px; background-image:url({% static 'wac/styles/images/icons/utility/completedNO.png' %});" onclick="assignmentDone({{ ass.id }})" class="myBorder"></div>
+                                {% endif %}
+                            </li>
+                            {% endif %}
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    <div class="col-12">
+                        <hr />
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+            <div class="card col-12 col-md-6 m-0 p-0 pull-md-6">
+                <h3 class="card-title mt-3">Missed Assignments</h3>
+                {% if not_done %}
+                <table class="table table-sm">
+                    <thead class="bg-info">
+                        <tr>
+                            <th>Day</th>
+                            <th>Chore</th>
+                            <th>Person</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for miss in not_done %}
+                        <tr>
+                            <td>{{ miss.when|date:"l" }}</td>
+                            <td>{{ miss.what }}</td>
+                            <td>{{ miss.who }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% else %}
+                <h6 class="text-success text-center">You currently have no missed assignments!</h6>
+                {% endif %}
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<section id="home-control" class="container p-0">
+    <div class="container bg-info p-3" style="height: 50px;">
+        <div class="dropdown d-inline float-left">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="workerEmailDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Email Workers
+            </button>
+
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                {% for person in people %}
+                <a class="dropdown-item" href="#">{{ person.name }}</a>
+                {% endfor %}
+                <a class="dropdown-item" href="#">All</a>
+            </div>
+        </div>
+
+        <div class="dropdown d-inline float-left ml-2">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="passedWeeksDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                View Passed Weeks
+            </button>
+
+            <div id="passed-dropdown" class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <h6 class="dropdown-header">Start Date</h6>
+                {% for week in old_weeks %}
+                <a class="dropdown-item" data-toggle="modal" data-target="#homeModal" onclick="find_modal('{% url 'passed-week' week.pk %}')">{{ week.start_date }}</a>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="dropdown d-inline float-right">
+            <button class="btn btn-secondary" data-toggle="modal" data-target="#homeModal" onclick="find_modal('{% url 'account-settings' user.pk %}')" type="button">
+                Account Settings
+            </button>
+        </div>
+    </div>
+</section>
+
+<div class="modal" id="homeModal"></div>
 
 
 {% endblock %}

@@ -6937,6 +6937,9 @@ body {
     .jumbotron #jumboRow img {
       padding-top: 3rem; } }
 
+#login-modal a:hover {
+  cursor: pointer; }
+
 .register {
   font-family: Georgia, sans-serif;
   text-align: center;
@@ -7050,17 +7053,41 @@ body {
 /* ----------------------
     lineup Page
 -----------------------*/
-#lineup table {
+#lineup table,
+#home table,
+#home-display table {
   color: #FDF3E7;
   text-align: center; }
-  #lineup table td {
-    font-size: 1.3rem; }
-#lineup img {
+  #lineup table th,
+  #home table th,
+  #home-display table th {
+    text-align: center; }
+  #lineup table td,
+  #home table td,
+  #home-display table td {
+    font-size: 1rem; }
+#lineup img,
+#home img,
+#home-display img {
   padding-right: 0 auto; }
-#lineup .myBorder {
+#lineup .myBorder,
+#home .myBorder,
+#home-display .myBorder {
   position: absolute;
   left: 90%; }
-#lineup a:hover {
+#lineup hr,
+#home hr,
+#home-display hr {
+  border-color: #7E8F7C;
+  opacity: 0.5; }
+#lineup .p-name,
+#home .p-name,
+#home-display .p-name {
+  display: flex;
+  flex-direction: column;
+  justify-content: center; }
+
+#home-control a.dropdown-item:hover {
   color: #3B3738;
   cursor: pointer; }
 

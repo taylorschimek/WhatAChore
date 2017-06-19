@@ -12,7 +12,6 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 
 import os
 
-
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -40,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'djcelery',
     'widget_tweaks',
     'useraccounts',
     'wac',
@@ -121,6 +121,26 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
+# Celery Stuff
+BROKER_URL = "amqp://ruof:monugget1@localhost:5672/wachost"
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_RESULT_BACKEND = 'djcelery.backends.database:DatabaseBackend'
+CELERYBEAT_SCHEDULER = 'djcelery.schedulers.DatabaseScheduler'
+
+# SendGrid Stuff - needs to be secured with Python Decouple
+# EMAIL_HOST = 'smtp.sendgrid.net'
+# EMAIL_PORT = 587
+# EMAIL_HOST_USER = 'wac_app'
+# EMAIL_HOST_PASSWORD = 'PeLa478*'
+# EMAIL_USE_TLS = True
+
+# temp for development
+EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
+EMAIL_FILE_PATH = 'tmp/email-messages/'
+
 
 
 # Internationalization

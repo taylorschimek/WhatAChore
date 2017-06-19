@@ -1,6 +1,8 @@
 from django import forms
 
 from django.contrib.auth import get_user_model
+from django.contrib.auth.forms import AuthenticationForm
+from django.core.exceptions import ObjectDoesNotExist
 from django.utils.translation import ugettext_lazy as _
 
 
@@ -33,3 +35,13 @@ class RegistrationForm(forms.ModelForm):
         if commit:
             user.save()
         return user
+
+
+class EmailLoginForm(AuthenticationForm):
+    def clean(self):
+        try:
+            self.cleaned_data['username'] = get_user_model().objects.get(email=self.data["username"])
+        except ObjectDoesNotExist:
+            self.cleaned_data['username'] = "a_username_that_do_not_exists_anywhere_in_the_site"
+
+        return super(EmailLoginForm, self).clean()
