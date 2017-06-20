@@ -138,7 +138,6 @@ class Person(models.Model):
 #         instance.mugshot.delete(False)
 
 
-
 class Week(models.Model):
 
     user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name="created_by", default=1)

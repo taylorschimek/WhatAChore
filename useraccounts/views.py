@@ -48,6 +48,7 @@ class HomeView(TemplateView):
 
     def profiled(self):
         theUser = Person.objects.filter(email__exact=self.request.user.email)
+        print(theUser)
         return theUser[0]
 
     def get_context_data(self, **kwargs):

@@ -185,3 +185,94 @@ function postChangePassword() {
         }
     });
 };
+
+// Image Cropping Business
+
+function closeThis() {
+    console.log('closeThis');
+    $('#modalCrop').modal('hide');
+}
+
+$(function () {
+    var $image;
+    var cropBoxData;
+    var canvasData;
+
+    // Script to open the cropModal
+    $(document).on('change', '#id_mugshot', function () {
+        console.log('mugshot changed');
+        if (this.files && this.files[0]) {
+            console.log('if is true');
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                console.log('reader.onload worked');
+                $('#image').attr('src', e.target.result);
+                $('#modalCrop').modal('show');
+            }
+            $image = $('#image');
+            reader.readAsDataURL(this.files[0]);
+        }
+    });
+
+    // Script to handle the cropper box
+    $(document).on('shown.bs.modal', '#modalCrop', function () {
+
+        console.log('modalCrop shown');
+        console.log('image = ' + $image);
+        $image.cropper({
+            viewMode: 1,
+            aspectRatio: 3/4,
+            // minCropBoxWidth: 200,
+            // minCropBoxHeight: 200,
+            ready: function () {
+                $image.cropper('setCanvasData', canvasData);
+                $image.cropper('setCropBoxData', cropBoxData);
+            }
+        });
+    }).on('hidden.bs.modal', function () {
+        console.log('modal hidden');
+        cropBoxData = $image.cropper('getCropBoxData');
+        canvasData = $image.cropper('getCanvasData');
+        $image.cropper('destroy');
+    });
+
+    // Script to collect the data and post to the server
+    $(document).on('click', '.js-crop-and-upload', function () {
+        console.log('fucking collection worked');
+        var cropData = $image.cropper('getData');
+        
+    });
+});
+
+$('.js-zoom-in').click(function () {
+    $image.cropper('zoom', 0.1);
+});
+
+$('.js-zoom-out').click(function () {
+    $image.cropper('zoom', -0.1);
+});
+
+$(document).on('show.bs.modal', '.modal', function () {
+    // console.log($('.modal:visible').length)
+    var zIndex = 1040 + (10 * $('.modal:visible').length);
+    // console.log($(this));
+    $(this).css('z-index', zIndex);
+    setTimeout(function() {
+        // console.log('.modal-backdrop is ' + $('.modal-backdrop').length);
+        // console.log('.modal-backdrop.not is ' + $('.modal-backdrop').not('.modal-stack').length);
+        $('.modal-backdrop').not('.modal-stack').css('z-index', zIndex - 1).addClass('modal-stack');
+    }, 0);
+});
+
+
+
+
+// Script to collect the data and post to the server
+// $('.js-crop-and-upload').click(function () {
+//     var cropData = $image.cropper('getData');
+//     $('#id_x').val(cropData['x']);
+//     $('#id_y').val(cropData['y']);
+//     $('#id_height').val(cropData['height']);
+//     $('#id_width').val(cropData['width']);
+//     $('#formUpload').submit();
+// });

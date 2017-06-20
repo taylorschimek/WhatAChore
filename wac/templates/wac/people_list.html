@@ -32,7 +32,7 @@
         {% for person in people %}
         <!-- A Card -->
         <div class="col-xs-4 col-md-4 card m-0 p-0">
-          <a data-toggle="modal" data-target="#personDetailModal" onclick="find_modal('{% url "person-detail" person.pk %}')">
+          <a data-toggle="modal" data-target="#personModal" onclick="find_modal('{% url "person-detail" person.pk %}')">
           {% if person.mugshot %}
 
           <img src="{{ BASE_DIR }}/media/{{ person.mugshot }}" alt="{{ person.mugshot.url }}" />
@@ -66,7 +66,7 @@
 
         <!-- Create Person Card -->
         <div id="newPerson" class="card col-xs-4 col-md-2 m-0 p-0">
-          <a data-toggle="modal" data-target="#newPersonModal" onclick='find_modal("{% url 'person-create' %}")' >
+          <a data-toggle="modal" data-target="#personModal" onclick='find_modal("{% url 'person-create' %}")' >
             <div class="container text-center">
               <div class="imgDiv text-center">
                 <img src="{% static 'wac/styles/images/icons/red_icons/New.png' %}" alt="Create a worker">
@@ -83,9 +83,9 @@
 
 </section> <!-- /People Add/Edit -->
 
-<div class="modal" id="newPersonModal"></div>
-<div class="modal" id="personDetailModal"></div>
-<div class="modal" id="deletePersonModal"></div>
+<div class="modal" id="personModal"></div>
+
+
 
 
 
