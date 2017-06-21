@@ -30,6 +30,7 @@
           <fieldset class="form-group">
           {% endif %}
             {{ field.errors }}{{ field.label_tag }}
+            <p class="ml-5 mb-0 p-0 d-inline-block helptext text-warning"><small>{{ field.help_text }}</small></p>
             {{ field|add_class:"form-control" }}
           </fieldset>
         {% endfor %}

@@ -39,9 +39,18 @@ class ChoreEditForm(forms.ModelForm):
             'age_restriction',
             'chore_icon_location'
         ]
+        help_texts = {
+            'duration': _('in minutes, please.'),
+        }
 
 
 class PersonEditForm(forms.ModelForm):
+
+    x = forms.FloatField(widget=forms.HiddenInput(), required=False)
+    y = forms.FloatField(widget=forms.HiddenInput(), required=False)
+    width = forms.FloatField(widget=forms.HiddenInput(), required=False)
+    height = forms.FloatField(widget=forms.HiddenInput(), required=False)
+
     def __init__(self, *args, **kwargs):
         super(PersonEditForm, self).__init__(*args, **kwargs)
 
@@ -60,11 +69,19 @@ class PersonEditForm(forms.ModelForm):
             'email',
             'day_off',
             'mugshot',
+            'x',
+            'y',
+            'width',
+            'height',
         ]
         help_texts = {
             'birthday': _('YYYY-MM-DD - used only to assign correct chores to younger workers.'),
             'day_off': _('Specific day a worker would rather not or cannot have chores.')
         }
+
+    def __init__(self, *args, **kwargs):
+        super(PersonEditForm, self).__init__(*args, **kwargs)
+        self.fields['y'].widget.attrs['type'] = 'hidden'
 
 
 # class PhotoForm(forms.ModelForm):
@@ -84,7 +101,7 @@ class PersonEditForm(forms.ModelForm):
 #         y = self.cleaned_data.get('y')
 #         w = self.cleaned_data.get('width')
 #         h = self.cleaned_data.get('height')
-# 
+#
 #         image = Image.open(photo.file)
 #         cropped_image = image.crop((x, y, w+x, h+y))
 #         resized_image = cropped_image.resize((200, 200), Image.ANTIALIAS)
