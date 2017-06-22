@@ -1,16 +1,5 @@
 
-function find_modal(theUrl) {
-    var modal = $('.modal');
-    console.log(modal);
-    $.ajax({
-        url: theUrl,
-        context: document.body
-    }).done(function(response) {
-        modal.html(response);
-    });
-    console.log('yep');
 
-}
 
 
 $(".alert").fadeTo(3500, 0).slideUp(500, function(){
@@ -67,8 +56,23 @@ function assignmentDone(theAssPK) {
 }
 
 //=====================================
-//      modal form submit stuff      //
+//            MODAL STUFF            //
 //=====================================
+
+function find_modal(theUrl) {
+    var modal = $('.modal');
+    console.log(modal);
+    $.ajax({
+        url: theUrl,
+        context: document.body
+    }).done(function(response) {
+        modal.html(response);
+    });
+    console.log('yep');
+
+}
+
+// Modal Forms
 
 function apply_form_field_error(modal, fieldname, error)
 {
@@ -145,7 +149,6 @@ function postLogin() {
     });
 }
 
-
 $(document).on('submit', '.pw-change-form', function(event) {
     event.preventDefault();
     console.log("form submitted!")  // sanity check
@@ -186,6 +189,7 @@ function postChangePassword() {
     });
 };
 
+
 // Image Cropping Business
 
 function closeThis() {
@@ -225,7 +229,7 @@ $(function () {
                 $image.cropper('setCropBoxData', cropBoxData);
             }
         });
-    }).on('hidden.bs.modal', function () {
+    }).on('hidden.bs.modal', '#modalCrop', function () {
         console.log('modal hidden');
         cropBoxData = $image.cropper('getCropBoxData');
         canvasData = $image.cropper('getCanvasData');
@@ -270,14 +274,28 @@ $(document).on('hidden.bs.modal', '.modal', function () {
 });
 
 
+//=====================================
+//         DELETE CHECKBOX           //
+//=====================================
 
-
-// Script to collect the data and post to the server
-// $('.js-crop-and-upload').click(function () {
-//     var cropData = $image.cropper('getData');
-//     $('#id_x').val(cropData['x']);
-//     $('#id_y').val(cropData['y']);
-//     $('#id_height').val(cropData['height']);
-//     $('#id_width').val(cropData['width']);
-//     $('#formUpload').submit();
+// $(document).on('click', '#mugshot-clear_id', function() {
+//     console.log("mugshot clear was clicked");
+//     var frm = $('#person_detail');
+//     var modal = $('#personModal');
+//     $.ajax({
+//         url: $(frm).attr('action'),
+//         type: $(frm).attr('method'),
+//         data: $(frm).serialize(),
+//         success: function (data) {
+//             console.log("success");
+//             $(modal).modal('hide');
+//             $(modal).modal('show');
+//             newHTML = "<p> The picture has been deleted.</p>";
+//             $("label[for='id_mugshot']").after(newHTML);
+//
+//         },
+//         error: function (data) {
+//             console.log("error");
+//         }
+//     });
 // });

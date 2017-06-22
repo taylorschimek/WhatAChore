@@ -57,7 +57,7 @@ DAY_OFF_CHOICES = [
 class Chore(models.Model):
 
     user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name="chores", editable=False)
-    task = models.CharField(max_length=25)
+    task = models.CharField(max_length=100)
     description = models.TextField(blank=True, null=True)
     duration = models.IntegerField()
     interval = models.CharField(max_length=15,

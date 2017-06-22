@@ -27,11 +27,13 @@
   <div class="container">
     <hr />
     <div class="container m-0 p-0">
-      <div class="row card-group">
 
+        <div class="row">
         {% for person in people %}
+
+
         <!-- A Card -->
-        <div class="col-xs-4 col-md-4 card m-0 p-0">
+        <div class="card col-12 col-md-3 m-0 p-0">
           <a data-toggle="modal" data-target="#personModal" onclick="find_modal('{% url "person-detail" person.pk %}')">
           {% if person.mugshot %}
 
@@ -48,7 +50,7 @@
               </div>
               <div class="col-6 card-text text-center">
                 <small><label for="daysoff" class="text-muted">Days Off</label></small>
-                <h6 id="daysoff">{{ person.day_off }}</h6>
+                <h6 id="daysoff">{{ person.index }}</h6>
               </div>
             </div>
             <hr class="hidden-sm-down" style="margin: 0; padding: 0;" />
@@ -62,10 +64,8 @@
         </a>
         </div> <!-- /A Card -->
         {% endfor %}
-
-
         <!-- Create Person Card -->
-        <div id="newPerson" class="card col-xs-4 col-md-2 m-0 p-0">
+        <div id="newPerson" class="card col-12 col-md-3 m-0 p-0">
           <a data-toggle="modal" data-target="#personModal" onclick='find_modal("{% url 'person-create' %}")' >
             <div class="container text-center">
               <div class="imgDiv text-center">
@@ -78,15 +78,12 @@
           </a>
         </div>
       </div>
+
     </div>
   </div>
 
 </section> <!-- /People Add/Edit -->
 
 <div class="modal" id="personModal"></div>
-
-
-
-
 
 {% endblock %}

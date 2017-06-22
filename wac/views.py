@@ -1,10 +1,13 @@
 import calendar
 import datetime
+import os
 
 from whatachore.tasks import add
+from django.conf import settings
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib import messages
+from django.core.files.base import ContentFile
 from django.core.mail import send_mail
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render, render_to_response, redirect
@@ -12,11 +15,14 @@ from django.template.loader import render_to_string
 from django.urls import reverse, reverse_lazy
 from django.views.generic import CreateView, DetailView, ListView, TemplateView, DeleteView
 from django.views.generic.edit import FormMixin
+from io import BytesIO
 
 from wac.models import Assignment, Chore, Person, Week
 from wac.get_username import get_username
 
 from .forms import AssignmentForm, ChoreEditForm, PersonEditForm
+
+from PIL import Image
 
 
 
@@ -244,14 +250,28 @@ class PersonCreateView(SuccessMessageMixin, CreateView):
     def form_valid(self, form):
         self.object = form.save(commit=False)
         self.object.user = self.request.user
+
         for object in self.request.FILES:
             print(object)
+
         self.object.mugshot = ""
         self.object.save()
-        self.object.mugshot = self.request.FILES['mugshot']
+
+        image = form.crop_image()
+        f= BytesIO()
+        try:
+            image.save(f, format='png')
+            print(self.object.name)
+            self.object.mugshot.save(self.object.name + '.png', ContentFile(f.getvalue()))
+        finally: f.close()
+
         self.object.save()
+
         messages.success(self.request, self.object.name + " was added successfully!")
         return HttpResponseRedirect(reverse('people-list'))
+
+    def form_invalid(self, form):
+        print("INVALID")
 
 
 
@@ -289,7 +309,18 @@ class PersonDetailView(FormMixin, DetailView):
             return self.form_invalid(form)
 
     def form_valid(self, form):
-        form.save()
+        current_image = self.object.mugshot.name
+        self.object = form.save(commit=False)
+        if form.cleaned_data['x'] is not None:
+            image = form.crop_image()
+            f= BytesIO()
+            try:
+                image.save(f, format='png')
+                os.remove(settings.MEDIA_ROOT + current_image)
+                self.object.mugshot.save(self.object.name + '.png', ContentFile(f.getvalue()))
+            finally: f.close()
+
+        self.object.save()
         messages.success(self.request, self.object.name + " was updated successfully!")
         return HttpResponseRedirect(reverse('people-list'))
 

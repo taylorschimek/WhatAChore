@@ -29,6 +29,9 @@
                         {{ field|attr:"class:form-control" }}
                     </fieldset>
                     {% endfor %}
+                    {% for hidden in form.hidden_fields %}
+                    {{ hidden }}
+                    {% endfor %}
             </div>
 
             <div class="modal-footer">
@@ -42,3 +45,32 @@
         </div> <!-- /.modal-content -->
     </form>
 </div> <!-- /.modal-dialog -->
+
+<!-- MODAL TO CROP THE IMAGE -->
+<div class="modal modalCrop bg-success" id="modalCrop" data-backdrop="static">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content bg-primary">
+      <div class="modal-header">
+        <h4 class="modal-title text-center">Please crop your image for better formatting.</h4>
+        <button type="button" class="close btn btn-secondary" onclick="closeThis()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body m-0 p-0">
+        <img src="" id="image" style="max-width: 100%;">
+      </div>
+      <div class="modal-footer">
+        <div class="btn-group pull-left" role="group">
+          <button type="button" class="btn btn-default js-zoom-in">
+            <span class="glyphicon glyphicon-zoom-in"></span>
+          </button>
+          <button type="button" class="btn btn-default js-zoom-out">
+            <span class="glyphicon glyphicon-zoom-out"></span>
+          </button>
+        </div>
+        <button type="button" class="btn btn-default" onclick="closeThis()">Nevermind</button>
+        <button type="button" class="btn btn-primary js-crop-and-upload">Crop and upload</button>
+      </div>
+    </div>
+  </div>
+</div>
