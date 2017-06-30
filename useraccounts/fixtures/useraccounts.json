@@ -1,0 +1,47 @@
+[
+    {
+        "model": "useraccounts.user",
+        "pk": 15,
+        "fields": {
+            "password": "pbkdf2_sha256$36000$bkweW7imCS8z$iOVWOoomWeZpiN7r6e/7bqj0IvETXIt+818OnaKGAcs=",
+            "last_login": "2017-06-23T16:44:01.360Z",
+            "is_superuser": false,
+            "email": "test1@example.com",
+            "doNotEmail": false,
+            "is_staff": false,
+            "is_active": true,
+            "groups": [],
+            "user_permissions": []
+        }
+    },
+    {
+        "model": "useraccounts.user",
+        "pk": 16,
+        "fields": {
+            "password": "pbkdf2_sha256$36000$7qXDuD6DltJx$g7SHs2Xy4HCe2hQO0ypFLqG7DQFNWswjcsU/Xu4Mwp8=",
+            "last_login": "2017-06-23T16:41:25.139Z",
+            "is_superuser": false,
+            "email": "test2@example.com",
+            "doNotEmail": false,
+            "is_staff": false,
+            "is_active": true,
+            "groups": [],
+            "user_permissions": []
+        }
+    },
+    {
+        "model": "useraccounts.user",
+        "pk": 17,
+        "fields": {
+            "password": "pbkdf2_sha256$36000$7qXDuD6DltJx$g7SHs2Xy4HCe2hQO0ypFLqG7DQFNWswjcsU/Xu4Mwp8=",
+            "last_login": "2017-06-23T16:41:25.139Z",
+            "is_superuser": false,
+            "email": "test3@example.com",
+            "doNotEmail": false,
+            "is_staff": false,
+            "is_active": true,
+            "groups": [],
+            "user_permissions": []
+        }
+    }
+]

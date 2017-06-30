@@ -34,7 +34,7 @@
 
         <!-- A Card -->
         <div class="card col-12 col-md-3 m-0 p-0">
-          <a data-toggle="modal" data-target="#personModal" onclick="find_modal('{% url "person-detail" person.pk %}')">
+          <a id="{{person.name}}-link" data-toggle="modal" data-target="#myModal" onclick="find_modal('{% url "person-detail" person.pk %}')">
           {% if person.mugshot %}
 
           <img src="{{ BASE_DIR }}/media/{{ person.mugshot }}" alt="{{ person.mugshot.url }}" />
@@ -50,7 +50,7 @@
               </div>
               <div class="col-6 card-text text-center">
                 <small><label for="daysoff" class="text-muted">Days Off</label></small>
-                <h6 id="daysoff">{{ person.day_off }}</h6>
+                <h6 id="{{person.name}}-daysoff">{{ person.day_off }}</h6>
               </div>
             </div>
             <hr class="hidden-sm-down" style="margin: 0; padding: 0;" />
@@ -66,7 +66,7 @@
         {% endfor %}
         <!-- Create Person Card -->
         <div id="newPerson" class="card col-12 col-md-3 m-0 p-0">
-          <a data-toggle="modal" data-target="#personModal" onclick='find_modal("{% url 'person-create' %}")' >
+          <a data-toggle="modal" data-target="#myModal" onclick='find_modal("{% url 'person-create' %}")' >
             <div class="container text-center">
               <div class="imgDiv text-center">
                 <img src="{% static 'wac/styles/images/icons/red_icons/New.png' %}" alt="Create a worker">
@@ -84,6 +84,6 @@
 
 </section> <!-- /People Add/Edit -->
 
-<div class="modal" id="personModal"></div>
+<div class="modal" id="myModal"></div>
 
 {% endblock %}

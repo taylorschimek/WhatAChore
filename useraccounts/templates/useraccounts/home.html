@@ -7,15 +7,15 @@
 <section id="home" class="header">
     <div class="container text-center">
         <div class="row">
-            <h1 class="col-md-6 mt-md-4 text-primary">{{ view.profiled.name }}</h1>
-            <h1 class="col-md-6 mt-md-4 text-primary">{% now 'l' %} {% now 'm' %}/{% now 'd' %}</h1>
+            <h1 id="profiled" class="col-md-6 mt-md-4 text-primary">{{ view.profiled.name }}</h1>
+            <h1 id="home-date" class="col-md-6 mt-md-4 text-primary">{% now 'l' %} {% now 'm' %}/{% now 'd' %}</h1>
         </div>
         <hr />
     </div>
 </section>
 
 {% if messages %}
-<div class="container text-center">
+<div id="messages" class="container text-center">
   <div class="row">
     <div class="col-sm-8 offset-sm-2">
       {% for message in messages %}
@@ -45,7 +45,7 @@
                         <ul class="list_group m-0 p-0">
                             {% for ass in assignments %}
                             {% if ass.who == person %}
-                            <a data-toggle="modal" data-target="#assignmentModal" onclick="find_modal('{% url "assignment-detail" ass.pk %}')">
+                            <a data-toggle="modal" data-target="#myModal" onclick="find_modal('{% url "assignment-detail" ass.pk %}')">
                             <li class="list-group-item">
                                 <div>
                                     <p class="mb-0">{{ ass.what }}</p>
@@ -121,20 +121,19 @@
             <div id="passed-dropdown" class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                 <h6 class="dropdown-header">Start Date</h6>
                 {% for week in old_weeks %}
-                <a class="dropdown-item" data-toggle="modal" data-target="#homeModal" onclick="find_modal('{% url 'passed-week' week.pk %}')">{{ week.start_date }}</a>
+                <a class="dropdown-item" data-toggle="modal" data-target="#myModal" onclick="find_modal('{% url 'passed-week' week.pk %}')">{{ week.start_date }}</a>
                 {% endfor %}
             </div>
         </div>
 
         <div class="dropdown d-inline float-right">
-            <button class="btn btn-secondary" data-toggle="modal" data-target="#homeModal" onclick="find_modal('{% url 'account-settings' user.pk %}')" type="button">
+            <button id="acctSettings" class="btn btn-secondary" data-toggle="modal" data-target="#myModal" onclick="find_modal('{% url 'account-settings' user.pk %}')" type="button">
                 Account Settings
             </button>
         </div>
     </div>
 </section>
 
-<div class="modal" id="homeModal"></div>
-<div class="modal" id="assignmentModal"></div>
+<div class="modal" id="myModal"></div>
 
 {% endblock %}

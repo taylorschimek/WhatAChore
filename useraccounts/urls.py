@@ -12,6 +12,10 @@ urlpatterns = [
         name='login',
         kwargs={"form": EmailLoginForm}),
 
+    url(r'^login-page/$',
+        views.login_page,
+        name='login-page'),
+
     url(r'^logout/$',
         auth_views.LogoutView.as_view(),
         name='logout'),

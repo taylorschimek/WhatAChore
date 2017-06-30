@@ -718,7 +718,7 @@ $jumbotron-bg:                   $lightgray;
 // $state-info-border:              darken($state-info-bg, 7%) !default;
 //
 // $state-warning-text:             #8a6d3b !default;
-// $state-warning-bg:               #fcf8e3 !default;
+// $state-warning-bg:               $red;
 // $mark-bg:                        $state-warning-bg !default;
 // $state-warning-border:           darken($state-warning-bg, 5%) !default;
 //
@@ -858,13 +858,13 @@ $alert-success-text:          $cream;
 // $alert-info-text:             $state-info-text !default;
 // $alert-info-border:           $state-info-border !default;
 //
-// $alert-warning-bg:            $state-warning-bg !default;
-// $alert-warning-text:          $state-warning-text !default;
+$alert-warning-bg:            $red;
+$alert-warning-text:          yellow;
 // $alert-warning-border:        $state-warning-border !default;
 //
-// $alert-danger-bg:             $state-danger-bg !default;
-// $alert-danger-text:           $state-danger-text !default;
-// $alert-danger-border:         $state-danger-border !default;
+$alert-danger-bg:             $red;
+$alert-danger-text:           $charcoal;
+$alert-danger-border:         $red;
 
 
 // Progress bars

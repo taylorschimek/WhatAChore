@@ -73,7 +73,8 @@ class Chore(models.Model):
     last_assigned = models.DateField(blank=True, null=True)
     age_restriction = models.IntegerField()
     chore_icon_location = models.FilePathField(default='Chore_Default.png',
-                                      path='/Users/HOME/Developer/WAC/whatachore/wac/static/wac/styles/images/Icons/cream_icons'
+                                      path='/Users/HOME/Developer/WAC/whatachore/wac/static/wac/styles/images/Icons/cream_icons',
+                                      max_length=255
     )
 
     def __str__(self):
@@ -82,7 +83,6 @@ class Chore(models.Model):
     @property
     def chore_icon(self):
         remove = settings.BASE_DIR + '/wac/static'
-        # return '/wac/styles/images/Icons/cream_icons/' + self.chore_icon_location.replace(settings.BASE_DIR, '')
         return self.chore_icon_location.replace(remove, '')
 
 
@@ -116,9 +116,6 @@ class Person(models.Model):
                                choices=DAY_OFF_CHOICES,
                                default='None'
     )
-    # pic_location = models.FilePathField(default='No-Current-Image.png',
-    #                                     path='/Users/HOME/Developer/WAC/whatachore/wac/static/wac/styles/images/people'
-    # )
     mugshot = models.ImageField(blank=True, upload_to=get_image_path, null=True)
     number_of_chores = models.IntegerField(blank=True, null=True, editable=False)
     weekly_minutes = models.IntegerField(blank=True, null=True, editable=False)
@@ -131,11 +128,6 @@ class Person(models.Model):
         remove = settings.BASE_DIR + '/wac/static'
         # return '/wac/styles/images/Icons/cream_icons/' + self.chore_icon_location.replace(settings.BASE_DIR, '')
         return self.pic_location.replace(remove, '')
-
-# @receiver(pre_delete, sender=Person)
-# def person_delete(sender, instance, **kwargs):
-#     if instance.mugshot:
-#         instance.mugshot.delete(False)
 
 
 class Week(models.Model):

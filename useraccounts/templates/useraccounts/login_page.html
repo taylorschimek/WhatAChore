@@ -1,0 +1,36 @@
+{% extends 'landing.html' %}
+{% load i18n widget_tweaks %}
+
+{% block main_content %}
+
+<!-- {% if form.errors %}
+<p>Your username and password didn't match.  Please try again.</p>
+{% endif %} -->
+
+
+<div class="container">
+    <div class="card card-outline-danger col-12 col-md-4 offset-md-4 mt-5">
+        <h2 class="mt-4 mb-4 text-center text-primary">Please Log In</h2>
+<form method="post" action="{% url 'login-page' %}" class="form login-form">
+    <div class="modal-body">
+        {% csrf_token %}
+        {{ form.media }}
+        {% for field in form.visible_fields %}
+            <fieldset class="form-group {{ field.name }}">
+                {{ field.errors }}{{ field.label_tag }}
+                {{ field|attr:"class:form-control" }}
+            </fieldset>
+        {% endfor %}
+        <a class="forgot text-info text-muted" onclick="find_modal('{% url 'password_reset' %}')">Forgot your password?</a>
+    </div>
+
+    <div class="mb-4">
+        <input type="submit" class="mt-2 btn btn-secondary" value="Login">
+        <input type="hidden" name="next" value="{% url 'home-view' %}">
+    </div>
+
+</form>
+</div>
+</div>
+
+{% endblock %}

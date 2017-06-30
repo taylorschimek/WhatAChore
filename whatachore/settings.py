@@ -160,6 +160,8 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
+LOGIN_URL = '/useraccounts/login-page/'
+
 PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))
 
 MEDIA_ROOT = os.path.join(PROJECT_ROOT, 'media/')
@@ -168,8 +170,9 @@ MEDIA_URL = 'media/'
 
 STATIC_URL = '/static/'
 
-
 STATICFILES_DIRS = [
     # os.path.join(PROJECT_ROOT, 'static'),
     '/Users/HOME/Developer/WAC/whatachore/wac'
 ]
+
+FIXTURE_DIRS = (os.path.join(PROJECT_ROOT, 'fixtures'),)

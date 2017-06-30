@@ -44,9 +44,9 @@
                   <a class="nav-link" href="{% url 'lineup-make' %}">Assignments<span class="sr-only">Assignments</span></a>
                 </li>
 
-                <li class="nav-item"><a class="nav-link" href="{% url 'logout' %}?next={% url 'landing' %}">Logout - {{ user.get_username }}</a></li>
+                <li class="nav-item"><a id="id_logout" class="nav-link" href="{% url 'logout' %}?next={% url 'landing' %}">Logout - {{ user.get_username }}</a></li>
             {% else %}
-                <li class="nav-item"><a class="nav-link" data-toggle="modal" data-target="#loginModal" onclick="find_modal('{% url "login" %}')">Login</a></li>
+                <li class="nav-item"><a id="nav-login" class="nav-link" data-toggle="modal" data-target="#myModal" onclick="find_modal('{% url "login" %}')">Login</a></li>
                 <li class="nav-item"><a href="#registration" class="nav-link">Register</a></li>
             {% endif %}
           </ul>

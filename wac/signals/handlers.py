@@ -50,7 +50,7 @@ SUB_INTERVAL_CHOICES = [
     ('Weekend', 'Weekend'),
     ('Sunday', 'Sunday'),
     ('Monday', 'Monday'),
-    ('Tueday', 'Tuesday'),
+    ('Tuesday', 'Tuesday'),
     ('Wednesday', 'Wednesday'),
     ('Thursday', 'Thursday'),
     ('Friday', 'Friday'),
@@ -58,92 +58,78 @@ SUB_INTERVAL_CHOICES = [
 ]
 
 def random(chore):
-    print(chore.sub_interval)
     number_of_days = randint(0, 6)
     date = THIS_WEEK.start_date + datetime.timedelta(days=number_of_days)
-    print(date)
     return date
 
 
 def first(chore):
-    print(chore.sub_interval)
+    today = datetime.date.today()
+    year = today.year
+    month = today.month
+    first = datetime.date(year, month, 1)
 
+    if THIS_WEEK.start_date < first < THIS_WEEK.end_date:
+        return first
+    else:
+        return None
 
 def fifteenth(chore):
-    print(chore.sub_interval)
+    today = datetime.date.today()
+    year = today.year
+    month = today.month
+    fifteenth = datetime.date(year, month, 15)
 
+    if THIS_WEEK.start_date < fifteenth < THIS_WEEK.end_date:
+        return fifteenth
+    else:
+        return None
 
 def weekday(chore):
-    print(chore.sub_interval)
     number_of_days = randint(0, 4)
     date = THIS_WEEK.start_date + datetime.timedelta(days=number_of_days)
-    print(date)
     return date
-
 
 def weekend(chore):
-    print(chore.sub_interval)
     number_of_days = randint(5, 6)
     date = THIS_WEEK.start_date + datetime.timedelta(days=number_of_days)
-    print(date)
     return date
 
-
 def sunday(chore):
-    print(chore.sub_interval)
     number_of_days = 6
     date = THIS_WEEK.start_date + datetime.timedelta(days=number_of_days)
-    print(date)
     return date
 
 def monday(chore):
-    print(chore.sub_interval)
     number_of_days = 0
     date = THIS_WEEK.start_date + datetime.timedelta(days=number_of_days)
-    print(date)
     return date
 
 
 def tuesday(chore):
-    print(chore.sub_interval)
     number_of_days = 1
     date = THIS_WEEK.start_date + datetime.timedelta(days=number_of_days)
-    print(date)
     return date
-
 
 def wednesday(chore):
-    print(chore.sub_interval)
     number_of_days = 2
     date = THIS_WEEK.start_date + datetime.timedelta(days=number_of_days)
-    print(date)
     return date
-
 
 def thursday(chore):
-    print(chore.sub_interval)
     number_of_days = 3
     date = THIS_WEEK.start_date + datetime.timedelta(days=number_of_days)
-    print(date)
     return date
-
 
 def friday(chore):
-    print(chore.sub_interval)
     number_of_days = 4
     date = THIS_WEEK.start_date + datetime.timedelta(days=number_of_days)
-    print(date)
     return date
-
 
 def saturday(chore):
-    print(chore.sub_interval)
     number_of_days = 5
     date = THIS_WEEK.start_date + datetime.timedelta(days=number_of_days)
-    print(date)
     return date
-
-
 
 subinterval_methods = {
     'random': random,
@@ -196,7 +182,6 @@ def create_assignment(chore, date):
     new_assignment.save()
 
 def create_repeating_assignments(chore, date, increment):
-    print("loop called")
     for d in range(0, 7, increment):
         create_assignment(chore, date)
         date = date + datetime.timedelta(days=increment)
@@ -208,50 +193,80 @@ def once(chore):
     print("method once")
 
 def daily(chore):
-    print("method daily")
     create_repeating_assignments(chore, THIS_WEEK.start_date, 1)
 
 def every2days(chore):
-    print("method every 2 days")
     create_repeating_assignments(chore, THIS_WEEK.start_date, 2)
 
 def every3days(chore):
-    print("method every 3 days")
     create_repeating_assignments(chore, THIS_WEEK.start_date, 3)
 
 def weekly(chore):
-    print("method weekly")
     # need to check last_assigned and make sure new date is at least 5 days later
     new_date = get_date_from_subInterval(chore)
-    print(new_date)
-    chore.last_assigned = new_date
-    chore.save(update_fields=['last_assigned'])
-    create_assignment(chore, new_date)
+    if new_date:
+        if chore.sub_interval == 'Random':
+            diff_in_days = new_date - chore.last_assigned
+            while diff_in_days.days < 5:
+                new_date = new_date + datetime.timedelta(days=1)
+                diff_in_days = new_date - chore.last_assigned
+        chore.last_assigned = new_date
+        chore.save(update_fields=['last_assigned'])
+        create_assignment(chore, new_date)
 
 def every2weeks(chore):
-    print("method every 2 weeks")
-    new_date = get_date_from_subInterval(chore)
-    print(new_date)
+    last_week_end_date = THIS_WEEK.start_date - datetime.timedelta(days=1)
+    last_week_start_date = last_week_end_date - datetime.timedelta(days=6)
+    if chore.last_assigned < last_week_start_date:
+        print('chore should be assigned this week')
+        new_date = get_date_from_subInterval(chore)
+        chore.last_assigned = new_date
+        chore.save(update_fields=['last_assigned'])
+        create_assignment(chore, new_date)
+    else:
+        print('{} should not be assigned this week'.format(chore.task))
+
 
 def monthly(chore):
-    print("method monthly")
+    month = chore.last_assigned.month
     new_date = get_date_from_subInterval(chore)
-    print(new_date)
+    if month < new_date.month:
+        chore.last_assigned = new_date
+        chore.save(update_fields=['last_assigned'])
+        create_assignment(chore, new_date)
+    else:
+        print('{} should not be assigned this week'.format(chore.task))
 
 def every2months(chore):
-    print("method every 2 months")
+    month = chore.last_assigned.month
     new_date = get_date_from_subInterval(chore)
-    print(new_date)
+    if month < (new_date.month - 1):
+        chore.last_assigned = new_date
+        chore.save(update_fields=['last_assigned'])
+        create_assignment(chore, new_date)
+    else:
+        print('{} should not be assigned this week'.format(chore.task))
 
 def quarterly(chore):
-    print("method quarterly")
+    month = chore.last_assigned.month
     new_date = get_date_from_subInterval(chore)
-    print(new_date)
+    if month < (new_date.month - 3):
+        chore.last_assigned = new_date
+        chore.save(update_fields=['last_assigned'])
+        create_assignment(chore, new_date)
+    else:
+        print('{} should not be assigned this week'.format(chore.task))
 
 def yearly(chore):
-    print("method yearly")
+    year = chore.last_assigned.year
+    month = chore.last_assigned.month
     new_date = get_date_from_subInterval(chore)
-    print(new_date)
+    if year < (new_date.year) and month == (new_date.month):
+        chore.last_assigned = new_date
+        chore.save(update_fields=['last_assigned'])
+        create_assignment(chore, new_date)
+    else:
+        print('{} should not be assigned this week'.format(chore.task))
 
 
 #========================================================================
@@ -269,47 +284,50 @@ assigning_methods = {
 }
 
 def get_chores_for_this_week():
-    for chore in Chore.objects.filter(user=THIS_WEEK.user):
-        for choice in INTERVAL_CHOICES:
-            if chore.interval == choice[0]:
-                method_name = choice[0].replace(' ', '').lower()
-                assigning_methods[method_name](chore)
+    chores = Chore.objects.filter(user=THIS_WEEK.user)
+    if len(chores) > 0:
+        for chore in chores:
+            for choice in INTERVAL_CHOICES:
+                if chore.interval == choice[0]:
+                    method_name = choice[0].replace(' ', '').lower()
+                    assigning_methods[method_name](chore)
+    else:
+        print('You have no chores to assign!')
 
 #========================================================================
 def assign_people_to_chores():
-    print('assigning people')
     people = Person.objects.filter(user__exact=THIS_WEEK.user)
-    to_dos = Assignment.objects.filter(week__exact=THIS_WEEK)
-    global TOTAL_MINUTES_GATHERED
-    minute_limit = (TOTAL_MINUTES_GATHERED / len(people)) + (TOTAL_MINUTES_GATHERED / len(to_dos))
+    if len(people) > 0:
+        to_dos = Assignment.objects.filter(week__exact=THIS_WEEK)
+        global TOTAL_MINUTES_GATHERED
+        minute_limit = (TOTAL_MINUTES_GATHERED / len(people)) + (TOTAL_MINUTES_GATHERED / len(to_dos))
 
-    for person in people:
-        person.weekly_minutes = 0
-        person.save(update_fields=['weekly_minutes'])
+        for person in people:
+            person.weekly_minutes = 0
+            person.save(update_fields=['weekly_minutes'])
 
-    for to_do in to_dos:
-        working = True
-        tried = [False] * len(people)
-        while working:
-            choice = randint(0, len(people)-1)
-            tried[choice] = True
+        for to_do in to_dos:
+            working = True
+            tried = [False] * len(people)
+            while working:
+                choice = randint(0, len(people)-1)
+                tried[choice] = True
 
-            if (
-                    people[choice].age >= to_do.what.age_restriction and
-                    people[choice].day_off != calendar.day_abbr[to_do.when.weekday()] and
-                    people[choice].weekly_minutes < minute_limit
-               ):
-                working = False
-                # print('+'*30)
-            if all(tried):
-                working = False
-                print('Does age_restriction trump day_off or the other way around?')
-        to_do.who = people[choice]
-        to_do.save(update_fields=['who'])
-        # print("to_do.what.duration = {}".format(to_do.what.duration))
-        people[choice].weekly_minutes += to_do.what.duration
-        people[choice].save(update_fields=['weekly_minutes'])
-
+                if (
+                        people[choice].age >= to_do.what.age_restriction and
+                        people[choice].day_off != calendar.day_abbr[to_do.when.weekday()] and
+                        people[choice].weekly_minutes < minute_limit
+                   ):
+                    working = False
+                if all(tried):
+                    working = False
+                    print('Does age_restriction trump day_off or the other way around?')
+            to_do.who = people[choice]
+            to_do.save(update_fields=['who'])
+            people[choice].weekly_minutes += to_do.what.duration
+            people[choice].save(update_fields=['weekly_minutes'])
+    else:
+        print('You have no people to whom you may assign chores.')
 
 
 #========================================================================
@@ -318,9 +336,6 @@ def week_post_save(sender, instance, created, **kwargs):
     if created:
         global TOTAL_MINUTES_GATHERED
         TOTAL_MINUTES_GATHERED = 0
-        print('='*20)
-        print('handlers - week_post_save')
-        print('='*20)
         global THIS_WEEK
         THIS_WEEK = instance
 
@@ -338,6 +353,3 @@ def week_post_save(sender, instance, created, **kwargs):
 
         THIS_WEEK.total_time = TOTAL_MINUTES_GATHERED
         THIS_WEEK.save()
-
-        # TEMP
-        # print(THIS_WEEK.total_time)

@@ -3248,22 +3248,22 @@ a.badge:focus, a.badge:hover {
     color: #245269; }
 
 .alert-warning {
-  background-color: #fcf8e3;
+  background-color: #C63D0F;
   border-color: #faf2cc;
-  color: #8a6d3b; }
+  color: yellow; }
   .alert-warning hr {
     border-top-color: #f7ecb5; }
   .alert-warning .alert-link {
-    color: #66512c; }
+    color: #cccc00; }
 
 .alert-danger {
-  background-color: #f2dede;
-  border-color: #ebcccc;
-  color: #a94442; }
+  background-color: #C63D0F;
+  border-color: #C63D0F;
+  color: #3B3738; }
   .alert-danger hr {
-    border-top-color: #e4b9b9; }
+    border-top-color: #ae360d; }
   .alert-danger .alert-link {
-    color: #843534; }
+    color: #211e1f; }
 
 .list-group {
   display: flex;

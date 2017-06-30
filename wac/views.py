@@ -1,5 +1,6 @@
 import calendar
 import datetime
+import json
 import os
 
 from whatachore.tasks import add
@@ -9,7 +10,7 @@ from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib import messages
 from django.core.files.base import ContentFile
 from django.core.mail import send_mail
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, HttpResponseBadRequest
 from django.shortcuts import get_object_or_404, render, render_to_response, redirect
 from django.template.loader import render_to_string
 from django.urls import reverse, reverse_lazy
@@ -31,7 +32,6 @@ from PIL import Image
 def lineup(request):
     # add.delay(3, 5)
     if request.is_ajax():
-        print("is_ajax() happened")
 
         # Update done field on assignment
         assignment = Assignment.objects.get(pk=request.POST['pk'])
@@ -53,11 +53,22 @@ def lineup(request):
         html = render_to_string('wac/assignments_list_sub.html', {'people': people, 'week': assignment.week})
         return HttpResponse(html)
     else:
-        # print('uh oh')
-        new_week = Week.create(current_user=request.user)
-        send_mail('test', 'testing this nonsense', 'noreply@taylorschimek.com', ['ruof@yahoo.com'])
+        try:
+            if len(Person.objects.filter(user = request.user)) and len(Chore.objects.filter(user = request.user)):
+                new_week = Week.create(current_user=request.user)
+                send_mail('test', 'testing this nonsense', 'noreply@taylorschimek.com', ['ruof@yahoo.com'])
+            else:
+                messages.warning(request, '''You either: \n
+                                             1. have no chores or \n
+                                             2. have no workers. \n
+                                             Assignments cannot be formed.''')
+        except ZeroDivisionError:
+            messages.warning(request, '''You either: \n
+                                         1. have no chores or \n
+                                         2. have no workers. \n
+                                         Assignments cannot be formed.''')
+    return HttpResponseRedirect(reverse('lineup'))
 
-    return redirect(reverse('lineup'))
 
 class AssignmentListView(LoginRequiredMixin, TemplateView):
     context_object_name = 'assignments'
@@ -73,29 +84,30 @@ class AssignmentListView(LoginRequiredMixin, TemplateView):
 
         dates = []
 
-        monday = current_week[0].start_date
-        for i in range(7):
-            dates.append(monday + datetime.timedelta(days=i))
+        if len(current_week):
+            monday = current_week[0].start_date
+            for i in range(7):
+                dates.append(monday + datetime.timedelta(days=i))
 
-        context = super(AssignmentListView, self).get_context_data(**kwargs)
+            context = super(AssignmentListView, self).get_context_data(**kwargs)
 
-        context['people'] = Person.objects.filter(
-            user = self.request.user
-        )
+            context['people'] = Person.objects.filter(
+                user = self.request.user
+            )
 
-        context['assignments'] = Assignment.objects.filter(
-            week__user=self.request.user
-        ).filter(
-            week__is_current=True
-        )
+            context['assignments'] = Assignment.objects.filter(
+                week__user=self.request.user
+            ).filter(
+                week__is_current=True
+            )
 
-        context['dates'] = dates
-        context['week'] = current_week[0]
+            context['dates'] = dates
+            context['week'] = current_week[0]
 
-        return context
+            return context
 
 
-class AssignmentDetailView(FormMixin, DetailView):
+class AssignmentDetailView(LoginRequiredMixin, FormMixin, DetailView):
     model = Assignment
     form_class = AssignmentForm
 
@@ -125,8 +137,6 @@ class AssignmentDetailView(FormMixin, DetailView):
             return self.from_invalid(form)
 
     def form_valid(self, form):
-        print("Valid")
-        print(self.request.POST['fromUrl'])
         remove = 'http://localhost:8000/'
         nextFull = self.request.POST['fromUrl'].replace(remove, '')
         if nextFull == 'useraccounts/home/':
@@ -138,7 +148,6 @@ class AssignmentDetailView(FormMixin, DetailView):
         return HttpResponseRedirect(reverse(next))
 
     def form_invalid(self, form):
-        print("INVALID")
         return render(self.request, 'wav/assignment_detail.html', {'form': form, 'assignment': self.assignment})
 
 
@@ -157,46 +166,42 @@ class ChoreListView(LoginRequiredMixin, ListView):
         return Chore.objects.filter(user=self.request.user)
 
 
-class ChoreCreateView(SuccessMessageMixin, CreateView):
+class ChoreCreateView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
     model = Chore
-    # success_url = '/success/'
-    # success_message = "%(name)s was created successfully"
-    # fields = '__all__'
     form_class = ChoreEditForm
     template_name_suffix = '_create_form'
 
     def form_valid(self, form):
-        self.object = form.save(commit=False)
-        self.object.user = self.request.user
-        self.object.save()
-        messages.success(self.request, self.object.task + " was added successfully!")
-        return HttpResponseRedirect(reverse('chore-list'))
+        new_chore = form.save(commit=False)
+        new_chore.user = self.request.user
+        new_chore.last_assigned = datetime.date.today()
+        new_chore.save()
+        response_data = {}
+        response_data['status'] = 'success'
+        response_data['messages'] = '{} has been added to the list.'.format(new_chore.task)
+        return HttpResponse(json.dumps(response_data), content_type='application/json')
 
-    # def get_success_message(self, cleaned_data):
-    #     return self.success_message % dict(
-    #         cleaned_data,
-    #         task=self.object.task,
-    #     )
+    def form_invalid(self, form):
+        response_data = {}
+        response_data['status'] = 'fail'
+        return HttpResponseBadRequest(json.dumps(form.errors), content_type="application/json")
 
 
-class ChoreDetailView(FormMixin, DetailView):
+class ChoreDetailView(LoginRequiredMixin, FormMixin, DetailView):
     model = Chore
     form_class = ChoreEditForm
 
     def dispatch(self, request, *args, **kwargs):
-        print('dispatch')
         self.chore = Chore.objects.get(pk=self.kwargs['pk'])
         return super(ChoreDetailView, self).dispatch(request, *args, **kwargs)
 
-
-    def get_context_data(self, **kwargs):
-        print('get_context_data')
-        context = super().get_context_data(**kwargs)
-        context['form'] = self.get_form()
-        return context
+    # def get_context_data(self, **kwargs):
+    #     print('get_context_data')
+    #     context = super().get_context_data(**kwargs)
+    #     context['form'] = self.get_form()
+    #     return context
 
     def get(self, request, *args, **kwargs):
-        print('get')
         form = ChoreEditForm(instance=self.chore,
                              initial={'task': self.chore.task,
                                       'duration': self.chore.duration,
@@ -209,9 +214,6 @@ class ChoreDetailView(FormMixin, DetailView):
         return render(request, 'wac/chore_detail.html', {'form': form, 'chore': self.chore, 'gobble': "Create New Chore"})
 
     def post(self, request, *args, **kwargs):
-        print('post')
-        # if not request.user.is_authenticated:
-        #     return HttpResponseForbidden()
         self.object = self.get_object()
         form = ChoreEditForm(request.POST, instance=self.chore)
 
@@ -221,17 +223,15 @@ class ChoreDetailView(FormMixin, DetailView):
             return self.form_invalid(form)
 
     def form_valid(self, form):
-        print('valid')
         form.save()
         messages.success(self.request, self.object.task + " was updated successfully!")
         return HttpResponseRedirect(reverse('chore-list'))
 
     def form_invalid(self, form):
-        print('invalid')
         return render(self.request, 'wac/chore_detail.html', {'form': form, 'chore': self.chore})
 
 
-class ChoreDelete(DeleteView):
+class ChoreDelete(LoginRequiredMixin, DeleteView):
     model = Chore
     success_url = reverse_lazy('chore-list')
 
@@ -249,7 +249,7 @@ class PeopleListView(LoginRequiredMixin, ListView):
         return Person.objects.filter(user=self.request.user)
 
 
-class PersonCreateView(SuccessMessageMixin, CreateView):
+class PersonCreateView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
     model = Person
     # success_url = '/success/'
     # success_message = "%(name)s was created successfully"
@@ -260,11 +260,7 @@ class PersonCreateView(SuccessMessageMixin, CreateView):
         self.object = form.save(commit=False)
         self.object.user = self.request.user
 
-        for object in self.request.FILES:
-            print(object)
-
         if form.cleaned_data['x'] is not None:
-            print("P Create beginning of if form.cleaned_data['x'] is not None")
             self.object.mugshot = ""
             self.object.save()
 
@@ -272,23 +268,18 @@ class PersonCreateView(SuccessMessageMixin, CreateView):
             f= BytesIO()
             try:
                 image.save(f, format='png')
-                print(self.object.name)
                 self.object.mugshot.save(self.object.name + '.png', ContentFile(f.getvalue()))
             finally: f.close()
-            print("P Create end of if form.cleaned_data['x'] is not None")
 
         self.object.save()
 
         messages.success(self.request, self.object.name + " was added successfully!")
         return HttpResponseRedirect(reverse('people-list'))
 
-    def form_invalid(self, form):
-        print("INVALID")
+    # def form_invalid(self, form):
 
 
-
-
-class PersonDetailView(FormMixin, DetailView):
+class PersonDetailView(LoginRequiredMixin, FormMixin, DetailView):
     model = Person
     form_class = PersonEditForm
 
@@ -329,8 +320,6 @@ class PersonDetailView(FormMixin, DetailView):
             try:
                 image.save(f, format='png')
                 if self.object.mugshot == self.object.name + '.png':
-                    print("self.object.mugshot is not None")
-                    print(self.object.mugshot)
                     os.remove(settings.MEDIA_ROOT + current_image)
                 self.object.mugshot.save(self.object.name + '.png', ContentFile(f.getvalue()))
             finally: f.close()
@@ -343,6 +332,6 @@ class PersonDetailView(FormMixin, DetailView):
         return render(self.request, 'wac/person_detail.html', {'form': form, 'person': self.person})
 
 
-class PersonDelete(DeleteView):
+class PersonDelete(LoginRequiredMixin, DeleteView):
     model = Person
     success_url = reverse_lazy('people-list')

@@ -31,11 +31,11 @@ def register(request):
             login(request, new_user)
             return HttpResponseRedirect('../welcome')
         else:
-            return HttpResponse('errors')
+            return render(request, 'landing.html', {'form': form})
     else:
         form = RegistrationForm()
+        return HttpResponseRedirect(reverse('landing'))
 
-    return render(request, 'landing')
 
 
 class ProfileCreateFormView(PersonCreateView):
@@ -48,8 +48,6 @@ class ProfileCreateFormView(PersonCreateView):
         return render(request, 'useraccounts/welcomeNew.html', {'form': form})
 
 
-
-
 class HomeView(TemplateView):
     model = User
     template_name = 'home.html'
@@ -60,8 +58,8 @@ class HomeView(TemplateView):
         ).filter(
             email__exact=self.request.user.email
         )
-        print(theUser)
-        return theUser[0]
+        if len(theUser):
+            return theUser[0]
 
     def get_context_data(self, **kwargs):
         current_day = date.today()
@@ -126,32 +124,8 @@ class AccountSettings(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(AccountSettings, self).get_context_data(**kwargs)
-
         context['user'] = self.request.user
-
-        print(kwargs)
-        print(context['user'])
-
         return context
-
-
-# def ajax_login(request):
-#     form = AuthenticationForm()
-#     print(form)
-#     if request.method == 'POST':
-#         form = AuthenticationForm(request.POST)
-#         print(request.POST)
-#
-#         if form.is_valid():
-#             print("VALID")
-#             login(request, form.get_user())
-#             return HttpResponse(json.dumps({'success': 'ok'}),
-#                 mimetype='application/json')
-#         else:
-#             print("INVALID")
-#             return HttpResponseBadRequest(json.dumps(form.errors), content_type="application/json")
-#     return render(request, 'useraccounts/registration/login.html', {'form': form})
-
 
 
 class AjaxTemplateMixin(object):
@@ -172,7 +146,6 @@ class EmailLoginView(AjaxTemplateMixin, TemplateView, authviews.LoginView):
     form_class = EmailLoginForm
 
     def dispatch(self, request, *args, **kwargs):
-        print("DISPATCH")
         return super(EmailLoginView, self).dispatch(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
@@ -181,35 +154,52 @@ class EmailLoginView(AjaxTemplateMixin, TemplateView, authviews.LoginView):
         return context
 
     def get(self, request, *args, **kwargs):
-        print("GET")
         form = EmailLoginForm(request)
         return render(request, 'useraccounts/registration/login.html', context={'form': form})
 
     def post(self, request, *args, **kwargs):
-        print("POST")
         form = EmailLoginForm(request, data=self.request.POST)
-        print(form.data)
         if form.is_valid():
             return self.form_valid(form)
         else:
             return self.form_invalid(form)
 
     def form_valid(self, form):
-        print("VALID")
         username = form.cleaned_data['username']
         password = form.cleaned_data['password']
         login(self.request, form.get_user())
         response_data = {}
         response_data['status'] = 'success'
         response_data['url'] = '/useraccounts/home'
+        response_data['email'] = self.request.user.email
         return HttpResponse(json.dumps(response_data),
             content_type='application/json')
 
     def form_invalid(self, form):
-        print("INVALID")
         response_data = {}
         response_data['status'] = 'fail'
         return HttpResponseBadRequest(json.dumps(form.errors), content_type='application/json')
+
+
+def login_page(request):
+    if request.method == 'POST':
+        form = EmailLoginForm(request, data=request.POST)
+        if form.is_valid():
+            username = form.cleaned_data['username']
+            password = form.cleaned_data['password']
+            login(request, form.get_user())
+            response_data = {}
+            response_data['status'] = 'success'
+            response_data['url'] = '/useraccounts/home'
+            return HttpResponse(json.dumps(response_data),
+                content_type='application/json')
+        else:
+            response_data = {}
+            response_data['status'] = 'fail'
+            return HttpResponseBadRequest(json.dumps(form.errors), content_type='application/json')
+    else:
+        form = EmailLoginForm()
+    return render(request, 'useraccounts/login_page.html', context={'form': form})
 
 
 
@@ -226,13 +216,10 @@ class ChangePasswordView(FormMixin, AjaxTemplateMixin, TemplateView):
         return context
 
     def get(self, request, *args, **kwargs):
-        print("GET")
         form = PasswordChangeForm(user=self.request.user)
         return render(request, 'useraccounts/registration/password_change_form.html', context={'form': form})
 
     def post(self, request, *args, **kwargs):
-        print("POST")
-        print(self.request.POST)
         form = PasswordChangeForm(user=self.request.user, data=self.request.POST)
         user = self.request.user
         if form.is_valid():
@@ -241,7 +228,6 @@ class ChangePasswordView(FormMixin, AjaxTemplateMixin, TemplateView):
             return self.form_invalid(form)
 
     def form_valid(self, user, form):
-        print("VALID")
         new_pass = form.cleaned_data['new_password1']
         user.set_password(new_pass)
         user.save()
@@ -254,7 +240,6 @@ class ChangePasswordView(FormMixin, AjaxTemplateMixin, TemplateView):
         return HttpResponse(json.dumps(response_data), content_type="application/json")
 
     def form_invalid(self, form):
-        print("INVALID")
         response_data = {}
         response_data['status'] = 'fail'
         return HttpResponseBadRequest(json.dumps(form.errors), content_type="application/json")

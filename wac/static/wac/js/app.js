@@ -1,7 +1,14 @@
+//==========================================================================
+//            MESSAGES                                                 //
+//==========================================================================
 
-$(".alert").fadeTo(3500, 0).slideUp(500, function(){
+$(".alert-success").fadeTo(3500, 0).slideUp(500, function(){
     $(this).remove();
 });
+
+// $(".alert-warning").fadeTo(3500, 0).slideUp(500, function(){
+//     // $(this).remove();
+// });
 
 var form_options = { target: '#modal', success: function(response) {} };
 $('#chore_edit').ajaxForm(form_options);
@@ -52,9 +59,9 @@ function assignmentDone(theAssPK) {
 });
 }
 
-//=====================================
-//            MODAL STUFF            //
-//=====================================
+//==========================================================================
+//            FOR ALL MODALS                                              //
+//==========================================================================
 
 function find_modal(theUrl) {
     var modal = $('.modal');
@@ -110,6 +117,28 @@ function clear_form_field_errors(form) {
     $('.error', $(form)).removeClass('error');
 }
 
+// For Multiple Modals
+$(document).on('show.bs.modal', '.modal', function () {
+    // console.log($('.modal:visible').length)
+    var zIndex = 1040 + (10 * $('.modal:visible').length);
+    // console.log($(this));
+    $(this).css('z-index', zIndex);
+    setTimeout(function() {
+        // console.log('.modal-backdrop is ' + $('.modal-backdrop').length);
+        // console.log('.modal-backdrop.not is ' + $('.modal-backdrop').not('.modal-stack').length);
+        $('.modal-backdrop').not('.modal-stack').css('z-index', zIndex - 1).addClass('modal-stack');
+    }, 0);
+});
+
+$(document).on('hidden.bs.modal', '.modal', function () {
+    $('.modal:visible').length && $(document.body).addClass('modal-open');
+});
+
+
+//==========================================================================
+//            LOGIN MODAL                                                 //
+//==========================================================================
+
 $(document).on('submit', '.login-form', function(event) {
     event.preventDefault();
     postLogin();
@@ -119,15 +148,30 @@ function postLogin() {
     var frm = $('.login-form');
     clear_form_field_errors(frm);
     console.log($(frm).serialize())
-    var modal = $('#login-modal');
+    if ( $('#login-modal').length ) {
+        console.log('login-modal = true');
+        var modal = $('#login-modal');
+        var usrnm = $(modal).find('#id_username').val();
+        var psswrd = $(modal).find('#id_password').val();
+        var errorContainer = modal;
+    } else {
+        var usrnm = $('.login-form').find('#id_username').val();
+        console.log(usrnm);
+        var psswrd = $('.login-form').find('#id_password').val();
+        console.log(psswrd)
+        var errorContainer = $('.login-form');
+    };
+
     var csrftoken = getCookie('csrftoken');
     $.ajax({
         url: $(frm).attr('action'),
         type: $(frm).attr('method'),
-        data: {csrfmiddlewaretoken : csrftoken, 'username': $('#loginModal').find('#id_username').val(), 'password': $('#loginModal').find('#id_password').val()},
+        data: {csrfmiddlewaretoken : csrftoken, 'username': usrnm, 'password': psswrd},
         success: function (data){
             if (data.status === 'success') {
-                $(modal).modal('hide');
+                if ($(modal)) {
+                    $(modal).modal('hide');
+                }
                 window.location.replace(data.url);
             } else {
                 alert("success function, but data.status != success");
@@ -141,6 +185,51 @@ function postLogin() {
                 console.log(value);
                 if (index === '__all__') {
                     console.log('index == __all__');
+                    apply_form_field_error(errorContainer, index, value[0])
+                } else {
+                    console.log('index != __all__');
+                    apply_form_field_error(errorContainer, index, value);
+                }
+            });
+        }
+    });
+}
+
+
+//==========================================================================
+//           CREATE CHORE MODAL                                        //
+//==========================================================================
+
+$(document).on('submit', '.create-chore', function(event) {
+    event.preventDefault();
+    console.log("create chore form submitted")
+    postCreateChore();
+});
+
+function postCreateChore() {
+    var frm = $('.create-chore');
+    clear_form_field_errors(frm);
+    var modal = $('.modal');
+    $.ajax({
+        url: $(frm).attr('action'),
+        type: $(frm).attr('method'),
+        data: $(frm).serialize(),
+        success: function (data) {
+            if (data.status == 'success') {
+                $(modal).modal('hide');
+                location.reload();
+            } else {
+                alert("success function, but data.status != success");
+            }
+        },
+        error: function (data) {
+            console.log('errors');
+            console.log(data.responseText)
+            var errors = $.parseJSON(data.responseText);
+            console.log(errors);
+            $.each(errors, function(index, value) {
+                if (index === '__all__') {
+                    console.log('index == __all__');
                     apply_form_field_error(modal, index, value[0])
                 } else {
                     console.log('index != __all__');
@@ -150,6 +239,11 @@ function postLogin() {
         }
     });
 }
+
+
+//==========================================================================
+//           PASSWORD CHANGE MODAL                                        //
+//==========================================================================
 
 $(document).on('submit', '.pw-change-form', function(event) {
     event.preventDefault();
@@ -161,7 +255,7 @@ function postChangePassword() {
     // console.log('postChangePassword is working');
     var frm = $('.pw-change-form');
     clear_form_field_errors(frm);
-    var modal = $('#homeModal');
+    var modal = $('.modal');
     $.ajax({
         url: $(frm).attr('action'),
         type: $(frm).attr('method'),
@@ -192,7 +286,9 @@ function postChangePassword() {
 };
 
 
-// Image Cropping Business
+//==========================================================================
+//            IMAGE CROPPING                                              //
+//==========================================================================
 
 function closeThis() {
     console.log('closeThis');
@@ -255,24 +351,6 @@ $('.js-zoom-in').click(function () {
 
 $('.js-zoom-out').click(function () {
     $image.cropper('zoom', -0.1);
-});
-
-
-// For Multiple Modals
-$(document).on('show.bs.modal', '.modal', function () {
-    // console.log($('.modal:visible').length)
-    var zIndex = 1040 + (10 * $('.modal:visible').length);
-    // console.log($(this));
-    $(this).css('z-index', zIndex);
-    setTimeout(function() {
-        // console.log('.modal-backdrop is ' + $('.modal-backdrop').length);
-        // console.log('.modal-backdrop.not is ' + $('.modal-backdrop').not('.modal-stack').length);
-        $('.modal-backdrop').not('.modal-stack').css('z-index', zIndex - 1).addClass('modal-stack');
-    }, 0);
-});
-
-$(document).on('hidden.bs.modal', '.modal', function () {
-    $('.modal:visible').length && $(document.body).addClass('modal-open');
 });
 
 

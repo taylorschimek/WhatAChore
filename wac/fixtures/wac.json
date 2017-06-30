@@ -1,0 +1,407 @@
+[
+    {
+        "model": "wac.chore",
+        "pk": 30,
+        "fields": {
+            "user": 15,
+            "task": "Task 1",
+            "description": "Description 1",
+            "duration": 20,
+            "interval": "Daily",
+            "sub_interval": "Random",
+            "last_assigned": "2017-06-28",
+            "age_restriction": 12,
+            "chore_icon_location": "/Users/HOME/Developer/WAC/whatachore/wac/static/wac/styles/images/Icons/cream_icons/Chore_Bills.png"
+        }
+    },
+    {
+        "model": "wac.chore",
+        "pk": 31,
+        "fields": {
+            "user": 15,
+            "task": "Task 2",
+            "description": "Description 2",
+            "duration": 10,
+            "interval": "Every 2 Days",
+            "sub_interval": "Weekend",
+            "last_assigned": "2017-06-24",
+            "age_restriction": 12,
+            "chore_icon_location": "/Users/HOME/Developer/WAC/whatachore/wac/static/wac/styles/images/Icons/cream_icons/Chore_Broom.png"
+        }
+    },
+    {
+        "model": "wac.chore",
+        "pk": 32,
+        "fields": {
+            "user": 15,
+            "task": "Task 3",
+            "description": "Description 3",
+            "duration": 15,
+            "interval": "Every 3 Days",
+            "sub_interval": "Random",
+            "last_assigned": "2017-06-26",
+            "age_restriction": 18,
+            "chore_icon_location": "/Users/HOME/Developer/WAC/whatachore/wac/static/wac/styles/images/Icons/cream_icons/Chore_Sink.png"
+        }
+    },
+    {
+        "model": "wac.chore",
+        "pk": 33,
+        "fields": {
+            "user": 15,
+            "task": "Task 4",
+            "description": "Description 1",
+            "duration": 20,
+            "interval": "Weekly",
+            "sub_interval": "Random",
+            "last_assigned": "2017-06-28",
+            "age_restriction": 12,
+            "chore_icon_location": "/Users/HOME/Developer/WAC/whatachore/wac/static/wac/styles/images/Icons/cream_icons/Chore_Bills.png"
+        }
+    },
+    {
+        "model": "wac.chore",
+        "pk": 34,
+        "fields": {
+            "user": 15,
+            "task": "Task 5",
+            "description": "Description 2",
+            "duration": 10,
+            "interval": "Every 2 Weeks",
+            "sub_interval": "Weekend",
+            "last_assigned": "2017-06-24",
+            "age_restriction": 12,
+            "chore_icon_location": "/Users/HOME/Developer/WAC/whatachore/wac/static/wac/styles/images/Icons/cream_icons/Chore_Broom.png"
+        }
+    },
+    {
+        "model": "wac.chore",
+        "pk": 35,
+        "fields": {
+            "user": 15,
+            "task": "Task 6",
+            "description": "Description 3",
+            "duration": 15,
+            "interval": "Monthly",
+            "sub_interval": "Random",
+            "last_assigned": "2017-06-26",
+            "age_restriction": 18,
+            "chore_icon_location": "/Users/HOME/Developer/WAC/whatachore/wac/static/wac/styles/images/Icons/cream_icons/Chore_Sink.png"
+        }
+    },
+    {
+        "model": "wac.chore",
+        "pk": 36,
+        "fields": {
+            "user": 15,
+            "task": "Task 7",
+            "description": "Description 1",
+            "duration": 20,
+            "interval": "Every 2 Months",
+            "sub_interval": "Random",
+            "last_assigned": "2017-06-28",
+            "age_restriction": 12,
+            "chore_icon_location": "/Users/HOME/Developer/WAC/whatachore/wac/static/wac/styles/images/Icons/cream_icons/Chore_Bills.png"
+        }
+    },
+    {
+        "model": "wac.chore",
+        "pk": 37,
+        "fields": {
+            "user": 15,
+            "task": "Task 8",
+            "description": "Description 2",
+            "duration": 10,
+            "interval": "Quarterly",
+            "sub_interval": "Weekend",
+            "last_assigned": "2017-06-24",
+            "age_restriction": 12,
+            "chore_icon_location": "/Users/HOME/Developer/WAC/whatachore/wac/static/wac/styles/images/Icons/cream_icons/Chore_Broom.png"
+        }
+    },
+    {
+        "model": "wac.chore",
+        "pk": 38,
+        "fields": {
+            "user": 15,
+            "task": "Task 9",
+            "description": "Description 3",
+            "duration": 15,
+            "interval": "Yearly",
+            "sub_interval": "Random",
+            "last_assigned": "2017-06-26",
+            "age_restriction": 18,
+            "chore_icon_location": "/Users/HOME/Developer/WAC/whatachore/wac/static/wac/styles/images/Icons/cream_icons/Chore_Sink.png"
+        }
+    },
+    {
+        "model": "wac.chore",
+        "pk": 39,
+        "fields": {
+            "user": 16,
+            "task": "Task A",
+            "description": "Description A",
+            "duration": 20,
+            "interval": "Weekly",
+            "sub_interval": "Random",
+            "last_assigned": "2017-06-26",
+            "age_restriction": 12,
+            "chore_icon_location": "/Users/HOME/Developer/WAC/whatachore/wac/static/wac/styles/images/Icons/cream_icons/Chore_Cat.png"
+        }
+    },
+    {
+        "model": "wac.chore",
+        "pk": 40,
+        "fields": {
+            "user": 16,
+            "task": "Task B",
+            "description": "Description B",
+            "duration": 10,
+            "interval": "Weekly",
+            "sub_interval": "Monday",
+            "last_assigned": "2017-06-27",
+            "age_restriction": 10,
+            "chore_icon_location": "/Users/HOME/Developer/WAC/whatachore/wac/static/wac/styles/images/Icons/cream_icons/Chore_Hammer.png"
+        }
+    },
+    {
+        "model": "wac.chore",
+        "pk": 41,
+        "fields": {
+            "user": 16,
+            "task": "Task C",
+            "description": "Description C",
+            "duration": 25,
+            "interval": "Weekly",
+            "sub_interval": "Tuesday",
+            "last_assigned": "2017-06-27",
+            "age_restriction": 5,
+            "chore_icon_location": "/Users/HOME/Developer/WAC/whatachore/wac/static/wac/styles/images/Icons/cream_icons/Chore_Dog.png"
+        }
+    },
+    {
+        "model": "wac.chore",
+        "pk": 42,
+        "fields": {
+            "user": 16,
+            "task": "Task D",
+            "description": "Description A",
+            "duration": 20,
+            "interval": "Weekly",
+            "sub_interval": "Wednesday",
+            "last_assigned": "2017-06-26",
+            "age_restriction": 12,
+            "chore_icon_location": "/Users/HOME/Developer/WAC/whatachore/wac/static/wac/styles/images/Icons/cream_icons/Chore_Cat.png"
+        }
+    },
+    {
+        "model": "wac.chore",
+        "pk": 43,
+        "fields": {
+            "user": 16,
+            "task": "Task E",
+            "description": "Description B",
+            "duration": 10,
+            "interval": "Weekly",
+            "sub_interval": "Thursday",
+            "last_assigned": "2017-06-27",
+            "age_restriction": 10,
+            "chore_icon_location": "/Users/HOME/Developer/WAC/whatachore/wac/static/wac/styles/images/Icons/cream_icons/Chore_Hammer.png"
+        }
+    },
+    {
+        "model": "wac.chore",
+        "pk": 44,
+        "fields": {
+            "user": 16,
+            "task": "Task F",
+            "description": "Description C",
+            "duration": 25,
+            "interval": "Weekly",
+            "sub_interval": "Friday",
+            "last_assigned": "2017-06-27",
+            "age_restriction": 5,
+            "chore_icon_location": "/Users/HOME/Developer/WAC/whatachore/wac/static/wac/styles/images/Icons/cream_icons/Chore_Dog.png"
+        }
+    },
+    {
+        "model": "wac.chore",
+        "pk": 45,
+        "fields": {
+            "user": 16,
+            "task": "Task G",
+            "description": "Description A",
+            "duration": 20,
+            "interval": "Weekly",
+            "sub_interval": "Saturday",
+            "last_assigned": "2017-06-26",
+            "age_restriction": 12,
+            "chore_icon_location": "/Users/HOME/Developer/WAC/whatachore/wac/static/wac/styles/images/Icons/cream_icons/Chore_Cat.png"
+        }
+    },
+    {
+        "model": "wac.chore",
+        "pk": 46,
+        "fields": {
+            "user": 16,
+            "task": "Task H",
+            "description": "Description B",
+            "duration": 10,
+            "interval": "Weekly",
+            "sub_interval": "Sunday",
+            "last_assigned": "2017-06-27",
+            "age_restriction": 10,
+            "chore_icon_location": "/Users/HOME/Developer/WAC/whatachore/wac/static/wac/styles/images/Icons/cream_icons/Chore_Hammer.png"
+        }
+    },
+    {
+        "model": "wac.chore",
+        "pk": 47,
+        "fields": {
+            "user": 16,
+            "task": "Task I",
+            "description": "Description C",
+            "duration": 25,
+            "interval": "Weekly",
+            "sub_interval": "Weekend",
+            "last_assigned": "2017-06-27",
+            "age_restriction": 5,
+            "chore_icon_location": "/Users/HOME/Developer/WAC/whatachore/wac/static/wac/styles/images/Icons/cream_icons/Chore_Dog.png"
+        }
+    },
+    {
+        "model": "wac.chore",
+        "pk": 48,
+        "fields": {
+            "user": 16,
+            "task": "Task J",
+            "description": "Description C",
+            "duration": 25,
+            "interval": "Weekly",
+            "sub_interval": "Weekday",
+            "last_assigned": "2017-06-27",
+            "age_restriction": 5,
+            "chore_icon_location": "/Users/HOME/Developer/WAC/whatachore/wac/static/wac/styles/images/Icons/cream_icons/Chore_Dog.png"
+        }
+    },
+    {
+        "model": "wac.chore",
+        "pk": 49,
+        "fields": {
+            "user": 16,
+            "task": "Task K",
+            "description": "Description C",
+            "duration": 25,
+            "interval": "Weekly",
+            "sub_interval": "1st",
+            "last_assigned": "2017-06-27",
+            "age_restriction": 5,
+            "chore_icon_location": "/Users/HOME/Developer/WAC/whatachore/wac/static/wac/styles/images/Icons/cream_icons/Chore_Dog.png"
+        }
+    },
+    {
+        "model": "wac.chore",
+        "pk": 50,
+        "fields": {
+            "user": 16,
+            "task": "Task L",
+            "description": "Description C",
+            "duration": 25,
+            "interval": "Weekly",
+            "sub_interval": "15th",
+            "last_assigned": "2017-06-27",
+            "age_restriction": 5,
+            "chore_icon_location": "/Users/HOME/Developer/WAC/whatachore/wac/static/wac/styles/images/Icons/cream_icons/Chore_Dog.png"
+        }
+    },
+    {
+        "model": "wac.chore",
+        "pk": 51,
+        "fields": {
+            "user": 17,
+            "task": "Task A",
+            "description": "Description A",
+            "duration": 20,
+            "interval": "Weekly",
+            "sub_interval": "Random",
+            "last_assigned": "2017-06-26",
+            "age_restriction": 12,
+            "chore_icon_location": "/Users/HOME/Developer/WAC/whatachore/wac/static/wac/styles/images/Icons/cream_icons/Chore_Cat.png"
+        }
+    },
+    {
+        "model": "wac.chore",
+        "pk": 52,
+        "fields": {
+            "user": 17,
+            "task": "Task B",
+            "description": "Description B",
+            "duration": 10,
+            "interval": "Weekly",
+            "sub_interval": "Monday",
+            "last_assigned": "2017-06-27",
+            "age_restriction": 10,
+            "chore_icon_location": "/Users/HOME/Developer/WAC/whatachore/wac/static/wac/styles/images/Icons/cream_icons/Chore_Hammer.png"
+        }
+    },
+    {
+        "model": "wac.person",
+        "pk": 32,
+        "fields": {
+            "user": 15,
+            "name": "Bob",
+            "birthday": "1977-08-23",
+            "phone_number": null,
+            "email": "test1@example.com",
+            "day_off": "Tue",
+            "mugshot": "",
+            "number_of_chores": null,
+            "weekly_minutes": 60
+        }
+    },
+    {
+        "model": "wac.person",
+        "pk": 33,
+        "fields": {
+            "user": 15,
+            "name": "Barbara",
+            "birthday": "1977-08-22",
+            "phone_number": null,
+            "email": null,
+            "day_off": "Thur",
+            "mugshot": "",
+            "number_of_chores": null,
+            "weekly_minutes": 115
+        }
+    },
+    {
+        "model": "wac.person",
+        "pk": 34,
+        "fields": {
+            "user": 16,
+            "name": "Floyd",
+            "birthday": "1975-08-11",
+            "phone_number": null,
+            "email": "test2@example.com",
+            "day_off": "Sun",
+            "mugshot": "",
+            "number_of_chores": null,
+            "weekly_minutes": 155
+        }
+    },
+    {
+        "model": "wac.person",
+        "pk": 35,
+        "fields": {
+            "user": 16,
+            "name": "Florence",
+            "birthday": "1975-08-12",
+            "phone_number": null,
+            "email": null,
+            "day_off": "Mon",
+            "mugshot": "",
+            "number_of_chores": null,
+            "weekly_minutes": 125
+        }
+    }
+]

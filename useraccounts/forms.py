@@ -14,13 +14,13 @@ class RegistrationForm(forms.ModelForm):
 
     password = forms.CharField(
         widget=forms.PasswordInput(
-            attrs={'class': 'form-control', 'placeholder': 'Password'}
+            attrs={'id': 'reg_password', 'class': 'form-control', 'placeholder': 'Password'}
         )
     )
 
     email = forms.EmailField(
         widget=forms.EmailInput(
-            attrs={'class': 'form-control', 'placeholder': 'Enter email'}
+            attrs={'id': 'reg_email', 'class': 'form-control', 'placeholder': 'Enter email'}
         )
     )
 

@@ -42,7 +42,7 @@
                         {% if ass.who == person and ass.when == dates.0 %}
                         <div class="container">
                             <li class="list-group-item">
-                                <a data-toggle="modal" data-target="#assignmentModal" onclick="find_modal('{% url "assignment-detail" ass.pk %}')">
+                                <a data-toggle="modal" data-target="#myModal" onclick="find_modal('{% url "assignment-detail" ass.pk %}')">
                                     <div>
                                       <p class="mb-0">{{ ass.what }}</p>
                                     </div>
@@ -78,7 +78,7 @@
 
                     {% for ass in assignments %}
                         {% if ass.who == person and ass.when == dates.1 %}
-                        <a data-toggle="modal" data-target="#assignmentModal" onclick="find_modal('{% url "assignment-detail" ass.pk %}')">
+                        <a data-toggle="modal" data-target="#myModal" onclick="find_modal('{% url "assignment-detail" ass.pk %}')">
                         <li class="list-group-item">
                             <div>
                               <p class="mb-0">{{ ass.what }}</p>
@@ -114,7 +114,7 @@
 
                     {% for ass in assignments %}
                         {% if ass.who == person and ass.when == dates.2 %}
-                        <a data-toggle="modal" data-target="#assignmentModal" onclick="find_modal('{% url "assignment-detail" ass.pk %}')">
+                        <a data-toggle="modal" data-target="#myModal" onclick="find_modal('{% url "assignment-detail" ass.pk %}')">
                         <li class="list-group-item">
                             <div>
                               <p class="mb-0">{{ ass.what }}</p>
@@ -150,7 +150,7 @@
 
                     {% for ass in assignments %}
                         {% if ass.who == person and ass.when == dates.3 %}
-                        <a data-toggle="modal" data-target="#assignmentModal" onclick="find_modal('{% url "assignment-detail" ass.pk %}')">
+                        <a data-toggle="modal" data-target="#myModal" onclick="find_modal('{% url "assignment-detail" ass.pk %}')">
                         <li class="list-group-item">
                             <div>
                               <p class="mb-0">{{ ass.what }}</p>
@@ -191,7 +191,7 @@
 
                     {% for ass in assignments %}
                         {% if ass.who == person and ass.when == dates.4 %}
-                        <a data-toggle="modal" data-target="#assignmentModal" onclick="find_modal('{% url "assignment-detail" ass.pk %}')">
+                        <a data-toggle="modal" data-target="#myModal" onclick="find_modal('{% url "assignment-detail" ass.pk %}')">
                         <li class="list-group-item">
                             <div>
                               <p class="mb-0">{{ ass.what }}</p>
@@ -227,7 +227,7 @@
 
                     {% for ass in assignments %}
                         {% if ass.who == person and ass.when == dates.5 %}
-                        <a data-toggle="modal" data-target="#assignmentModal" onclick="find_modal('{% url "assignment-detail" ass.pk %}')">
+                        <a data-toggle="modal" data-target="#myModal" onclick="find_modal('{% url "assignment-detail" ass.pk %}')">
                         <li class="list-group-item">
                             <div>
                               <p class="mb-0">{{ ass.what }}</p>
@@ -263,7 +263,7 @@
 
                     {% for ass in assignments %}
                         {% if ass.who == person and ass.when == dates.6 %}
-                        <a data-toggle="modal" data-target="#assignmentModal" onclick="find_modal('{% url "assignment-detail" ass.pk %}')">
+                        <a data-toggle="modal" data-target="#myModal" onclick="find_modal('{% url "assignment-detail" ass.pk %}')">
                         <li class="list-group-item">
                             <div>
                               <p class="mb-0">{{ ass.what }}</p>
@@ -314,6 +314,6 @@
       </div>
     </section> <!-- /Lineup -->
 
-    <div class="modal" id="assignmentModal"></div>
+    <div class="modal" id="myModal"></div>
 
 {% endblock %}

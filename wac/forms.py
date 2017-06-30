@@ -32,6 +32,10 @@ class ChoreEditForm(forms.ModelForm):
 
         for key in self.fields:
             self.fields[key].required = False
+        self.fields['task'].required = True
+        self.fields['duration'].required = True
+        self.fields['interval'].required = True
+        self.fields['age_restriction'].required = True
 
     class Meta:
         model = models.Chore
@@ -61,9 +65,9 @@ class PersonEditForm(forms.ModelForm):
 
         for key in self.fields:
             self.fields[key].required = False
-            self.fields['name'].required = True
-            self.fields['birthday'].required = True
-            self.fields['day_off'].required = True
+        self.fields['name'].required = True
+        self.fields['birthday'].required = True
+        self.fields['day_off'].required = True
 
     class Meta:
         model = models.Person

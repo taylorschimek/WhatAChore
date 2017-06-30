@@ -1,0 +1,308 @@
+{
+    "model": "wac.week",
+    "pk": 43,
+    "fields": {
+        "user": 16,
+        "start_date": "2017-06-19",
+        "end_date": "2017-06-26",
+        "is_current": true,
+        "total_time": 280
+    }
+},
+{
+    "model": "wac.week",
+    "pk": 44,
+    "fields": {
+        "user": 15,
+        "start_date": "2017-06-19",
+        "end_date": "2017-06-26",
+        "is_current": true,
+        "total_time": 175
+    }
+},
+{
+    "model": "wac.assignment",
+    "pk": 138,
+    "fields": {
+        "week": 43,
+        "what": 35,
+        "when": "2017-06-19",
+        "who": 34,
+        "done": false
+    }
+},
+{
+    "model": "wac.assignment",
+    "pk": 139,
+    "fields": {
+        "week": 43,
+        "what": 35,
+        "when": "2017-06-21",
+        "who": 35,
+        "done": false
+    }
+},
+{
+    "model": "wac.assignment",
+    "pk": 140,
+    "fields": {
+        "week": 43,
+        "what": 35,
+        "when": "2017-06-23",
+        "who": 35,
+        "done": false
+    }
+},
+{
+    "model": "wac.assignment",
+    "pk": 141,
+    "fields": {
+        "week": 43,
+        "what": 35,
+        "when": "2017-06-25",
+        "who": 35,
+        "done": false
+    }
+},
+{
+    "model": "wac.assignment",
+    "pk": 142,
+    "fields": {
+        "week": 43,
+        "what": 34,
+        "when": "2017-06-19",
+        "who": 34,
+        "done": false
+    }
+},
+{
+    "model": "wac.assignment",
+    "pk": 143,
+    "fields": {
+        "week": 43,
+        "what": 34,
+        "when": "2017-06-21",
+        "who": 34,
+        "done": false
+    }
+},
+{
+    "model": "wac.assignment",
+    "pk": 144,
+    "fields": {
+        "week": 43,
+        "what": 34,
+        "when": "2017-06-23",
+        "who": 34,
+        "done": false
+    }
+},
+{
+    "model": "wac.assignment",
+    "pk": 145,
+    "fields": {
+        "week": 43,
+        "what": 34,
+        "when": "2017-06-25",
+        "who": 35,
+        "done": false
+    }
+},
+{
+    "model": "wac.assignment",
+    "pk": 146,
+    "fields": {
+        "week": 43,
+        "what": 33,
+        "when": "2017-06-19",
+        "who": 34,
+        "done": false
+    }
+},
+{
+    "model": "wac.assignment",
+    "pk": 147,
+    "fields": {
+        "week": 43,
+        "what": 33,
+        "when": "2017-06-20",
+        "who": 34,
+        "done": false
+    }
+},
+{
+    "model": "wac.assignment",
+    "pk": 148,
+    "fields": {
+        "week": 43,
+        "what": 33,
+        "when": "2017-06-21",
+        "who": 35,
+        "done": false
+    }
+},
+{
+    "model": "wac.assignment",
+    "pk": 149,
+    "fields": {
+        "week": 43,
+        "what": 33,
+        "when": "2017-06-22",
+        "who": 34,
+        "done": false
+    }
+},
+{
+    "model": "wac.assignment",
+    "pk": 150,
+    "fields": {
+        "week": 43,
+        "what": 33,
+        "when": "2017-06-23",
+        "who": 34,
+        "done": false
+    }
+},
+{
+    "model": "wac.assignment",
+    "pk": 151,
+    "fields": {
+        "week": 43,
+        "what": 33,
+        "when": "2017-06-24",
+        "who": 34,
+        "done": false
+    }
+},
+{
+    "model": "wac.assignment",
+    "pk": 152,
+    "fields": {
+        "week": 43,
+        "what": 33,
+        "when": "2017-06-25",
+        "who": 35,
+        "done": false
+    }
+},
+{
+    "model": "wac.assignment",
+    "pk": 153,
+    "fields": {
+        "week": 44,
+        "what": 32,
+        "when": "2017-06-19",
+        "who": 33,
+        "done": false
+    }
+},
+{
+    "model": "wac.assignment",
+    "pk": 154,
+    "fields": {
+        "week": 44,
+        "what": 32,
+        "when": "2017-06-20",
+        "who": 33,
+        "done": false
+    }
+},
+{
+    "model": "wac.assignment",
+    "pk": 155,
+    "fields": {
+        "week": 44,
+        "what": 32,
+        "when": "2017-06-21",
+        "who": 32,
+        "done": false
+    }
+},
+{
+    "model": "wac.assignment",
+    "pk": 156,
+    "fields": {
+        "week": 44,
+        "what": 32,
+        "when": "2017-06-22",
+        "who": 33,
+        "done": false
+    }
+},
+{
+    "model": "wac.assignment",
+    "pk": 157,
+    "fields": {
+        "week": 44,
+        "what": 32,
+        "when": "2017-06-23",
+        "who": 32,
+        "done": false
+    }
+},
+{
+    "model": "wac.assignment",
+    "pk": 158,
+    "fields": {
+        "week": 44,
+        "what": 32,
+        "when": "2017-06-24",
+        "who": 32,
+        "done": false
+    }
+},
+{
+    "model": "wac.assignment",
+    "pk": 159,
+    "fields": {
+        "week": 44,
+        "what": 32,
+        "when": "2017-06-25",
+        "who": 32,
+        "done": false
+    }
+},
+{
+    "model": "wac.assignment",
+    "pk": 160,
+    "fields": {
+        "week": 44,
+        "what": 31,
+        "when": "2017-06-24",
+        "who": 33,
+        "done": false
+    }
+},
+{
+    "model": "wac.assignment",
+    "pk": 161,
+    "fields": {
+        "week": 44,
+        "what": 30,
+        "when": "2017-06-19",
+        "who": 33,
+        "done": false
+    }
+},
+{
+    "model": "wac.assignment",
+    "pk": 162,
+    "fields": {
+        "week": 44,
+        "what": 30,
+        "when": "2017-06-22",
+        "who": 33,
+        "done": false
+    }
+},
+{
+    "model": "wac.assignment",
+    "pk": 163,
+    "fields": {
+        "week": 44,
+        "what": 30,
+        "when": "2017-06-25",
+        "who": 33,
+        "done": false
+    }
+}
