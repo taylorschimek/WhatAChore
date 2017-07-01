@@ -310,7 +310,7 @@ class SeleniumTestViews(StaticLiveServerTestCase):
         # wait for modal to load then assert that it is Task 1
         task_elem = try_name(browser, delay, 'task')
         task = task_elem.get_attribute('value')
-        self.assertEqual('Task 1', task)
+        self.assertEqual('Task Daily', task)
 
         # Change the duration of Task 1 to 120 minutes.
         duration = browser.find_element_by_name('duration')
@@ -417,12 +417,12 @@ class SeleniumTestViews(StaticLiveServerTestCase):
         self.assertGreater(len(now_asses), 9)
 
         # Navigate to a Task 3 and select it
-        browser.find_element_by_xpath('//p[text()="Task 3"]').click()
+        browser.find_element_by_xpath('//p[text()="Task 3Days"]').click()
 
         title_elem = try_class_name(browser, delay, 'modal-title')
         title = title_elem.text
         print('modal-title = {}'.format(title))
-        self.assertIn('Task 3', title)
+        self.assertIn('Task 3Days', title)
 
         who_field = Select(browser.find_element_by_id('id_who'))
         who = who_field.first_selected_option.text
@@ -432,7 +432,7 @@ class SeleniumTestViews(StaticLiveServerTestCase):
             who_field.select_by_visible_text('Bob')
         browser.find_element_by_xpath('//input[@value="Save"]').click()
         sleep(1)
-        browser.find_element_by_xpath('//p[text()="Task 3"]').click()
+        browser.find_element_by_xpath('//p[text()="Task 3Days"]').click()
         sleep(1)
         who_field = Select(browser.find_element_by_id('id_who'))
         who2 = who_field.first_selected_option.text

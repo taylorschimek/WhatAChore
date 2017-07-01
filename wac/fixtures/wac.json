@@ -4,12 +4,12 @@
         "pk": 30,
         "fields": {
             "user": 15,
-            "task": "Task 1",
+            "task": "Task Daily",
             "description": "Description 1",
             "duration": 20,
             "interval": "Daily",
             "sub_interval": "Random",
-            "last_assigned": "2017-06-28",
+            "last_assigned": "2017-06-24",
             "age_restriction": 12,
             "chore_icon_location": "/Users/HOME/Developer/WAC/whatachore/wac/static/wac/styles/images/Icons/cream_icons/Chore_Bills.png"
         }
@@ -19,7 +19,7 @@
         "pk": 31,
         "fields": {
             "user": 15,
-            "task": "Task 2",
+            "task": "Task 2Days",
             "description": "Description 2",
             "duration": 10,
             "interval": "Every 2 Days",
@@ -34,12 +34,12 @@
         "pk": 32,
         "fields": {
             "user": 15,
-            "task": "Task 3",
+            "task": "Task 3Days",
             "description": "Description 3",
             "duration": 15,
             "interval": "Every 3 Days",
             "sub_interval": "Random",
-            "last_assigned": "2017-06-26",
+            "last_assigned": "2017-06-24",
             "age_restriction": 18,
             "chore_icon_location": "/Users/HOME/Developer/WAC/whatachore/wac/static/wac/styles/images/Icons/cream_icons/Chore_Sink.png"
         }
@@ -49,12 +49,12 @@
         "pk": 33,
         "fields": {
             "user": 15,
-            "task": "Task 4",
+            "task": "Task Weekly",
             "description": "Description 1",
             "duration": 20,
             "interval": "Weekly",
             "sub_interval": "Random",
-            "last_assigned": "2017-06-28",
+            "last_assigned": "2017-06-24",
             "age_restriction": 12,
             "chore_icon_location": "/Users/HOME/Developer/WAC/whatachore/wac/static/wac/styles/images/Icons/cream_icons/Chore_Bills.png"
         }
@@ -64,7 +64,7 @@
         "pk": 34,
         "fields": {
             "user": 15,
-            "task": "Task 5",
+            "task": "Task 2Weeks",
             "description": "Description 2",
             "duration": 10,
             "interval": "Every 2 Weeks",
@@ -79,12 +79,12 @@
         "pk": 35,
         "fields": {
             "user": 15,
-            "task": "Task 6",
+            "task": "Task Monthly",
             "description": "Description 3",
             "duration": 15,
             "interval": "Monthly",
             "sub_interval": "Random",
-            "last_assigned": "2017-06-26",
+            "last_assigned": "2017-06-24",
             "age_restriction": 18,
             "chore_icon_location": "/Users/HOME/Developer/WAC/whatachore/wac/static/wac/styles/images/Icons/cream_icons/Chore_Sink.png"
         }
@@ -94,12 +94,12 @@
         "pk": 36,
         "fields": {
             "user": 15,
-            "task": "Task 7",
+            "task": "Task 2Months",
             "description": "Description 1",
             "duration": 20,
             "interval": "Every 2 Months",
             "sub_interval": "Random",
-            "last_assigned": "2017-06-28",
+            "last_assigned": "2017-06-24",
             "age_restriction": 12,
             "chore_icon_location": "/Users/HOME/Developer/WAC/whatachore/wac/static/wac/styles/images/Icons/cream_icons/Chore_Bills.png"
         }
@@ -109,7 +109,7 @@
         "pk": 37,
         "fields": {
             "user": 15,
-            "task": "Task 8",
+            "task": "Task Quarterly",
             "description": "Description 2",
             "duration": 10,
             "interval": "Quarterly",
@@ -124,12 +124,12 @@
         "pk": 38,
         "fields": {
             "user": 15,
-            "task": "Task 9",
+            "task": "Task Yearly",
             "description": "Description 3",
             "duration": 15,
             "interval": "Yearly",
             "sub_interval": "Random",
-            "last_assigned": "2017-06-26",
+            "last_assigned": "2017-06-24",
             "age_restriction": 18,
             "chore_icon_location": "/Users/HOME/Developer/WAC/whatachore/wac/static/wac/styles/images/Icons/cream_icons/Chore_Sink.png"
         }
