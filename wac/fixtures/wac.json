@@ -136,6 +136,126 @@
     },
     {
         "model": "wac.chore",
+        "pk": 53,
+        "fields": {
+            "user": 15,
+            "task": "Task Monthly 1st",
+            "description": "Description 3",
+            "duration": 15,
+            "interval": "Monthly",
+            "sub_interval": "1st",
+            "last_assigned": "2017-06-24",
+            "age_restriction": 18,
+            "chore_icon_location": "/Users/HOME/Developer/WAC/whatachore/wac/static/wac/styles/images/Icons/cream_icons/Chore_Sink.png"
+        }
+    },
+    {
+        "model": "wac.chore",
+        "pk": 54,
+        "fields": {
+            "user": 15,
+            "task": "Task Monthly 15th",
+            "description": "Description 3",
+            "duration": 15,
+            "interval": "Monthly",
+            "sub_interval": "15th",
+            "last_assigned": "2017-06-24",
+            "age_restriction": 18,
+            "chore_icon_location": "/Users/HOME/Developer/WAC/whatachore/wac/static/wac/styles/images/Icons/cream_icons/Chore_Sink.png"
+        }
+    },
+    {
+        "model": "wac.chore",
+        "pk": 55,
+        "fields": {
+            "user": 15,
+            "task": "Task Every 2 Months 1st",
+            "description": "Description 3",
+            "duration": 15,
+            "interval": "Every 2 Months",
+            "sub_interval": "1st",
+            "last_assigned": "2017-06-24",
+            "age_restriction": 18,
+            "chore_icon_location": "/Users/HOME/Developer/WAC/whatachore/wac/static/wac/styles/images/Icons/cream_icons/Chore_Sink.png"
+        }
+    },
+    {
+        "model": "wac.chore",
+        "pk": 56,
+        "fields": {
+            "user": 15,
+            "task": "Task Every 2 Months 15th",
+            "description": "Description 3",
+            "duration": 15,
+            "interval": "Every 2 Months",
+            "sub_interval": "15th",
+            "last_assigned": "2017-06-24",
+            "age_restriction": 18,
+            "chore_icon_location": "/Users/HOME/Developer/WAC/whatachore/wac/static/wac/styles/images/Icons/cream_icons/Chore_Sink.png"
+        }
+    },
+    {
+        "model": "wac.chore",
+        "pk": 57,
+        "fields": {
+            "user": 15,
+            "task": "Task Quarterly 1st",
+            "description": "Description 3",
+            "duration": 15,
+            "interval": "Quarterly",
+            "sub_interval": "1st",
+            "last_assigned": "2017-06-24",
+            "age_restriction": 18,
+            "chore_icon_location": "/Users/HOME/Developer/WAC/whatachore/wac/static/wac/styles/images/Icons/cream_icons/Chore_Sink.png"
+        }
+    },
+    {
+        "model": "wac.chore",
+        "pk": 58,
+        "fields": {
+            "user": 15,
+            "task": "Task Quarterly 15th",
+            "description": "Description 3",
+            "duration": 15,
+            "interval": "Quarterly",
+            "sub_interval": "15th",
+            "last_assigned": "2017-06-24",
+            "age_restriction": 18,
+            "chore_icon_location": "/Users/HOME/Developer/WAC/whatachore/wac/static/wac/styles/images/Icons/cream_icons/Chore_Sink.png"
+        }
+    },
+    {
+        "model": "wac.chore",
+        "pk": 59,
+        "fields": {
+            "user": 15,
+            "task": "Task Yearly 1st",
+            "description": "Description 3",
+            "duration": 15,
+            "interval": "Yearly",
+            "sub_interval": "1st",
+            "last_assigned": "2017-06-24",
+            "age_restriction": 18,
+            "chore_icon_location": "/Users/HOME/Developer/WAC/whatachore/wac/static/wac/styles/images/Icons/cream_icons/Chore_Sink.png"
+        }
+    },
+    {
+        "model": "wac.chore",
+        "pk": 60,
+        "fields": {
+            "user": 15,
+            "task": "Task Yearly 15th",
+            "description": "Description 3",
+            "duration": 15,
+            "interval": "Yearly",
+            "sub_interval": "15th",
+            "last_assigned": "2017-06-24",
+            "age_restriction": 18,
+            "chore_icon_location": "/Users/HOME/Developer/WAC/whatachore/wac/static/wac/styles/images/Icons/cream_icons/Chore_Sink.png"
+        }
+    },
+    {
+        "model": "wac.chore",
         "pk": 39,
         "fields": {
             "user": 16,

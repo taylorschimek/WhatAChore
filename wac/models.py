@@ -155,7 +155,7 @@ class Week(models.Model):
     def save(self, **kwargs):
         if not self.pk:
             self.start_date = self.prior_monday()
-            self.end_date = self.start_date + datetime.timedelta(days=7)
+            self.end_date = self.start_date + datetime.timedelta(days=6)
 
         super(Week, self).save(**kwargs)
 

@@ -64,23 +64,50 @@ def random(chore):
 
 
 def first(chore):
-    today = datetime.date.today()
-    year = today.year
-    month = today.month
+    addendum = 0
+    if chore.interval == 'Monthly':
+        addendum = 1
+    elif chore.interval == 'Every 2 Months':
+        addendum = 2
+    elif chore.interval == 'Quarterly':
+        addendum = 3
+    elif chore.interval == 'Yearly':
+        addendum = 12
+
+    month = chore.last_assigned.month + addendum
+    print("==first sub_interval month = {}".format(month))
+    if month > 12:
+        month = month - 12
+        year = chore.last_assigned.year + 1
+    else:
+        year = chore.last_assigned.year
     first = datetime.date(year, month, 1)
 
-    if THIS_WEEK.start_date < first < THIS_WEEK.end_date:
+    if THIS_WEEK.start_date <= first <= THIS_WEEK.end_date:
         return first
     else:
         return None
 
 def fifteenth(chore):
-    today = datetime.date.today()
-    year = today.year
-    month = today.month
+    addendum = 0
+    if chore.interval == 'Monthly':
+        addendum = 1
+    elif chore.interval == 'Every 2 Months':
+        addendum = 2
+    elif chore.interval == 'Quarterly':
+        addendum = 3
+    elif chore.interval == 'Yearly':
+        addendum = 12
+
+    month = chore.last_assigned.month + addendum
+    if month > 12:
+        month = month - 12
+        year = chore.last_assigned.year + 1
+    else:
+        year = chore.last_assigned.year
     fifteenth = datetime.date(year, month, 15)
 
-    if THIS_WEEK.start_date < fifteenth < THIS_WEEK.end_date:
+    if THIS_WEEK.start_date <= fifteenth <= THIS_WEEK.end_date:
         return fifteenth
     else:
         return None
@@ -196,10 +223,25 @@ def daily(chore):
     create_repeating_assignments(chore, THIS_WEEK.start_date, 1)
 
 def every2days(chore):
-    create_repeating_assignments(chore, THIS_WEEK.start_date, 2)
+    since = THIS_WEEK.start_date - chore.last_assigned
+    between = datetime.timedelta(days=2)
+    if since == between:
+        create_repeating_assignments(chore, THIS_WEEK.start_date, 2)
+    else:
+        date = THIS_WEEK.start_date + datetime.timedelta(days=1)
+        create_repeating_assignments(chore, date, 2)
 
 def every3days(chore):
-    create_repeating_assignments(chore, THIS_WEEK.start_date, 3)
+    since = THIS_WEEK.start_date - chore.last_assigned
+    between = datetime.timedelta(days=3)
+    if since == between:
+        create_repeating_assignments(chore, THIS_WEEK.start_date, 3)
+    elif since - between == 1:
+        date = THIS_WEEK.start_date - datetime.timedelta(days=1)
+        create_repeating_assignments(chore, date, 3)
+    else:
+        date = THIS_WEEK.start_date - datetime.timedelta(days=2)
+        create_repeating_assignments(chore, date, 3)
 
 def weekly(chore):
     # need to check last_assigned and make sure new date is at least 5 days later
@@ -228,19 +270,15 @@ def every2weeks(chore):
 
 def monthly(chore):
     new_date = get_date_from_subInterval(chore)
-    if chore.sub_interval == '1st':
-        if new_date:
-            chore.last_assigned = new_date
-            chore.save(update_fields=['last_assigned'])
-            create_assignment(chore, new_date)
-    elif chore.sub_interval == '15th':
+    if chore.sub_interval == '1st' or chore.sub_interval == '15th':
         if new_date:
             chore.last_assigned = new_date
             chore.save(update_fields=['last_assigned'])
             create_assignment(chore, new_date)
     else:
-        difference = new_date - chore.last_assigned
-        if difference > datetime.timedelta(weeks=4, days=1):
+        if THIS_WEEK.start_date - chore.last_assigned >= datetime.timedelta(days=28):
+        # difference = new_date - chore.last_assigned
+        # if difference > datetime.timedelta(weeks=4, days=1):
             chore.last_assigned = new_date
             chore.save(update_fields=['last_assigned'])
             create_assignment(chore, new_date)
@@ -249,60 +287,56 @@ def monthly(chore):
 
 def every2months(chore):
     new_date = get_date_from_subInterval(chore)
-    if chore.sub_interval == '1st':
+    print("every2months called with newdate of {}".format(new_date))
+    if chore.sub_interval == '1st' or chore.sub_interval == '15th':
         if new_date:
-            chore.last_assigned = new_date
-            chore.save(update_fields=['last_assigned'])
-            create_assignment(chore, new_date)
-    elif chore.sub_interval == '15th':
-        if new_date:
-            chore.last_assigned = new_date
-            chore.save(update_fields=['last_assigned'])
-            chore_assignment(chore, new_date)
+            if new_date.year == chore.last_assigned.year:
+                if new_date.month - chore.last_assigned.month == 2:
+                    print("2month 1st is assigned")
+                    chore.last_assigned = new_date
+                    chore.save(update_fields=['last_assigned'])
+                    create_assignment(chore, new_date)
+            else:
+                if chore.last_assigned.month - new_date.month == 10:
+                    print("2month 1st is assigned")
+                    chore.last_assigned = new_date
+                    chore.save(update_fields=['last_assigned'])
+                    create_assignment(chore, new_date)
     else:
-        difference = new_date - chore.last_assigned
-        print('2months difference = {}'.format(difference))
-        if difference > datetime.timedelta(weeks=8):
+        if THIS_WEEK.start_date - chore.last_assigned >= datetime.timedelta(weeks=8):
             chore.last_assigned = new_date
             chore.save(update_fields=['last_assigned'])
             create_assignment(chore, new_date)
-        else:
-            print('{} should not be assigned this week'.format(chore.task))
 
 def quarterly(chore):
     new_date = get_date_from_subInterval(chore)
-    if chore.sub_interval == '1st':
+    if chore.sub_interval == '1st' or chore.sub_interval == '15th':
         if new_date:
-            chore.last_assigned = new_date
-            chore.save(update_fields=['last_assigned'])
-            create_assignment(chore, new_date)
-    elif chore.sub_interval == '15th':
-        if new_date:
-            chore.last_assigned = new_date
-            chore.save(update_fields=['last_assigned'])
-            chore_assignment(chore, new_date)
+            if new_date.year == chore.last_assigned.year:
+                if new_date.month - chore.last_assigned.month == 3:
+                    chore.last_assigned = new_date
+                    chore.save(update_fields=['last_assigned'])
+                    create_assignment(chore, new_date)
+            else:
+                if chore.last_assigned.month - new_date.month == 9:
+                    chore.last_assigned = new_date
+                    chore.save(update_fields=['last_assigned'])
+                    create_assignment(chore, new_date)
     else:
-        difference = new_date - chore.last_assigned
-        if difference > datetime.timedelta(weeks=13):
+        if THIS_WEEK.start_date - chore.last_assigned >= datetime.timedelta(weeks=13):
             print("QUARTERLY new_date = {}".format(new_date))
             chore.last_assigned = new_date
             chore.save(update_fields=['last_assigned'])
             create_assignment(chore, new_date)
-        else:
-            print('{} should not be assigned this week'.format(chore.task))
 
 def yearly(chore):
     new_date = get_date_from_subInterval(chore)
-    if chore.sub_interval == '1st':
+    if chore.sub_interval == '1st' or chore.sub_interval == '15th':
         if new_date:
-            chore.last_assigned = new_date
-            chore.save(update_fields=['last_assigned'])
-            create_assignment(chore, new_date)
-    elif chore.sub_interval == '15th':
-        if new_date:
-            chore.last_assigned = new_date
-            chore.save(update_fields=['last_assigned'])
-            chore_assignment(chore, new_date)
+            if new_date.year > chore.last_assigned.year:
+                chore.last_assigned = new_date
+                chore.save(update_fields=['last_assigned'])
+                create_assignment(chore, new_date)
     else:
         difference = new_date - chore.last_assigned
         if difference > datetime.timedelta(weeks=52):
