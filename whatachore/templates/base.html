@@ -41,7 +41,7 @@
                   <a class="nav-link" href="{% url 'chore-list' %}">Chores<span class="sr-only">Chores</span></a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="{% url 'lineup-make' %}">Assignments<span class="sr-only">Assignments</span></a>
+                  <a class="nav-link" href="{% url 'lineup' %}">Assignments<span class="sr-only">Assignments</span></a>
                 </li>
 
                 <li class="nav-item"><a id="id_logout" class="nav-link" href="{% url 'logout' %}?next={% url 'landing' %}">Logout - {{ user.get_username }}</a></li>

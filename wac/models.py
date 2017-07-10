@@ -141,7 +141,7 @@ class Week(models.Model):
     def prior_monday(self):
         the_date = datetime.date.today()
         idx = (the_date.weekday()) % 7
-        a_monday = the_date - datetime.timedelta(idx)
+        a_monday = the_date - datetime.timedelta(days=idx)
         # if idx == 0:
         #     last_monday = a_monday - datetime.timedelta(days=7)
         #     return last_monday
@@ -156,6 +156,7 @@ class Week(models.Model):
         if not self.pk:
             self.start_date = self.prior_monday()
             self.end_date = self.start_date + datetime.timedelta(days=6)
+            print("____week.start_date = {} / end_date = {}".format(self.start_date, self.end_date))
 
         super(Week, self).save(**kwargs)
 

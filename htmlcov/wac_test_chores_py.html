@@ -496,9 +496,9 @@
 <p id="n427" class="stm run hide_run"><a href="#n427">427</a></p>
 <p id="n428" class="stm run hide_run"><a href="#n428">428</a></p>
 <p id="n429" class="stm run hide_run"><a href="#n429">429</a></p>
-<p id="n430" class="stm run hide_run"><a href="#n430">430</a></p>
+<p id="n430" class="stm mis"><a href="#n430">430</a></p>
 <p id="n431" class="pln"><a href="#n431">431</a></p>
-<p id="n432" class="stm mis"><a href="#n432">432</a></p>
+<p id="n432" class="stm run hide_run"><a href="#n432">432</a></p>
 <p id="n433" class="stm run hide_run"><a href="#n433">433</a></p>
 <p id="n434" class="stm run hide_run"><a href="#n434">434</a></p>
 <p id="n435" class="stm run hide_run"><a href="#n435">435</a></p>
@@ -852,7 +852,7 @@
 <p id="t310" class="pln">        <span class="com"># wait for modal to load then assert that it is Task 1</span><span class="strut">&nbsp;</span></p>
 <p id="t311" class="stm run hide_run">        <span class="nam">task_elem</span> <span class="op">=</span> <span class="nam">try_name</span><span class="op">(</span><span class="nam">browser</span><span class="op">,</span> <span class="nam">delay</span><span class="op">,</span> <span class="str">'task'</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
 <p id="t312" class="stm run hide_run">        <span class="nam">task</span> <span class="op">=</span> <span class="nam">task_elem</span><span class="op">.</span><span class="nam">get_attribute</span><span class="op">(</span><span class="str">'value'</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
-<p id="t313" class="stm run hide_run">        <span class="nam">self</span><span class="op">.</span><span class="nam">assertEqual</span><span class="op">(</span><span class="str">'Task 1'</span><span class="op">,</span> <span class="nam">task</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
+<p id="t313" class="stm run hide_run">        <span class="nam">self</span><span class="op">.</span><span class="nam">assertEqual</span><span class="op">(</span><span class="str">'Task Daily'</span><span class="op">,</span> <span class="nam">task</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
 <p id="t314" class="pln"><span class="strut">&nbsp;</span></p>
 <p id="t315" class="pln">        <span class="com"># Change the duration of Task 1 to 120 minutes.</span><span class="strut">&nbsp;</span></p>
 <p id="t316" class="stm run hide_run">        <span class="nam">duration</span> <span class="op">=</span> <span class="nam">browser</span><span class="op">.</span><span class="nam">find_element_by_name</span><span class="op">(</span><span class="str">'duration'</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
@@ -959,22 +959,22 @@
 <p id="t417" class="stm run hide_run">        <span class="nam">self</span><span class="op">.</span><span class="nam">assertGreater</span><span class="op">(</span><span class="nam">len</span><span class="op">(</span><span class="nam">now_asses</span><span class="op">)</span><span class="op">,</span> <span class="num">9</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
 <p id="t418" class="pln"><span class="strut">&nbsp;</span></p>
 <p id="t419" class="pln">        <span class="com"># Navigate to a Task 3 and select it</span><span class="strut">&nbsp;</span></p>
-<p id="t420" class="stm run hide_run">        <span class="nam">browser</span><span class="op">.</span><span class="nam">find_element_by_xpath</span><span class="op">(</span><span class="str">'//p[text()="Task 3"]'</span><span class="op">)</span><span class="op">.</span><span class="nam">click</span><span class="op">(</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
+<p id="t420" class="stm run hide_run">        <span class="nam">browser</span><span class="op">.</span><span class="nam">find_element_by_xpath</span><span class="op">(</span><span class="str">'//p[text()="Task 3Days"]'</span><span class="op">)</span><span class="op">.</span><span class="nam">click</span><span class="op">(</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
 <p id="t421" class="pln"><span class="strut">&nbsp;</span></p>
 <p id="t422" class="stm run hide_run">        <span class="nam">title_elem</span> <span class="op">=</span> <span class="nam">try_class_name</span><span class="op">(</span><span class="nam">browser</span><span class="op">,</span> <span class="nam">delay</span><span class="op">,</span> <span class="str">'modal-title'</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
 <p id="t423" class="stm run hide_run">        <span class="nam">title</span> <span class="op">=</span> <span class="nam">title_elem</span><span class="op">.</span><span class="nam">text</span><span class="strut">&nbsp;</span></p>
 <p id="t424" class="stm run hide_run">        <span class="nam">print</span><span class="op">(</span><span class="str">'modal-title = {}'</span><span class="op">.</span><span class="nam">format</span><span class="op">(</span><span class="nam">title</span><span class="op">)</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
-<p id="t425" class="stm run hide_run">        <span class="nam">self</span><span class="op">.</span><span class="nam">assertIn</span><span class="op">(</span><span class="str">'Task 3'</span><span class="op">,</span> <span class="nam">title</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
+<p id="t425" class="stm run hide_run">        <span class="nam">self</span><span class="op">.</span><span class="nam">assertIn</span><span class="op">(</span><span class="str">'Task 3Days'</span><span class="op">,</span> <span class="nam">title</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
 <p id="t426" class="pln"><span class="strut">&nbsp;</span></p>
 <p id="t427" class="stm run hide_run">        <span class="nam">who_field</span> <span class="op">=</span> <span class="nam">Select</span><span class="op">(</span><span class="nam">browser</span><span class="op">.</span><span class="nam">find_element_by_id</span><span class="op">(</span><span class="str">'id_who'</span><span class="op">)</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
 <p id="t428" class="stm run hide_run">        <span class="nam">who</span> <span class="op">=</span> <span class="nam">who_field</span><span class="op">.</span><span class="nam">first_selected_option</span><span class="op">.</span><span class="nam">text</span><span class="strut">&nbsp;</span></p>
 <p id="t429" class="stm run hide_run">        <span class="key">if</span> <span class="nam">who</span> <span class="op">==</span> <span class="str">'Bob'</span><span class="op">:</span><span class="strut">&nbsp;</span></p>
-<p id="t430" class="stm run hide_run">            <span class="nam">who_field</span><span class="op">.</span><span class="nam">select_by_visible_text</span><span class="op">(</span><span class="str">'Barbara'</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
+<p id="t430" class="stm mis">            <span class="nam">who_field</span><span class="op">.</span><span class="nam">select_by_visible_text</span><span class="op">(</span><span class="str">'Barbara'</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
 <p id="t431" class="pln">        <span class="key">else</span><span class="op">:</span><span class="strut">&nbsp;</span></p>
-<p id="t432" class="stm mis">            <span class="nam">who_field</span><span class="op">.</span><span class="nam">select_by_visible_text</span><span class="op">(</span><span class="str">'Bob'</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
+<p id="t432" class="stm run hide_run">            <span class="nam">who_field</span><span class="op">.</span><span class="nam">select_by_visible_text</span><span class="op">(</span><span class="str">'Bob'</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
 <p id="t433" class="stm run hide_run">        <span class="nam">browser</span><span class="op">.</span><span class="nam">find_element_by_xpath</span><span class="op">(</span><span class="str">'//input[@value="Save"]'</span><span class="op">)</span><span class="op">.</span><span class="nam">click</span><span class="op">(</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
 <p id="t434" class="stm run hide_run">        <span class="nam">sleep</span><span class="op">(</span><span class="num">1</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
-<p id="t435" class="stm run hide_run">        <span class="nam">browser</span><span class="op">.</span><span class="nam">find_element_by_xpath</span><span class="op">(</span><span class="str">'//p[text()="Task 3"]'</span><span class="op">)</span><span class="op">.</span><span class="nam">click</span><span class="op">(</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
+<p id="t435" class="stm run hide_run">        <span class="nam">browser</span><span class="op">.</span><span class="nam">find_element_by_xpath</span><span class="op">(</span><span class="str">'//p[text()="Task 3Days"]'</span><span class="op">)</span><span class="op">.</span><span class="nam">click</span><span class="op">(</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
 <p id="t436" class="stm run hide_run">        <span class="nam">sleep</span><span class="op">(</span><span class="num">1</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
 <p id="t437" class="stm run hide_run">        <span class="nam">who_field</span> <span class="op">=</span> <span class="nam">Select</span><span class="op">(</span><span class="nam">browser</span><span class="op">.</span><span class="nam">find_element_by_id</span><span class="op">(</span><span class="str">'id_who'</span><span class="op">)</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
 <p id="t438" class="stm run hide_run">        <span class="nam">who2</span> <span class="op">=</span> <span class="nam">who_field</span><span class="op">.</span><span class="nam">first_selected_option</span><span class="op">.</span><span class="nam">text</span><span class="strut">&nbsp;</span></p>
@@ -1020,7 +1020,7 @@
     <div class="content">
         <p>
             <a class="nav" href="index.html">&#xab; index</a> &nbsp; &nbsp; <a class="nav" href="https://coverage.readthedocs.io">coverage.py v4.4.1</a>,
-            created at 2017-06-27 16:28
+            created at 2017-07-06 23:17
         </p>
     </div>
 </div>

@@ -76,7 +76,16 @@ class AssignmentListView(LoginRequiredMixin, TemplateView):
     template_name = 'wac/assignments_list.html'
 
     def get_context_data(self, **kwargs):
-        current_week = Week.objects.filter(
+
+        # Very first time someone clicks on Assignment page
+        weeks = Week.objects.filter(
+            user = self.request.user
+        )
+        if len(weeks) == 0:
+            new_week = Week.create(current_user=self.request.user)
+
+        # all subsequent calls to Assignment page
+        current_week = weeks.filter(
             user = self.request.user
         ).filter(
             is_current = True

@@ -4,9 +4,9 @@ from random import randint
 
 from django.dispatch import receiver
 from django.db.models.signals import post_save, pre_delete, pre_save
-from wac.get_username import get_username
 
 from wac.models import Assignment, Chore, Person, Week
+
 
 # Concerning Person Images
 
@@ -22,7 +22,6 @@ def person_delete(sender, instance, **kwargs):
 
 #########################################################################
 # Concerning Weeks and Assignments
-
 
 @receiver(pre_save, sender=Week)
 def obsolete_old_weeks(sender, instance, **kwargs):
@@ -430,4 +429,5 @@ def week_post_save(sender, instance, created, **kwargs):
         THIS_WEEK.is_current = True
 
         THIS_WEEK.total_time = TOTAL_MINUTES_GATHERED
+        print("ENDED - {}".format(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')))
         THIS_WEEK.save()
