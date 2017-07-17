@@ -1,0 +1,47 @@
+{% load i18n widget_tweaks %}
+
+<div id="emailModal" class="modal-dialog modal-lg container" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3 class="modal-title text-primary"><strong>Email Your Workers</strong></h3>
+            <button type="button" class="close btn btn-info" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">x</span>
+              <span class="sr-only">Close</span>
+            </button>
+        </div>
+        <div>
+            {% if messages %}
+            <div id="messages" class="container text-center">
+              <div class="row">
+                <div class="col-sm-8 offset-sm-2">
+                  {% for message in messages %}
+                  <div class="alert alert-{{ message.tags }}" role="alert" >
+                    <h4 class="text-warning">{{ message }}</h4>
+                  </div>
+                  {% endfor %}
+                </div>
+              </div>
+            </div>
+            {% endif %}
+
+        </div>
+
+        <form action="{% url 'email-to-worker' %}" method="POST" class="email_to_worker">
+            {% csrf_token %}
+            <div class="modal-body">
+                {{ form.media }}
+                    {% for field in form.visible_fields %}
+                    <fieldset class="form-group">
+                    {{ field.label_tag }}
+                    {{ field|add_class:"form-control" }}
+                    </fieldset>
+                    {% endfor %}
+            </div>
+
+            <div class="modal-footer">
+                <button type="submit" class="d-inline btn btn-primary">Send Email</button>
+                <button type="button" class="btn btn-info" data-dismiss="modal">Cancel</button>
+            </div>
+        </form>
+    </div>
+</div>

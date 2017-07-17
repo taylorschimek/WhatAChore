@@ -140,6 +140,9 @@ CELERYBEAT_SCHEDULER = 'djcelery.schedulers.DatabaseScheduler'
 # temp for development
 EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
 EMAIL_FILE_PATH = 'tmp/email-messages/'
+DEFAULT_FROM_EMAIL = 'noreply@taylorschimek.com'
+
+TEMPLATED_EMAIL_BACKEND = 'templated_email.backends.vanilla_django'
 
 
 

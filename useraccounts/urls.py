@@ -20,7 +20,7 @@ urlpatterns = [
         auth_views.LogoutView.as_view(),
         name='logout'),
 
-    url(r'password_change/$',
+    url(r'^password_change/$',
         views.ChangePasswordView.as_view(),
         name='password_change'),
 
@@ -28,16 +28,20 @@ urlpatterns = [
         views.change_password_done,
         name='password_change_done'),
 
-    url(r'^password_reset/$',
-        auth_views.PasswordResetView.as_view(),
+    url(r'^password_reset$',
+        views.my_password_reset,
+        # auth_views.PasswordResetView.as_view(),
+        # auth_views.password_reset,
         name='password_reset'),
 
     url(r'^password_reset/done/$',
-        auth_views.PasswordResetDoneView.as_view(),
+        # auth_views.PasswordResetDoneView.as_view(),
+        # views.reset_password_redirect,
+        auth_views.password_reset_done,
         name='password_reset_done'),
 
-    url(r'^reset/$(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',
-        auth_views.PasswordResetConfirmView.as_view(),
+    url(r'^reset/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',
+        auth_views.PasswordResetConfirmView.as_view(post_reset_login=True, success_url='/useraccounts/home'),
         name='password_reset_confirm'),
 
     url(r'^reset/done/$',
@@ -50,7 +54,9 @@ urlpatterns = [
 
     url(r'^home/$', views.HomeView.as_view(), name='home-view'),
 
-    url(r'home/(?P<pk>\d+)$', views.OldWeekView.as_view(), name='passed-week'),
+    url(r'week/(?P<pk>\d+)$', views.OldWeekView.as_view(), name='passed-week'),
+
+    url(r'^email/', views.email_to_worker, name='email-to-worker'),
 
     url(r'home/account/(?P<pk>\d+)$', views.AccountSettings.as_view(), name='account-settings'),
 ]

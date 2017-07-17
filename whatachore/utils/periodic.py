@@ -29,10 +29,3 @@ def get_users():
 #     except ZeroDivisionError:
 #         print("Try failed")
 #         # email user that they're missing either workers or chores and assignments cannot be made.
-
-
-def periodic_example(a, b):
-    return a + b
-
-def weekly_setup(User):
-    pass

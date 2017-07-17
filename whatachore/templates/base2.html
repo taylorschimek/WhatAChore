@@ -1,0 +1,56 @@
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>What A Chore</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Main CSS -->
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'wac/styles/css/app.css' %}" />
+    <link rel="stylesheet" href="{% static 'wac/styles/css/cropper.min.css' %}" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+  </head>
+
+  <body>
+      <!-- Nav Bar -->
+      <nav id="myNav" class="navbar navbar-toggleable-md navbar-light">
+        <button id="nav-toggle-btn" class="navbar-toggler navbar-toggler-right btn btn-secondary" type="button" data-toggle="collapse" data-target="#togglemenu" aria-controls="togglemenu" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <a class="navbar-brand" href="{% url 'admin:index' %}">
+          {% load admin_urls %}
+          <img class="nav-logo" src="{% static 'wac/styles/images/Logo_cream.png' %}" alt="What A Chore Logo" />
+          What A Chore
+        </a>
+
+        <div class="collapse navbar-collapse" id="togglemenu">
+          <hr style="padding: 0; margin: 0;" />
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item"><a id="nav-login" class="nav-link" data-toggle="modal" data-target="#myModal" href='{% url "login-page" %}'>Login</a></li>
+          </ul>
+          <form class="form-inline my-2 my-lg-0">
+            <input class="form-control mr-sm-2" type="text" placeholder="Search">
+            <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
+            <input type="hidden" name="next" value="{% url 'landing' %}">
+          </form>
+        </div>
+      </nav> <!-- /Nav Bar -->
+
+      {% block main_content %}
+      {% endblock %}
+
+      {% block modal_content %}
+      {% endblock %}
+
+      <!-- jQuery first, then Bootstrap JS. -->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+      <script src="{% static 'wac/js/bootstrap.js' %}"></script>
+      <script src="http://malsup.github.com/jquery.form.js"></script>
+      <script src="{% static 'wac/js/cropper.min.js' %}"></script>
+      <script src="{% static 'wac/js/app.js' %}"></script>
+  </body>
+</html>

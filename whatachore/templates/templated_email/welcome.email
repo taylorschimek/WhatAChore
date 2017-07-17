@@ -1,0 +1,17 @@
+{% block subject %}Welcome {{ user.email }}{% endblock %}
+
+{% block plain %}
+    Hello {{ name }},
+
+    You just created an account at What A Chore.
+
+    We hope you enjoy getting everyone involved in household chores.
+
+    Thanks, you rock!
+{% endblock %}
+
+{% block html %}
+    <p>You just created an account at What A Chore.</p>
+    <p>We hope you enjoy getting everyone involved in household chores.</p>
+    <p>Thanks, you rock!</p>
+{% endblock %}

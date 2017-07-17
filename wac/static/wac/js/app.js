@@ -6,6 +6,10 @@ $(".alert-success").fadeTo(3500, 0).slideUp(500, function(){
     $(this).remove();
 });
 
+$(".alert-info").fadeTo(3500, 0).slideUp(500, function() {
+    $(this).remove();
+});
+
 // $(".alert-warning").fadeTo(3500, 0).slideUp(500, function(){
 //     // $(this).remove();
 // });
@@ -136,6 +140,55 @@ $(document).on('hidden.bs.modal', '.modal', function () {
 
 
 //==========================================================================
+//            RESET PASSWORD                                              //
+//==========================================================================
+
+$(document).on('submit', '.pw-reset-form', function(event) {
+    console.log('pw-reset-form submit clicked');
+    event.preventDefault();
+    postReset();
+});
+
+function postReset() {
+    var frm = $('.pw-reset-form');
+    clear_form_field_errors(frm);
+    console.log($(frm).serialize());
+    if ( $('#pw-reset-modal').length ) {
+        console.log('pw-reset-modal');
+        var modal = $('#pw-reset-modal');
+        var email = $(modal).find('#id_email').val();
+        var errorContainer = modal;
+    } else {
+        var email = $('.pw-reset-form').find('#id_email').val()
+        console.log(email)
+        var errorContainer = $('.pw-reset-form')
+    };
+
+    var csrftoken = getCookie('csrftoken');
+    $.ajax({
+        url: $(frm).attr('action'),
+        type: $(frm).attr('method'),
+        data: $(frm).serialize(),
+        success: function (data) {
+            if (data.status === 'success') {
+                console.log("success");
+                console.log(data)
+                // if ($(modal)) {
+                //     $(modal).modal('hide');
+                // }
+                location.reload();
+            }
+        },
+        error: function (data) {
+            console.log('error'),
+            console.log(data)
+        }
+
+    });
+}
+
+
+//==========================================================================
 //            LOGIN MODAL                                                 //
 //==========================================================================
 
@@ -147,7 +200,7 @@ $(document).on('submit', '.login-form', function(event) {
 function postLogin() {
     var frm = $('.login-form');
     clear_form_field_errors(frm);
-    console.log($(frm).serialize())
+    console.log($(frm).serialize());
     if ( $('#login-modal').length ) {
         console.log('login-modal = true');
         var modal = $('#login-modal');
@@ -215,7 +268,7 @@ function postCreateChore() {
         type: $(frm).attr('method'),
         data: $(frm).serialize(),
         success: function (data) {
-            if (data.status == 'success') {
+            if (data.status === 'success') {
                 $(modal).modal('hide');
                 location.reload();
             } else {
@@ -231,6 +284,77 @@ function postCreateChore() {
                 if (index === '__all__') {
                     console.log('index == __all__');
                     apply_form_field_error(modal, index, value[0])
+                } else {
+                    console.log('index != __all__');
+                    apply_form_field_error(modal, index, value);
+                }
+            });
+        }
+    });
+}
+
+
+//==========================================================================
+//           ACCOUNT SETTINGS FORM                                        //
+//==========================================================================
+$(document).on('submit', '.account_setting_change', function(event) {
+    event.preventDefault();
+    console.log('account form submitted');
+    postChangeSettings();
+});
+
+function postChangeSettings() {
+    var frm = $('.account_setting_change');
+    clear_form_field_errors(frm);
+    var modal = $('.modal');
+    $.ajax({
+        url: $(frm).attr('action'),
+        type: $(frm).attr('method'),
+        data: $(frm).serialize(),
+        success: function (data) {
+            $(modal).modal('hide');
+            location.reload();
+        }
+    });
+}
+
+
+//==========================================================================
+//           EMAIL WORKER MODAL                                           //
+//==========================================================================
+$(document).on('submit', '.email_to_worker', function(event) {
+    console.log(".email_worker clicked");
+    event.preventDefault();
+    postEmailWorker();
+});
+
+function postEmailWorker() {
+    var frm = $('.email_to_worker');
+    clear_form_field_errors(frm);
+    var modal = $('.modal');
+    $.ajax({
+        url: $(frm).attr('action'),
+        type: $(frm).attr('method'),
+        data: $(frm).serialize(),
+        success: function (data) {
+            console.log('success on ajax');
+            console.log(data.status);
+            if (data.status === 'success') {
+                $(modal).modal('hide');
+                location.reload();
+            } else {
+                alert("success function, but resp_data != success");
+            }
+        },
+        error: function (data) {
+            console.log('error on ajax');
+            var errors = $.parseJSON(data.responseText);
+            $.each(errors, function(index, value) {
+                if (index === '__all__') {
+                    console.log('index == __all__');
+                    // apply_form_field_error(index, value);
+                    // alert(error);
+                    // django_message(value[0], 'error');
                 } else {
                     console.log('index != __all__');
                     apply_form_field_error(modal, index, value);

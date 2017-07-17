@@ -4,8 +4,6 @@
 <p>Your username and password didn't match.  Please try again.</p>
 {% endif %} -->
 
-
-
 <form method="post" action="{% url 'login' %}" class="form login-form">
 <div id="login-modal" class="modal-content">
     <div class="modal-header">
@@ -26,7 +24,7 @@
                 {{ field|attr:"class:form-control" }}
             </fieldset>
         {% endfor %}
-        <a class="forgot text-info text-muted" data-toggle="modal" onclick="find_modal('{% url 'password_reset' %}')">Forgot your password?</a>
+        <a class="forgot text-info text-muted" onclick="find_modal('{% url "password_reset" %}')">Forgot your password?</a>
     </div>
     <div class="modal-footer">
         <input type="submit" class="btn btn-secondary" value="Login">

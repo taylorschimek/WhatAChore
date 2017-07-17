@@ -1,16 +1,24 @@
+import datetime
+
 from celery import Celery
 from celery.decorators import periodic_task
 from celery.task.schedules import crontab
 from celery.utils.log import get_task_logger
-from datetime import datetime
 from django.conf import settings
-from django.core.mail import send_mail
+from django.contrib.auth.tokens import default_token_generator
+from django.core.mail import send_mail, EmailMultiAlternatives
+from django.template.loader import get_template
+from django.template import Context
+from django.utils.encoding import force_bytes
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+
+from templated_email import send_templated_mail, get_templated_mail
 
 from whatachore.utils import periodic
 
 from useraccounts.models import User
 
-from wac.models import Chore, Person, Week
+from wac.models import Assignment, Chore, Person, Week
 
 
 app = Celery('tasks')
@@ -26,6 +34,7 @@ def add(x, y):
 logger = get_task_logger(__name__)
 
 
+
 # EMAIL stuff....
 # password change?
 # from user to worker
@@ -33,6 +42,80 @@ logger = get_task_logger(__name__)
 @app.task
 def email_user(user, type):
     send_mail('Monday Assigning Test', 'testing this nonsense', 'noreply@taylorschimek.com', [user.email])
+
+@app.task
+def special_email_user(user, type):
+    from_email = 'noreply@taylorschimek.com'
+    user_person = Person.objects.get(
+        email = user.email
+    )
+    name = user_person.name
+    current_week = Week.objects.filter(
+        user = user
+    ).filter(
+        is_current = True
+    )
+    ctx = {
+        'email': user.email,
+        'name': name,
+        'week': current_week
+    }
+
+    if type == 'welcome':
+        send_templated_mail(
+            template_name='welcome',
+            from_email=from_email,
+            recipient_list=[user.email],
+            context=ctx
+        )
+    elif type == 'assigned':
+        send_templated_mail(
+            template_name='assignments',
+            from_email=from_email,
+            recipient_list=[user.email],
+            context=ctx
+        )
+
+@app.task
+def pw_email(email, token):
+    user = User.objects.get(email=email)
+    if user:
+        ctx = {
+            'email': email,
+            'domain': 'localhost:8000',
+            'site_name': 'What A Chore',
+            'uid': urlsafe_base64_encode(force_bytes(user.pk)),
+            'token': token,  # default_token_generator.make_token(user),
+            'protocol': 'http',
+        }
+        logger.info("pw_email happened")
+        from_email = 'noreply@taylorschimek.com'
+        try:
+            send_templated_mail(
+                template_name='reset_pass',
+                from_email=from_email,
+                recipient_list=[email],
+                context=ctx
+            )
+        except AttributeError:
+            print("attributeerror")
+
+@app.task
+def user_to_worker(rec_list, subject, message):
+    ctx = {
+        'subject': subject,
+        'message': message
+    }
+    from_email = 'noreply@taylorschimek.com'
+    try:
+        send_templated_mail(
+            template_name='user_worker',
+            from_email=from_email,
+            recipient_list=rec_list,
+            context=ctx
+        )
+    except AttributeError:
+        print('attributeerror')
 
 
 # MONDAY assignings....
@@ -47,20 +130,20 @@ def user_assignments(user):
         pass
         # logger.info("Try failed")
         # email user that they're missing either workers or chores and assignments cannot be made.
-    logger.info("user_assignment finished = {}".format(datetime.now().strftime('%Y-%m-%d %H:%M:%S')))
+    logger.info("user_assignment finished = {}".format(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')))
 
-# below is real line
-# @periodic_task(run_every=(crontab(hour=0, minute=0, day_of_week="Monday")))
 # below is testing line
-@periodic_task(run_every=(crontab(hour="*", minute="*/2", day_of_week="Monday")))
+# @periodic_task(run_every=(crontab(hour="*", minute="*/2", day_of_week="Thursday")))
+# below is real line
+@periodic_task(run_every=(crontab(hour=0, minute=0, day_of_week="Monday")))
 def gather_users_for_new_assignments():
-    logger.info("Starting gufna at {}".format(datetime.now().strftime('%Y-%m-%d %H:%M:%S')))
+    logger.info("Starting gufna at {}".format(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')))
     results = periodic.get_users()
     for user in results:
         user_assignments(user)
     for user in results:
-        email_user(user, 'assigned')
-    logger.info("Task finished at {}: week = {}".format(datetime.now().strftime('%Y-%m-%d %H:%M:%S'), results))
+        special_email_user(user, 'assigned')
+    logger.info("Task finished at {}: week = {}".format(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'), results))
 
 
 

@@ -9,21 +9,19 @@
             </button>
         </div>
 
-        <div class="modal-body">
-            <h4 class="text-info">Not many settings just yet.  More to come.</h4>
-            <div class="container">
-                <form action="" method="POST">
+        <form action="{% url 'account-settings' user.pk %}" method="POST" class="account_setting_change">
+            {% csrf_token %}
+            <div class="modal-body">
+                <h4 class="text-info">Not many settings just yet.  More to come.</h4>
+                <div class="container">
                     <div class="form-check d-inline">
-                        <label class="form-check-label">
-                            <input type="checkbox" class="form-check-input">
-                            Do not send email updates or announcements.
-                        </label>
+                        {{ form.media }}
+                            {% for field in form.visible_fields %}
+                            {{ field }} Do not send email updates or announcements.
+                            {% endfor %}
                     </div>
-                    <button type="submit" class="d-inline btn btn-primary">Submit</button>
-                </form>
+                </div>
             </div>
-        </div>
-
         <div class="modal-footer">
             <div class="float-left mr-auto">
                 <button type="button"
@@ -33,7 +31,9 @@
                         class="btn btn-warning ml-2"
                         onclick='alert("Change Email")'>Change Email</button>
             </div>
+            <button type="submit" class="d-inline btn btn-primary">Save Changes</button>
             <button type="button" class="btn btn-info" data-dismiss="modal">Close</button>
         </div>
+        </form>
     </div>
 </div>

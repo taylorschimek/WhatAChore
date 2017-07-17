@@ -5,6 +5,8 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.core.exceptions import ObjectDoesNotExist
 from django.utils.translation import ugettext_lazy as _
 
+from useraccounts.fields import CommaSeparatedEmailField
+
 
 class RegistrationForm(forms.ModelForm):
 
@@ -45,3 +47,15 @@ class EmailLoginForm(AuthenticationForm):
             self.cleaned_data['username'] = "a_username_that_do_not_exists_anywhere_in_the_site"
 
         return super(EmailLoginForm, self).clean()
+
+
+class PasswordResetRequestForm(forms.Form):
+    email = forms.CharField(max_length=254)
+
+class AccountSettingsForm(forms.Form):
+    no_email = forms.BooleanField(required=False)
+
+class EmailWorkerForm(forms.Form):
+    recipient_email = CommaSeparatedEmailField()
+    subject = forms.CharField(max_length=255)
+    message = forms.CharField(widget=forms.Textarea)

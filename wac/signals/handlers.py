@@ -236,10 +236,10 @@ def every3days(chore):
     if since == between:
         create_repeating_assignments(chore, THIS_WEEK.start_date, 3)
     elif since - between == 1:
-        date = THIS_WEEK.start_date - datetime.timedelta(days=1)
+        date = THIS_WEEK.start_date + datetime.timedelta(days=1)
         create_repeating_assignments(chore, date, 3)
     else:
-        date = THIS_WEEK.start_date - datetime.timedelta(days=2)
+        date = THIS_WEEK.start_date + datetime.timedelta(days=2)
         create_repeating_assignments(chore, date, 3)
 
 def weekly(chore):

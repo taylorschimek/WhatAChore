@@ -4,23 +4,58 @@ from datetime import date
 
 from django.contrib import messages
 from django.contrib.auth import views as authviews
-from django.conf import settings
-from django.forms.utils import ValidationError
-from django.http import HttpResponse, HttpResponseRedirect, HttpResponseBadRequest
-from django.shortcuts import render
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.tokens import default_token_generator
 from django.contrib.auth import get_user_model, login, update_session_auth_hash
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import SetPasswordForm, AuthenticationForm, PasswordChangeForm, PasswordResetForm
+from django.conf import settings
+from django.core.validators import validate_email
+from django.core.exceptions import ValidationError
+from django.db.models.query_utils import Q
+from django.forms.utils import ValidationError
+from django.http import HttpResponse, HttpResponseRedirect, HttpResponseBadRequest
+from django.middleware.csrf import get_token
+from django.shortcuts import render
+from django.template import loader
 from django.urls import reverse, reverse_lazy
-from django.views.generic import DetailView, TemplateView
+from django.views.generic import *
 from django.views.generic.edit import FormMixin
 
+from django.contrib.auth.views import password_reset
+
+from whatachore.tasks import pw_email, user_to_worker
+
 from wac.forms import PersonEditForm
-from .forms import EmailLoginForm, RegistrationForm
+from .forms import AccountSettingsForm, EmailLoginForm, EmailWorkerForm, RegistrationForm, PasswordResetRequestForm
 
 from wac.views import PersonCreateView
 from wac.models import Assignment, Person, User, Week
 from .models import User
+
+
+def my_password_reset(request):
+    if request.is_ajax() and request.method == 'POST':
+        form = PasswordResetRequestForm(data=request.POST)
+        if form.is_valid():
+            email = form.cleaned_data['email']
+            user = User.objects.get(email=email)
+            token = default_token_generator.make_token(user)
+            pw_email.delay(email, token)
+            messages.success(request, 'An email has been sent to ' + email +".  Please check your inbox to continue resetting your password.")
+
+            response_data = {}
+            response_data['status'] = 'success'
+            response_data['url'] = 'landing'
+
+            return HttpResponse(json.dumps(response_data),
+                content_type='application/json')
+            # return render(request, 'registration/password_reset_done.html')
+        else:
+            print("FUCKING FORM ISN'T VALID")
+    else:
+        form = PasswordResetRequestForm()
+        return render(request, 'registration/password_reset_form.html', {'form': form})
 
 
 def register(request):
@@ -59,7 +94,9 @@ class HomeView(TemplateView):
             email__exact=self.request.user.email
         )
         if len(theUser):
-            return theUser[0]
+            return theUser[0].name
+        else:
+            return self.request.user.email
 
     def get_context_data(self, **kwargs):
         current_day = date.today()
@@ -97,6 +134,67 @@ class HomeView(TemplateView):
         return context
 
 
+def email_to_worker(request):
+    template_name = 'email_worker_modal.html'
+    if request.is_ajax() and request.method == 'POST':
+        print("AJAX")
+        form = EmailWorkerForm(data=request.POST)
+        if form.is_valid():
+            print("VALID")
+            # gather email pieces
+            recipient_list = form.cleaned_data['recipient_email']
+            subject = form.cleaned_data['subject']
+            message = form.cleaned_data['message']
+
+            # call email task
+            user_to_worker.delay(recipient_list, subject, message)
+
+            messages.success(request, "Your email is on its way.")
+            response_data = {}
+            response_data['status'] = 'success'
+            return HttpResponse(json.dumps(response_data), content_type="application/json")
+        else:
+            print("INVALID")
+            response_data = {}
+            response_data['status'] = 'fail'
+            return HttpResponseBadRequest(json.dumps(form.errors), content_type="application/json")
+    else:
+        recipient_list = []
+        person_pk = request.GET.get('person')
+        if person_pk:
+            print(person_pk)
+            worker = Person.objects.get(pk=person_pk)
+            recipient_list.append(worker.email)
+            print(worker)
+            print("worker.email = {}".format(worker.email))
+            form = EmailWorkerForm()
+            if worker.email:
+                form = EmailWorkerForm(initial={'recipient_email': worker.email})
+                print("GET")
+                return render(request, template_name, {'form': form})
+            else:
+                print("That particular worker doesn't have an email address on file.")
+                messages.warning(request, "Looks like that worker doesn't have an email address on file.")
+                return render(request, template_name, {'form': form})
+        else:
+            print("no person_pk so ALL")
+            messages.info(request, "Emails will only be sent to workers with an email address on file.")
+            # get all workers
+            workers = Person.objects.filter(
+                user = request.user
+            ).exclude(
+                email = None
+            )
+            print(workers)
+            for worker in workers:
+                recipient_list.append(worker.email)
+
+            # set recipient email field to list of all emails.
+            form = EmailWorkerForm(initial={'recipient_email': recipient_list})
+            return render(request, template_name, {'form': form})
+
+
+
 class OldWeekView(DetailView):
     model = Week
     template_name = 'passed_week_modal.html'
@@ -126,6 +224,33 @@ class AccountSettings(TemplateView):
         context = super(AccountSettings, self).get_context_data(**kwargs)
         context['user'] = self.request.user
         return context
+
+    def get(self, request, *args, **kwargs):
+        user = self.request.user
+        print("USER DONOTEMAIL VALUE = {}".format(user.doNotEmail))
+        form = AccountSettingsForm(initial={
+            'no_email': user.doNotEmail
+        })
+        return render(request, self.template_name, {'form': form, 'user': user})
+
+    def post(self, request, *args, **kwargs):
+        print("POSTING")
+        form = AccountSettingsForm(data=self.request.POST)
+        if form.is_valid():
+            return self.form_valid(form)
+        else:
+            return self.form_invalid(form)
+
+    def form_valid(self, form):
+        print("FORM VALID")
+        user = self.request.user
+        no_email_value = form.cleaned_data['no_email']
+        user.doNotEmail = no_email_value
+        user.save(update_fields=['doNotEmail'])
+        return HttpResponse(reverse('home-view'))
+
+    def form_invalid(self, form):
+        print("FORM INVALID")
 
 
 class AjaxTemplateMixin(object):
@@ -236,13 +361,14 @@ class ChangePasswordView(FormMixin, AjaxTemplateMixin, TemplateView):
 
         response_data = {}
         response_data['status'] = 'success'
-        response_data['messages'] = 'Your password was updated successfully'
+        # response_data['messages'] = 'Your password was updated successfully'
         return HttpResponse(json.dumps(response_data), content_type="application/json")
 
     def form_invalid(self, form):
         response_data = {}
         response_data['status'] = 'fail'
         return HttpResponseBadRequest(json.dumps(form.errors), content_type="application/json")
+
 
 def change_password_done(request):
     return HttpResponseRedirect(reverse('home-view'))

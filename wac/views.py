@@ -168,11 +168,14 @@ class AssignmentDetailView(LoginRequiredMixin, FormMixin, DetailView):
 #=========================================#
 
 class ChoreListView(LoginRequiredMixin, ListView):
+    template_name = 'wac/chore_list.html'
     context_object_name = 'chores'
     model = Chore
 
     def get_queryset(self):
-        return Chore.objects.filter(user=self.request.user)
+        order = ['Once', 'Daily', 'Every 2 Days', 'Every 3 Days', 'Weekly', 'Every 2 Weeks', 'Monthly', 'Every 2 Months', 'Quarterly', 'Yearly']
+        return sorted(Chore.objects.filter(user=self.request.user).order_by('task'), key = lambda c: order.index(c.interval))
+
 
 
 class ChoreCreateView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
@@ -255,7 +258,7 @@ class PeopleListView(LoginRequiredMixin, ListView):
     template_name = 'wac/people_list.html'
 
     def get_queryset(self):
-        return Person.objects.filter(user=self.request.user)
+        return Person.objects.filter(user=self.request.user).order_by('birthday')
 
 
 class PersonCreateView(LoginRequiredMixin, SuccessMessageMixin, CreateView):

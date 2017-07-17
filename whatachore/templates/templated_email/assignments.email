@@ -1,0 +1,10 @@
+{% block subject %}Your assignment list is ready!!{% endblock %}
+
+{% block plain %}
+    Howdy {{ name }},
+
+    We have made your weekly assignments.  Please login and see who's doing what this week.
+
+    Thanks,
+    What A Chore staff
+{% endblock %}

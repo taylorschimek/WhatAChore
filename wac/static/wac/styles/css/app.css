@@ -3239,13 +3239,13 @@ a.badge:focus, a.badge:hover {
     color: #f9dbb8; }
 
 .alert-info {
-  background-color: #d9edf7;
-  border-color: #bcdff1;
-  color: #31708f; }
+  background-color: #FDF3E7;
+  border-color: #C63D0F;
+  color: #3B3738; }
   .alert-info hr {
-    border-top-color: #a6d5ec; }
+    border-top-color: #ae360d; }
   .alert-info .alert-link {
-    color: #245269; }
+    color: #211e1f; }
 
 .alert-warning {
   background-color: #C63D0F;
