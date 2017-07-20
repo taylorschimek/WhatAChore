@@ -121,9 +121,11 @@
             </button>
 
             <div id="passed-dropdown" class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <h6 class="dropdown-header">Start Date</h6>
+                <h6 class="dropdown-header">Weeks starting:</h6>
                 {% for week in old_weeks %}
                 <a id="week_{{ week.pk }}" class="dropdown-item" data-toggle="modal" data-target="#homeModal" onclick="find_modal('{% url "passed-week" week.pk %}')">{{ week.start_date }}</a>
+                {% empty %}
+                <h6 class="dropdown-header">No passed weeks just yet</h6>
                 {% endfor %}
             </div>
         </div>

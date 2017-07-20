@@ -19,9 +19,10 @@ from django.views.generic.edit import FormMixin
 from io import BytesIO
 
 from wac.models import Assignment, Chore, Person, Week
-from wac.get_username import get_username
 
 from .forms import AssignmentForm, ChoreEditForm, PersonEditForm
+
+from wac.signals.handlers import single_chore_added
 
 from PIL import Image
 
@@ -173,7 +174,7 @@ class ChoreListView(LoginRequiredMixin, ListView):
     model = Chore
 
     def get_queryset(self):
-        order = ['Once', 'Daily', 'Every 2 Days', 'Every 3 Days', 'Weekly', 'Every 2 Weeks', 'Monthly', 'Every 2 Months', 'Quarterly', 'Yearly']
+        order = ['Daily', 'Every 2 Days', 'Every 3 Days', 'Weekly', 'Every 2 Weeks', 'Monthly', 'Every 2 Months', 'Quarterly', 'Yearly']
         return sorted(Chore.objects.filter(user=self.request.user).order_by('task'), key = lambda c: order.index(c.interval))
 
 
@@ -188,9 +189,21 @@ class ChoreCreateView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
         new_chore.user = self.request.user
         new_chore.last_assigned = datetime.date.today()
         new_chore.save()
+
+        # Make assignment if chore.interval is Weekly or more often:
+        weekly_or_less = ['Every 3 Days', 'Every 2 Days', 'Daily']
+        if new_chore.interval in weekly_or_less:
+            weeks = Week.objects.filter(
+                user = self.request.user
+            )
+            this_week = weeks.filter(is_current=True)[0]
+            if this_week:
+                single_chore_added(new_chore, this_week)
+
         response_data = {}
         response_data['status'] = 'success'
         response_data['messages'] = '{} has been added to the list.'.format(new_chore.task)
+        messages.success(self.request, new_chore.task + " was added successfully!")
         return HttpResponse(json.dumps(response_data), content_type='application/json')
 
     def form_invalid(self, form):
@@ -285,8 +298,18 @@ class PersonCreateView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
 
         self.object.save()
 
-        messages.success(self.request, self.object.name + " was added successfully!")
-        return HttpResponseRedirect(reverse('people-list'))
+        chores = Chore.objects.filter(
+            user = self.object.user
+        )
+
+        if len(chores):
+            print("wac.views.PersonCreateView.form_valid: len(chores) is True")
+            messages.success(self.request, self.object.name + " was added successfully!")
+            return HttpResponseRedirect(reverse('people-list'))
+        else:
+            print("wac.views.PersonCreateView.form_valid: len(chores) is False")
+            # messages.success(self.request, "Greate!  Now let's enter a chore or two.")
+            return HttpResponseRedirect(reverse('welcome-new2'))
 
     # def form_invalid(self, form):
 

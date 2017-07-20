@@ -1,8 +1,7 @@
 function check_field_value(new_val) {
     console.log("function ran");
     console.log(new_val);
-    if (new_val === 'Once' ||
-        new_val === 'Daily' ||
+    if (new_val === 'Daily' ||
         new_val === 'Every 2 Days' ||
         new_val === 'Every 3 Days') {
             // Hide id_subinterval

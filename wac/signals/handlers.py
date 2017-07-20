@@ -185,7 +185,6 @@ THIS_WEEK = None
 TOTAL_MINUTES_GATHERED = 0
 
 INTERVAL_CHOICES = [
-    ('Once', 'Once'),
     ('Daily', 'Daily'),
     ('Every 2 Days', 'Every 2 Days'),
     ('Every 3 Days', 'Every 3 Days'),
@@ -207,16 +206,14 @@ def create_assignment(chore, date):
     TOTAL_MINUTES_GATHERED += chore.duration
     new_assignment.save()
 
-def create_repeating_assignments(chore, date, increment):
-    for d in range(0, 7, increment):
-        create_assignment(chore, date)
-        date = date + datetime.timedelta(days=increment)
-    chore.last_assigned = date
+def create_repeating_assignments(chore, week_start_date, increment):
+    today = datetime.date.today()
+    max = ((week_start_date+datetime.timedelta(days=7)) - today).days
+    for d in range(0, max, increment):
+        create_assignment(chore, today)
+        today = today + datetime.timedelta(days=increment)
+    chore.last_assigned = today
     chore.save(update_fields=['last_assigned'])
-
-def once(chore):
-    # Factor subinterval
-    print("method once")
 
 def daily(chore):
     create_repeating_assignments(chore, THIS_WEEK.start_date, 1)
@@ -348,7 +345,6 @@ def yearly(chore):
 
 #========================================================================
 assigning_methods = {
-    'once': once,
     'daily': daily,
     'every2days': every2days,
     'every3days': every3days,
@@ -361,6 +357,10 @@ assigning_methods = {
 }
 
 def get_chores_for_this_week():
+    """
+        Called when a new week is created.
+        Gathers all chores, looks at their intervals and calls appropriate method.
+    """
     chores = Chore.objects.filter(user=THIS_WEEK.user)
     if len(chores) > 0:
         for chore in chores:
@@ -371,11 +371,29 @@ def get_chores_for_this_week():
     else:
         print('You have no chores to assign!')
 
+def single_chore_added(chore, week):
+    """
+        if a new chore is created after a week exists,
+        and new chore's interval is weekly or less:
+        this creates an assignment for the current week.
+    """
+    global THIS_WEEK
+    THIS_WEEK = week
+    for choice in INTERVAL_CHOICES:
+        if chore.interval == choice[0]:
+            method_name = choice[0].replace(' ', '').lower()
+            print(method_name)
+            assigning_methods[method_name](chore)
+
+    assign_people_to_chores()
+
+
+
 #========================================================================
 def assign_people_to_chores():
     people = Person.objects.filter(user__exact=THIS_WEEK.user)
     if len(people) > 0:
-        to_dos = Assignment.objects.filter(week__exact=THIS_WEEK)
+        to_dos = Assignment.objects.filter(week__exact=THIS_WEEK).filter(who__isnull = True)
         global TOTAL_MINUTES_GATHERED
         minute_limit = (TOTAL_MINUTES_GATHERED / len(people)) + (TOTAL_MINUTES_GATHERED / len(to_dos))
 

@@ -4,3 +4,5 @@ db.sqlite3
 00WorkFlowNotes.txt
 00notes
 .DS_Store
+tmp
+htmlcov

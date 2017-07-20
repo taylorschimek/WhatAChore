@@ -22,14 +22,14 @@
             {{ field|attr:"class:form-control" }}
         </fieldset>
         {% endfor %}
-        <input type="submit" class="btn btn-secondary float-right" value="Save">
+        <input type="submit" class="btn btn-secondary float-right" value="Next">
         {% comment %}<input type="button" class="btn btn-info float-right" onclick="{% url "home-view" %}" value="Skip for Now">{% endcomment %}
     </form>
 </div>
 
 <!-- MODAL TO CROP THE IMAGE -->
 <div class="modal modalCrop bg-success" id="modalCrop" data-backdrop="static">
-  <div class="modal-dialog modal-lg">
+  <div class="modal-dialog modal-md">
     <div class="modal-content bg-primary">
       <div class="modal-header">
         <h4 class="modal-title text-center">Please crop your image for better formatting.</h4>

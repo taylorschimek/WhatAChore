@@ -6,7 +6,7 @@ from django.contrib import messages
 from django.contrib.auth import views as authviews
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.tokens import default_token_generator
-from django.contrib.auth import get_user_model, login, update_session_auth_hash
+from django.contrib.auth import authenticate, get_user_model, login, update_session_auth_hash
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import SetPasswordForm, AuthenticationForm, PasswordChangeForm, PasswordResetForm
 from django.conf import settings
@@ -26,10 +26,10 @@ from django.contrib.auth.views import password_reset
 
 from whatachore.tasks import pw_email, user_to_worker
 
-from wac.forms import PersonEditForm
+from wac.forms import PersonEditForm, ChoreEditForm
 from .forms import AccountSettingsForm, EmailLoginForm, EmailWorkerForm, RegistrationForm, PasswordResetRequestForm
 
-from wac.views import PersonCreateView
+from wac.views import PersonCreateView, ChoreCreateView
 from wac.models import Assignment, Person, User, Week
 from .models import User
 
@@ -81,6 +81,15 @@ class ProfileCreateFormView(PersonCreateView):
         form = PersonEditForm(initial={'email': theUser.email,})
 
         return render(request, 'useraccounts/welcomeNew.html', {'form': form})
+
+
+class PostProfileCreateView(ChoreCreateView):
+    template_name = 'welcomeNew2.html'
+
+    def get(self, request, *args, **kwargs):
+        form = ChoreEditForm()
+
+        return render(request, 'useraccounts/welcomeNew2.html', {'form': form})
 
 
 class HomeView(TemplateView):

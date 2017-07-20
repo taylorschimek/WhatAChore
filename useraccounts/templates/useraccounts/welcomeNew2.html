@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% load i18n widget_tweaks %}
+{% block main_content %}
+
+<div class="container text-center mt-5">
+    <h3 class="text-primary">Great!!</h3>
+
+    <p class="pt-5">You've added your first worker.  To add more and manage your workers, just visit 'People' in the navigation menu.</p>
+    <p>Now, let's add some Chores.  Just click <a href="{% url 'chore-list' %}"<strong>'Chores'</strong></a> above, and then click 'Create New Chore'.</p>
+    <hr>
+</div>
+<div class="container">
+
+</div>
+
+{% endblock %}

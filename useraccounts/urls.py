@@ -52,6 +52,8 @@ urlpatterns = [
 
     url(r'^welcome/', views.ProfileCreateFormView.as_view(), name='welcome-new'),
 
+    url(r'^welcome2/', views.PostProfileCreateView.as_view(), name='welcome-new2'),
+
     url(r'^home/$', views.HomeView.as_view(), name='home-view'),
 
     url(r'week/(?P<pk>\d+)$', views.OldWeekView.as_view(), name='passed-week'),
