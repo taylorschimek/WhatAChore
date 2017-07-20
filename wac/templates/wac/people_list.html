@@ -6,7 +6,7 @@
 <!-- People Add/Edit -->
 <section id="people">
   <div class="container mt-4 text-center">
-    <h1 class="mt-4 text-primary">Your Team</h1>
+    <h1 class="mt-4 text-primary"><strong>Your Team</strong></h1>
   </div>
 
   {% if messages %}
@@ -30,8 +30,6 @@
 
         <div class="row">
         {% for person in people %}
-
-
         <!-- A Card -->
         <div class="card col-12 col-md-3 m-0 p-0">
           <a id="{{person.name}}-link" data-toggle="modal" data-target="#myModal" onclick="find_modal('{% url "person-detail" person.pk %}')">

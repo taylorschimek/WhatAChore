@@ -14,21 +14,20 @@ from useraccounts.models import User
 
 
 INTERVAL_CHOICES = [
-    ('Once', 'Once'),
-    ('Daily', 'Daily'),
-    ('Every 2 Days', 'Every 2 Days'),
-    ('Every 3 Days', 'Every 3 Days'),
-    ('Weekly', 'Weekly'),
-    ('Every 2 Weeks', 'Every 2 Weeks'),
-    ('Monthly', 'Monthly'),
-    ('Every 2 Months', 'Every 2 Months'),
-    ('Quarterly', 'Quarterly'),
-    ('Yearly', 'Yearly')
+    ('Once', "Once"),
+    ('Daily', "Daily"),
+    ('Every 2 Days', "Every 2 Days"),
+    ('Every 3 Days', "Every 3 Days"),
+    ('Weekly', "Weekly"),
+    ('Every 2 Weeks', "Every 2 Weeks"),
+    ('Monthly', "Monthly"),
+    ('Every 2 Months', "Every 2 Months"),
+    ('Quarterly', "Quarterly"),
+    ('Yearly', "Yearly")
 ]
 
 SUB_INTERVAL_CHOICES = [
-    ('None', 'None'),
-    ('Random', 'Random'),
+    ('Random', "Random"),
     ('1st', '1st of the month'),
     ('15th', '15th of the month'),
     ('Weekday', 'Weekday'),
@@ -72,7 +71,7 @@ class Chore(models.Model):
 
     last_assigned = models.DateField(blank=True, null=True)
     age_restriction = models.IntegerField()
-    chore_icon_location = models.FilePathField(default='Chore_Default.png',
+    chore_icon_location = models.FilePathField(default='Default.png',
                                       path='/Users/HOME/Developer/WAC/whatachore/wac/static/wac/styles/images/Icons/cream_icons',
                                       max_length=255
     )

@@ -102,7 +102,7 @@ class AssignmentListView(LoginRequiredMixin, TemplateView):
 
             context['people'] = Person.objects.filter(
                 user = self.request.user
-            )
+            ).order_by('name')
 
             context['assignments'] = Assignment.objects.filter(
                 week__user=self.request.user
@@ -258,7 +258,7 @@ class PeopleListView(LoginRequiredMixin, ListView):
     template_name = 'wac/people_list.html'
 
     def get_queryset(self):
-        return Person.objects.filter(user=self.request.user).order_by('birthday')
+        return Person.objects.filter(user=self.request.user).order_by('birthday', 'name')
 
 
 class PersonCreateView(LoginRequiredMixin, SuccessMessageMixin, CreateView):

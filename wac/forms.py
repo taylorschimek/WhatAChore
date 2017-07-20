@@ -50,6 +50,7 @@ class ChoreEditForm(forms.ModelForm):
         ]
         help_texts = {
             'duration': _('in minutes, please.'),
+            'age_restriction': _('the youngest a worker can be to do this task.'),
         }
 
 
@@ -85,7 +86,7 @@ class PersonEditForm(forms.ModelForm):
         ]
         help_texts = {
             'birthday': _('YYYY-MM-DD - used only to assign correct chores to younger workers.'),
-            'day_off': _('Specific day a worker would rather not or cannot have chores.')
+            'day_off': _('Specific day this person would like to have no chores.')
         }
         widgets = {'mugshot': CustomClearableFileInput}
 
