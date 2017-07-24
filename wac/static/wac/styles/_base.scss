@@ -299,6 +299,17 @@ body {
     }
 }
 
+input[id^="id_chore_icon_location"] {
+    // border: 2px solid $red;
+    display: none;
+}
+
+.checked {
+    border: 1px solid $red;
+}
+
+
+
 .form-group:disabled {
     color: lighten($lightgray, 20%);
 }

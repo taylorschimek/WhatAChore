@@ -31,11 +31,11 @@
             {% for chore in chores %}
               <!-- A Card -->
               <div class="card col-12 col-md-2 m-0 p-0">
-                <a data-toggle="modal" data-target="#myModal" name="chore_{{ chore.pk }}" onclick="find_modal('{% url "chore-detail" chore.pk %}')">
+                <a data-toggle="modal" data-target="#choreModal" name="chore_{{ chore.pk }}" onclick="find_modal('{% url "chore-detail" chore.pk %}')">
 
                 <div class="row m-0 p-0">
                       <div class="imgDiv col-4 col-sm-12 text-center">
-                        <img class="mt-2" src="{% static ''|add:chore.chore_icon %}" alt="">
+                        <img class="mt-2" src="{% static ''|add:chore.chore_icon %}" alt="{{ chore.chore_icon }}">
                       </div>
                       <div class="card-block col-8 col-md-12">
                         <div class="cardTitle">
@@ -62,10 +62,10 @@
 
               <!-- Create Chore Card -->
               <div id="newCard" class="card col-12 col-md-2 m-0 p-0">
-                <a data-toggle="modal" name="newCard-link" data-target="#myModal" onclick="find_modal('{% url "chore-create" %}')">
+                <a data-toggle="modal" name="newCard-link" data-target="#choreModal" onclick="find_modal('{% url "chore-create" %}')">
                 <div class="row m-0 p-0">
                   <div class="imgDiv col-4 col-sm-12 text-center">
-                    <img src="{% static 'wac/styles/images/icons/red_icons/New.png' %}" alt="Create a Chore">
+                    <img src="{% static 'wac/styles/images/icons/utility/New.png' %}" alt="Create a Chore">
                   </div>
                   <div class="card-block col-8 col-md-12">
                     <h3 class="card-title text-primary text-center">Create New Chore</h3>
@@ -80,7 +80,7 @@
         </div>
     </section>
 
-    <div class="modal" id="myModal"></div>
+    <div class="modal" id="choreModal"></div>
 
 
     {% endblock %}

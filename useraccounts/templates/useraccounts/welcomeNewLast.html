@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% load i18n widget_tweaks %}
+{% block main_content %}
+
+<div class="container text-center mt-5">
+    <h3 class="text-primary">That's It!!</h3>
+
+    <p class="pt-5">You've added your first chore.  To add more and manage your chores, just visit 'Chores' in the navigation menu.</p>
+    <p>Once you've added all your workers and chores, head over to <a href="{% url 'lineup' %}"<strong>'Assignments'</strong></a> to see who does what when.</p>
+    <h4 class="text-info">Now, you're ready to <strong>Get To Work!</strong></h4>
+    <hr>
+</div>
+<div class="container">
+
+</div>
+
+{% endblock %}

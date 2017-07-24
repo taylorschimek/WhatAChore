@@ -9,7 +9,7 @@
               <p class="mb-0">{{ ass.what }}</p>
             </div>
             <div class="myBorder">
-              <img src="{% static 'wac/styles/images/icons/utility/completedNO.png' %}" alt="">
+              <img src="{% static 'wac/styles/images/icons/utility/completedNO.png' %}" alt="Not Completed Icon">
               <!-- <p class="m-0 px-1">✓</p> -->
             </div>
         </li>

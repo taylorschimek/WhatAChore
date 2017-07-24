@@ -1,4 +1,5 @@
 {% load i18n widget_tweaks %}
+{% load static %}
 <script>
     {% if messages %}
         {% for message in messages %}
@@ -7,12 +8,13 @@
     {% endif %}
 </script>
 
-<div class="modal-dialog modal-lg" role="document">
+<div class="chore-modal modal-dialog modal-lg" role="document">
   <form action="{% url 'chore-detail' chore.pk %}" method="post" id="chore_detail" class="form">
     {% csrf_token %}
     {{ form.errors }}
     {{ form.non_field_errors }}
     <div class="modal-content">
+
       <div class="modal-header">
         <h3 class="modal-title text-primary"><strong>{{ chore.task }}</strong></h3>
         <button type="button" class="close btn btn-info" data-dismiss="modal" aria-label="Close">
@@ -23,16 +25,44 @@
 
       <div class="modal-body">
         {{ form.media }}
-            {% for field in form.visible_fields %}
-            {% if field.auto_id == "id_sub_interval" %}
-                 <fieldset class="form-group hiddenSub">
-                 {% else %}
-                 <fieldset class="form-group">
-                 {% endif %}
-                  {{ field.errors }}{{ field.label_tag }}
-                {{ field|add_class:"form-control" }}
-              </fieldset>
+        {% for field in form.visible_fields %}
+          {% if field.auto_id == "id_sub_interval" %}
+            <fieldset class="form-group hiddenSub">
+          {% else %}
+            <fieldset class="form-group">
+          {% endif %}
+
+          {% if field.auto_id == "id_chore_icon_location" %}
+          <label>Chore Icon:</label>
+            <div class="container">
+              <div class="row">
+              {% for radio in form.chore_icon_location %}
+              <div class="radio-div">
+                <label for="{{ radio.id_for_label }}">
+
+                <span class="radio">{{ radio.tag }}</span>
+                <img style="width: 60px;" class="m-0 p-0" src="{% static '/wac/styles/images/Icons/red_icons/'|add:radio.choice_label %}" alt="{{ radio.choice_label }}">
+                </label>
+
+              </div>
               {% endfor %}
+              </div>
+            </div>
+            </fieldset
+          {% else %}
+
+            {{ field.label_tag }}
+            {% if field.field.required %}
+              <span class="required" style="color: #C63D0F; font-size: 1.5rem;">*</span>
+            {% endif %}
+
+            <p class="ml-5 mb-0 p-0 d-inline-block helptext text-warning"><small>{{ field.help_text }}</small></p>
+            {{ field|add_class:"form-control" }}
+            </fieldset>
+
+          {% endif %}
+
+        {% endfor %}
       </div>
 
       <div class="modal-footer">

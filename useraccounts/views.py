@@ -73,7 +73,7 @@ def register(request):
 
 
 
-class ProfileCreateFormView(PersonCreateView):
+class WelcomeOneView(PersonCreateView):
     template_name = 'welcomeNew.html'
 
     def get(self, request, *args, **kwargs):
@@ -83,13 +83,12 @@ class ProfileCreateFormView(PersonCreateView):
         return render(request, 'useraccounts/welcomeNew.html', {'form': form})
 
 
-class PostProfileCreateView(ChoreCreateView):
+class WelcomeTwoView(TemplateView):
     template_name = 'welcomeNew2.html'
 
-    def get(self, request, *args, **kwargs):
-        form = ChoreEditForm()
 
-        return render(request, 'useraccounts/welcomeNew2.html', {'form': form})
+class WelcomeLastView(TemplateView):
+    template_name = 'welcomeNewLast.html'
 
 
 class HomeView(TemplateView):

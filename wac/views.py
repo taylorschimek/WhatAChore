@@ -184,27 +184,73 @@ class ChoreCreateView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
     form_class = ChoreEditForm
     template_name_suffix = '_create_form'
 
-    def form_valid(self, form):
-        new_chore = form.save(commit=False)
-        new_chore.user = self.request.user
-        new_chore.last_assigned = datetime.date.today()
-        new_chore.save()
+    # def get_context_data(self, **kwargs):
+    #     print("get context data")
+    #     context = super().get_context_data(**kwargs)
+    #
+    #     included_extensions = ['png']
+    #     choices = [fn for fn in os.listdir('/Users/HOME/Developer/WAC/whatachore/wac/static/wac/styles/images/Icons/cream_icons')
+    #                if any(fn.endswith(ext) for ext in included_extensions)]
+    #
+    #     print(choices)
+    #     context['paths'] = choices
+    #
+    #     return context
 
-        # Make assignment if chore.interval is Weekly or more often:
-        weekly_or_less = ['Every 3 Days', 'Every 2 Days', 'Daily']
-        if new_chore.interval in weekly_or_less:
-            weeks = Week.objects.filter(
-                user = self.request.user
-            )
-            this_week = weeks.filter(is_current=True)[0]
-            if this_week:
-                single_chore_added(new_chore, this_week)
+
+    def get(self, request, *args, **kwargs):
+        # print('get get get')
+        form = ChoreEditForm()
+        included_extensions = ['png']
+        choices = [fn for fn in os.listdir('/Users/HOME/Developer/WAC/whatachore/wac/static/wac/styles/images/Icons/cream_icons')
+                   if any(fn.endswith(ext) for ext in included_extensions)]
+        # print("get's choices {}".format(choices))
+        paths = choices
+
+        return render(request, 'wac/chore_create_form.html', {'form': form, 'paths': paths})
+
+
+    def form_valid(self, form):
+        print(form.cleaned_data)
+        user = self.request.user
+        new_chore = form.save(commit=False)
+        new_chore.user = user
+        new_chore.last_assigned = datetime.date.today()
+        # new_chore.chore_icon_location = '/Users/HOME/Developer/WAC/whatachore/wac/static/wac/styles/images/Icons/cream_icons/' + form.cleaned_data['chore_icon_location']
+        new_chore.save()
 
         response_data = {}
         response_data['status'] = 'success'
-        response_data['messages'] = '{} has been added to the list.'.format(new_chore.task)
-        messages.success(self.request, new_chore.task + " was added successfully!")
+
+        if user.welcomed:
+            print("wac.views.ChoreCreateView.form_valid: welcomed is True")
+
+            # Make assignment if chore.interval is Every 3 Days or more often:
+            weekly_or_less = ['Every 3 Days', 'Every 2 Days', 'Daily']
+            if new_chore.interval in weekly_or_less:
+                weeks = Week.objects.filter(
+                    user = self.request.user
+                )
+                if len(weeks):
+                    this_week = weeks.filter(is_current=True)[0]
+                    if this_week:
+                        single_chore_added(new_chore, this_week)
+
+
+            response_data['messages'] = '{} has been added to the list.'.format(new_chore.task)
+            messages.success(self.request, new_chore.task + " was added successfully!")
+
+        else:
+            print("wac.views.ChoreCreateView.form_valid: welcomed is False")
+            user.welcomed = True
+            user.save(update_fields=['welcomed'])
+            response_data = {}
+            response_data['status'] = 'success'
+            response_data['messages'] = 'welcoming'
+            response_data['url'] = reverse('welcome-newLast')
+
         return HttpResponse(json.dumps(response_data), content_type='application/json')
+
 
     def form_invalid(self, form):
         response_data = {}
@@ -220,13 +266,13 @@ class ChoreDetailView(LoginRequiredMixin, FormMixin, DetailView):
         self.chore = Chore.objects.get(pk=self.kwargs['pk'])
         return super(ChoreDetailView, self).dispatch(request, *args, **kwargs)
 
-    # def get_context_data(self, **kwargs):
-    #     print('get_context_data')
-    #     context = super().get_context_data(**kwargs)
-    #     context['form'] = self.get_form()
-    #     return context
-
     def get(self, request, *args, **kwargs):
+        included_extensions = ['png']
+        choices = [fn for fn in os.listdir('/Users/HOME/Developer/WAC/whatachore/wac/static/wac/styles/images/Icons/cream_icons')
+                   if any(fn.endswith(ext) for ext in included_extensions)]
+
+        print(choices)
+
         form = ChoreEditForm(instance=self.chore,
                              initial={'task': self.chore.task,
                                       'duration': self.chore.duration,
@@ -236,7 +282,7 @@ class ChoreDetailView(LoginRequiredMixin, FormMixin, DetailView):
                                       'age_restriction': self.chore.age_restriction,
                                       'last_assigned': self.chore.last_assigned,
                                       'chore_icon_location': self.chore.chore_icon_location})
-        return render(request, 'wac/chore_detail.html', {'form': form, 'chore': self.chore, 'gobble': "Create New Chore"})
+        return render(request, 'wac/chore_detail.html', {'form': form, 'chore': self.chore, 'paths': choices})
 
     def post(self, request, *args, **kwargs):
         self.object = self.get_object()
@@ -302,13 +348,12 @@ class PersonCreateView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
             user = self.object.user
         )
 
-        if len(chores):
-            print("wac.views.PersonCreateView.form_valid: len(chores) is True")
+        if self.request.user.welcomed:
+            print("wac.views.PersonCreateView.form_valid: welcomed is True")
             messages.success(self.request, self.object.name + " was added successfully!")
             return HttpResponseRedirect(reverse('people-list'))
         else:
-            print("wac.views.PersonCreateView.form_valid: len(chores) is False")
-            # messages.success(self.request, "Greate!  Now let's enter a chore or two.")
+            print("wac.views.PersonCreateView.form_valid: welcomed is False")
             return HttpResponseRedirect(reverse('welcome-new2'))
 
     # def form_invalid(self, form):

@@ -50,9 +50,11 @@ urlpatterns = [
 
     url(r'^register/', views.register, name='register-user'),
 
-    url(r'^welcome/', views.ProfileCreateFormView.as_view(), name='welcome-new'),
+    url(r'^welcome/', views.WelcomeOneView.as_view(), name='welcome-new'),
 
-    url(r'^welcome2/', views.PostProfileCreateView.as_view(), name='welcome-new2'),
+    url(r'^welcome2/', views.WelcomeTwoView.as_view(), name='welcome-new2'),
+
+    url(r'^welcomeEnd/', views.WelcomeLastView.as_view(), name='welcome-newLast'),
 
     url(r'^home/$', views.HomeView.as_view(), name='home-view'),
 

@@ -1,6 +1,7 @@
 from django import forms
 from django.core.files import File
 from django.core.files.uploadedfile import InMemoryUploadedFile
+from django.forms.widgets import DateInput
 from django.utils.translation import ugettext_lazy as _
 from PIL import Image
 
@@ -52,6 +53,7 @@ class ChoreEditForm(forms.ModelForm):
             'duration': _('in minutes, please.'),
             'age_restriction': _('the youngest a worker can be to do this task.'),
         }
+        widgets = {'chore_icon_location': forms.RadioSelect}
 
 
 class PersonEditForm(forms.ModelForm):
@@ -88,7 +90,7 @@ class PersonEditForm(forms.ModelForm):
             'birthday': _('YYYY-MM-DD - used only to assign correct chores to younger workers.'),
             'day_off': _('Specific day this person would like to have no chores.')
         }
-        widgets = {'mugshot': CustomClearableFileInput}
+        widgets = {'mugshot': CustomClearableFileInput, 'birthday': DateInput(attrs={'type': 'date'})}
 
     def crop_image(self):
         print("Crop Happened")

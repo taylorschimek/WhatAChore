@@ -1,5 +1,7 @@
 {% load i18n widget_tweaks %}
 
+{% load static %}
+
 <div class="modal-dialog modal-lg" role="document">
     <form action="{% url 'person-create' %}" method="post" enctype="multipart/form-data" id="person_create" class="form">
         {% csrf_token %}
@@ -49,18 +51,19 @@
         </button>
       </div>
       <div class="modal-body m-0 p-0">
-        <img src="" id="image" style="max-width: 100%;">
+        <img src="" id="image" style="max-width: 100%;" alt="Uploaded Image to be cropped">
       </div>
       <div class="modal-footer">
         <div class="btn-group pull-left" role="group">
-          <button type="button" class="btn btn-default js-zoom-in">
-            <span class="glyphicon glyphicon-zoom-in"></span>
-          </button>
-          <button type="button" class="btn btn-default js-zoom-out">
-            <span class="glyphicon glyphicon-zoom-out"></span>
-          </button>
+          <input style="height: 29px; width: 29px; padding: 4px;" src="{% static 'wac/styles/images/icons/utility/zoom-in.png' %}" type="image" class="btn btn-secondary js-zoom-in crop-buttons">
+
+          <input style="height: 29px; width: 29px; padding: 4px;" src="{% static 'wac/styles/images/icons/utility/zoom-out.png' %}" type="image" class="btn btn-secondary js-zoom-out crop-buttons">
+
+          <input style="height: 29px; width: 29px; padding: 4px;" src="{% static 'wac/styles/images/icons/utility/rotate-right.png' %}" type="image" class="btn btn-secondary js-rotate-rt crop-buttons">
+
+          <input style="height: 29px; width: 29px; padding: 4px;" src="{% static 'wac/styles/images/icons/utility/rotate-left.png' %}" type="image" class="btn btn-secondary js-rotate-lf crop-buttons">
         </div>
-        <button type="button" class="btn btn-default" onclick="closeThis()">Nevermind</button>
+        <button type="button" class="btn btn-secondary text-secondary" onclick="closeThis()">Nevermind</button>
         <button type="button" class="btn btn-primary js-crop-and-upload">Crop and upload</button>
       </div>
     </div>

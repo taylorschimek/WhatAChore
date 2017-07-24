@@ -7042,6 +7042,12 @@ body {
     top: 50%;
     transform: translateY(-50%); }
 
+input[id^="id_chore_icon_location"] {
+  display: none; }
+
+.checked {
+  border: 1px solid #C63D0F; }
+
 .form-group:disabled {
   color: #b4beb3; }
 

@@ -46,6 +46,7 @@ class User(AbstractBaseUser, PermissionsMixin):
             'Unselect this instead of deleting accounts.'
         ),
     )
+    welcomed = models.BooleanField(default=False)
     USERNAME_FIELD = 'email'
     objects = MyUserManager()
 

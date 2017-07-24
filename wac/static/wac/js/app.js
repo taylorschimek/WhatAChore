@@ -81,9 +81,40 @@ function find_modal(theUrl) {
             $(modal).find('#id_fromUrl').val(url);
         }
     });
-    console.log('yep');
 
+    // For Chore Modal only
+    if (url === 'http://localhost:8000/wac/chores/') {
+        checkDOMChange();
+    }
 }
+
+//  Icon Choices ------------------------------------------------------
+function checkDOMChange() {
+    // .chore-modal is on the div.modal-dialog which is not in orig DOM
+    if ($('.chore-modal').length) {
+        let theInput = $('input[name="chore_icon_location"]:checked');
+        $(theInput).parent().parent().addClass('checked');
+        $(theInput).parent().parent().css("border", "2px solid #C63D0F");
+    } else {
+        setTimeout( checkDOMChange, 100 );
+    }
+}
+
+$('body').on('hidden.bs.modal', '#choreModal', function () {
+    $(this).empty();
+});
+
+$(document).on('click', 'input:radio', function(event) {
+    // remove checked from wherever it was
+    $('.checked').css("border", "none");
+    $('.checked').removeClass('checked');
+
+    $(this).parent().parent().addClass('checked');  // this class might be handled in css
+    $(this).parent().parent().css("border", "2px solid #C63D0F"); // temp
+
+});
+//  Icon Choices ------------------------------------------------------
+
 
 // Modal Forms
 
@@ -269,8 +300,16 @@ function postCreateChore() {
         data: $(frm).serialize(),
         success: function (data) {
             if (data.status === 'success') {
-                $(modal).modal('hide');
-                location.reload();
+                console.log("44 Success");
+                if (data.messages === 'welcoming') {
+                    console.log("44 Welcoming");
+                    console.log(data.url);
+                    $(modal).modal('hide');
+                    location.replace(data.url);
+                } else {
+                    $(modal).modal('hide');
+                    location.reload();
+                }
             } else {
                 alert("success function, but data.status != success");
             }
@@ -292,6 +331,7 @@ function postCreateChore() {
         }
     });
 }
+
 
 
 //==========================================================================
@@ -467,15 +507,25 @@ $(function () {
         $('#id_width').val(cropData['width']);
         closeThis();
     });
+
+    $(document).on('click', '.js-zoom-in', function () {
+        $image.cropper('zoom', 0.1);
+    });
+
+    $(document).on('click', '.js-zoom-out', function () {
+        $image.cropper('zoom', -0.1);
+    });
+
+    $(document).on('click', '.js-rotate-rt', function () {
+        $image.cropper('rotate', 90);
+    });
+
+    $(document).on('click', '.js-rotate-lf', function () {
+        $image.cropper('rotate', -90);
+    });
 });
 
-$('.js-zoom-in').click(function () {
-    $image.cropper('zoom', 0.1);
-});
 
-$('.js-zoom-out').click(function () {
-    $image.cropper('zoom', -0.1);
-});
 
 
 //=====================================
