@@ -78,10 +78,13 @@ class UseraccountsTests(StaticLiveServerTestCase):
         # On welcome/create first worker page
         driver.find_element_by_id('id_name').send_keys('John')
         birthday = driver.find_element_by_id('id_birthday')
-        birthday.clear()
-        birthday.send_keys('1990-01-01')
+        print("birthday = {}".format(birthday))
+        # birthday.clear()
+        birthday.send_keys('01011990')
         driver.find_element_by_xpath("//select[@id='id_day_off']/option[text()='Friday']").click()
-        driver.find_element_by_xpath("//input[@value='Save']").click()
+        button = try_xpath(dirver, 2, "//input[@value='Save']")
+        button.click()
+        # driver.find_element_by_xpath("//input[@value='Save']").click()
 
         self.assertIn('wac/people/', driver.current_url)
         card_title = try_class_name(driver, 3, 'card-title')

@@ -1,4 +1,6 @@
 {% load i18n widget_tweaks %}
+{% load static %}
+
 <script>
     {% if messages %}
         {% for message in messages %}
@@ -48,29 +50,26 @@
 
 <!-- MODAL TO CROP THE IMAGE -->
 <div class="modal modalCrop bg-success" id="modalCrop" data-backdrop="static">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content bg-primary">
-      <div class="modal-header">
-        <h4 class="modal-title text-center">Please crop your image for better formatting.</h4>
-        <button type="button" class="close btn btn-secondary" onclick="closeThis()" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body m-0 p-0">
-        <img src="" id="image" style="max-width: 100%;" alt="Uploaded Image to be cropped">
-      </div>
-      <div class="modal-footer">
-        <div class="btn-group pull-left" role="group">
-          <button type="button" class="btn btn-default js-zoom-in">
-            <span class="glyphicon glyphicon-zoom-in"></span>
-          </button>
-          <button type="button" class="btn btn-default js-zoom-out">
-            <span class="glyphicon glyphicon-zoom-out"></span>
-          </button>
+    <div class="modal-dialog modal-md">
+        <div class="modal-content bg-primary">
+            <div class="modal-header">
+                <h4 class="modal-title text-center">Please crop your image for better formatting.</h4>
+                <button type="button" class="close btn btn-secondary" onclick="closeThis()" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body m-0 p-0">
+                <img src="" id="image" style="max-width: 100%;" alt="Uploaded Image to be cropped">
+            </div>
+            <div class="modal-footer">
+                <div class="btn-group pull-left" role="group">
+                    <input style="height: 29px; width: 29px; padding: 4px;" src="{% static 'wac/styles/images/icons/utility/zoom-in.png' %}" type="image" class="btn btn-secondary js-zoom-in crop-buttons">
+
+                    <input style="height: 29px; width: 29px; padding: 4px;" src="{% static 'wac/styles/images/icons/utility/zoom-out.png' %}" type="image" class="btn btn-secondary js-zoom-out crop-buttons">
+                </div>
+                <button type="button" class="btn btn-default" onclick="closeThis()">Nevermind</button>
+                <button type="button" class="btn btn-primary js-crop-and-upload">Crop and upload</button>
+            </div>
         </div>
-        <button type="button" class="btn btn-default" onclick="closeThis()">Nevermind</button>
-        <button type="button" class="btn btn-primary js-crop-and-upload">Crop and upload</button>
-      </div>
     </div>
-  </div>
 </div>

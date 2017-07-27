@@ -80,7 +80,7 @@ class ChoreTests(WebTest):
                            duration=20,
                            interval='Daily',
                            age_restriction=14,
-                           chore_icon_location='/Users/HOME/Developer/WAC/whatachore/wac/static/wac/styles/images/Icons/cream_icons/Chore_Broom.png'
+                           chore_icon_location='/Users/HOME/Developer/WAC/whatachore/wac/static/wac/styles/images/Icons/cream_icons/)1_Broom.png'
     ):
         return Chore.objects.create(user_id=self.user.id,
                                     task=task,
@@ -130,8 +130,7 @@ class ChoreTests(WebTest):
                 'description': c.description,
                 'duration': c.duration,
                 'interval': c.interval,
-                'age_restriction': c.age_restriction,
-                'chore_icon_location': c.chore_icon_location}
+                'age_restriction': c.age_restriction}
         form = ChoreEditForm(data=data)
         self.assertTrue(form.is_valid())
         self.client.login(email='test@example.com', password='password1')
@@ -383,14 +382,17 @@ class SeleniumTestViews(StaticLiveServerTestCase):
         name_elem = try_id(browser, delay, 'id_name')
         name_elem.send_keys('Billy')
         bday = browser.find_element_by_id('id_birthday')
-        bday.clear()
-        bday.send_keys('1995-05-21')
+        print("bday = {}".format(bday))
+        # bday.clear()
+        bday.send_keys('05211995')
         # browser.find_element_by_xpath("//select[@id='id_day_off']/option[text()='Thursday']").click()
         # file_location = '/Users/HOME/Developer/WAC/whatachore/wac/static/wac/styles/images/people/tito.png'
         # browser.find_element_by_xpath('//input[@name="mugshot"]').send_keys(file_location)
         browser.find_element_by_xpath('//input[@value="Save"]').click()
         sleep(1)
-        new_name = browser.find_element_by_xpath('//a[@id="Billy-link"]//h3[@class="card-title"]').text
+        new_name0 = try_xpath(browser, delay, '//a[@id="Billy-link"]//h3[@class="card-title"]')
+        new_name = new_name0.text
+        # new_name = browser.find_element_by_xpath('//a[@id="Billy-link"]//h3[@class="card-title"]').text
         self.assertEqual(new_name, 'Billy')
 
     def test_assignment_list_view(self):

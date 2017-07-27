@@ -70,7 +70,7 @@ class Chore(models.Model):
 
     last_assigned = models.DateField(blank=True, null=True)
     age_restriction = models.IntegerField()
-    chore_icon_location = models.FilePathField(default='Default.png',
+    chore_icon_location = models.FilePathField(default='00_Default.png',
                                       match=".\.png",
                                       path='/Users/HOME/Developer/WAC/whatachore/wac/static/wac/styles/images/Icons/cream_icons',
                                       max_length=255

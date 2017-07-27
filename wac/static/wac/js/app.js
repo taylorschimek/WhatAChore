@@ -36,17 +36,13 @@ function getCookie(name) {
 }
 
 function assignmentDone(theAssPK) {
-    console.log(theAssPK + ' is changing')
-
     var csrftoken = getCookie('csrftoken');
-
     $.ajax({
         url: '/wac/lineup/make/',
         type: 'POST',
         data: { csrfmiddlewaretoken : csrftoken, pk : theAssPK,
     },
     success : function(data) {
-        console.log('success');
         let path = $('#' + theAssPK).css('background-image');
         if (~path.indexOf('YES')) {
             path = path.replace('YES', 'NO');
@@ -56,9 +52,6 @@ function assignmentDone(theAssPK) {
         $('#' + theAssPK).css('background-image', path);
 
         $('#server_response').html(data);
-    },
-    error : function() {
-        console.log('unsuccess');
     }
 });
 }
@@ -70,8 +63,6 @@ function assignmentDone(theAssPK) {
 function find_modal(theUrl) {
     var modal = $('.modal');
     var url = window.location.href;
-    console.log(url);
-    console.log(modal);
     $.ajax({
         url: theUrl,
         context: document.body
@@ -106,10 +97,12 @@ $('body').on('hidden.bs.modal', '#choreModal', function () {
 
 $(document).on('click', 'input:radio', function(event) {
     // remove checked from wherever it was
-    $('.checked').css("border", "none");
+    $('.checked').css("border", "");
+    $('.checked').css("border", "2px solid #FDF3E7"); // temp
     $('.checked').removeClass('checked');
 
     $(this).parent().parent().addClass('checked');  // this class might be handled in css
+    $(this).parent().parent().css("border", ""); // temp
     $(this).parent().parent().css("border", "2px solid #C63D0F"); // temp
 
 });
@@ -120,28 +113,17 @@ $(document).on('click', 'input:radio', function(event) {
 
 function apply_form_field_error(modal, fieldname, error)
 {
-    console.log('apply called');
-    console.log(modal);
-    console.log(fieldname);
     var body = $(modal).find('.modal-body');
     if (fieldname === '__all__') {
-        console.log('use error');
-        console.log(error);
         var input = body,
             container = body,
             error_msg = $('<p class="help-inline px-3 text-danger ajax-error">' + error + '</p>');
     } else {
-        console.log('use error[0]');
-        console.log(error[0]);
         var input = $(modal).find('#id_' + fieldname),
             container = $(input).parent();
             error_msg = $('<p class="help-inline text-danger ajax-error">' + error[0] + '</p>');
     }
 
-    console.log('id_' + fieldname);
-    console.log(error_msg);
-    console.log(container);
-    console.log(input);
     container.addClass("error");
     // error_msg.append(container);
     input.after(error_msg);
@@ -154,13 +136,9 @@ function clear_form_field_errors(form) {
 
 // For Multiple Modals
 $(document).on('show.bs.modal', '.modal', function () {
-    // console.log($('.modal:visible').length)
     var zIndex = 1040 + (10 * $('.modal:visible').length);
-    // console.log($(this));
     $(this).css('z-index', zIndex);
     setTimeout(function() {
-        // console.log('.modal-backdrop is ' + $('.modal-backdrop').length);
-        // console.log('.modal-backdrop.not is ' + $('.modal-backdrop').not('.modal-stack').length);
         $('.modal-backdrop').not('.modal-stack').css('z-index', zIndex - 1).addClass('modal-stack');
     }, 0);
 });
@@ -175,7 +153,6 @@ $(document).on('hidden.bs.modal', '.modal', function () {
 //==========================================================================
 
 $(document).on('submit', '.pw-reset-form', function(event) {
-    console.log('pw-reset-form submit clicked');
     event.preventDefault();
     postReset();
 });
@@ -183,15 +160,12 @@ $(document).on('submit', '.pw-reset-form', function(event) {
 function postReset() {
     var frm = $('.pw-reset-form');
     clear_form_field_errors(frm);
-    console.log($(frm).serialize());
     if ( $('#pw-reset-modal').length ) {
-        console.log('pw-reset-modal');
         var modal = $('#pw-reset-modal');
         var email = $(modal).find('#id_email').val();
         var errorContainer = modal;
     } else {
         var email = $('.pw-reset-form').find('#id_email').val()
-        console.log(email)
         var errorContainer = $('.pw-reset-form')
     };
 
@@ -202,19 +176,9 @@ function postReset() {
         data: $(frm).serialize(),
         success: function (data) {
             if (data.status === 'success') {
-                console.log("success");
-                console.log(data)
-                // if ($(modal)) {
-                //     $(modal).modal('hide');
-                // }
                 location.reload();
             }
         },
-        error: function (data) {
-            console.log('error'),
-            console.log(data)
-        }
-
     });
 }
 
@@ -231,18 +195,14 @@ $(document).on('submit', '.login-form', function(event) {
 function postLogin() {
     var frm = $('.login-form');
     clear_form_field_errors(frm);
-    console.log($(frm).serialize());
     if ( $('#login-modal').length ) {
-        console.log('login-modal = true');
         var modal = $('#login-modal');
         var usrnm = $(modal).find('#id_username').val();
         var psswrd = $(modal).find('#id_password').val();
         var errorContainer = modal;
     } else {
         var usrnm = $('.login-form').find('#id_username').val();
-        console.log(usrnm);
         var psswrd = $('.login-form').find('#id_password').val();
-        console.log(psswrd)
         var errorContainer = $('.login-form');
     };
 
@@ -262,16 +222,11 @@ function postLogin() {
             }
         },
         error: function (data) {
-            console.log("error");
-            console.log(data)
             var errors = $.parseJSON(data.responseText);
             $.each(errors, function(index, value) {
-                console.log(value);
                 if (index === '__all__') {
-                    console.log('index == __all__');
                     apply_form_field_error(errorContainer, index, value[0])
                 } else {
-                    console.log('index != __all__');
                     apply_form_field_error(errorContainer, index, value);
                 }
             });
@@ -286,7 +241,6 @@ function postLogin() {
 
 $(document).on('submit', '.create-chore', function(event) {
     event.preventDefault();
-    console.log("create chore form submitted")
     postCreateChore();
 });
 
@@ -300,10 +254,7 @@ function postCreateChore() {
         data: $(frm).serialize(),
         success: function (data) {
             if (data.status === 'success') {
-                console.log("44 Success");
                 if (data.messages === 'welcoming') {
-                    console.log("44 Welcoming");
-                    console.log(data.url);
                     $(modal).modal('hide');
                     location.replace(data.url);
                 } else {
@@ -315,16 +266,11 @@ function postCreateChore() {
             }
         },
         error: function (data) {
-            console.log('errors');
-            console.log(data.responseText)
             var errors = $.parseJSON(data.responseText);
-            console.log(errors);
             $.each(errors, function(index, value) {
                 if (index === '__all__') {
-                    console.log('index == __all__');
                     apply_form_field_error(modal, index, value[0])
                 } else {
-                    console.log('index != __all__');
                     apply_form_field_error(modal, index, value);
                 }
             });
@@ -339,7 +285,6 @@ function postCreateChore() {
 //==========================================================================
 $(document).on('submit', '.account_setting_change', function(event) {
     event.preventDefault();
-    console.log('account form submitted');
     postChangeSettings();
 });
 
@@ -363,7 +308,6 @@ function postChangeSettings() {
 //           EMAIL WORKER MODAL                                           //
 //==========================================================================
 $(document).on('submit', '.email_to_worker', function(event) {
-    console.log(".email_worker clicked");
     event.preventDefault();
     postEmailWorker();
 });
@@ -377,8 +321,6 @@ function postEmailWorker() {
         type: $(frm).attr('method'),
         data: $(frm).serialize(),
         success: function (data) {
-            console.log('success on ajax');
-            console.log(data.status);
             if (data.status === 'success') {
                 $(modal).modal('hide');
                 location.reload();
@@ -387,16 +329,11 @@ function postEmailWorker() {
             }
         },
         error: function (data) {
-            console.log('error on ajax');
             var errors = $.parseJSON(data.responseText);
             $.each(errors, function(index, value) {
                 if (index === '__all__') {
                     console.log('index == __all__');
-                    // apply_form_field_error(index, value);
-                    // alert(error);
-                    // django_message(value[0], 'error');
                 } else {
-                    console.log('index != __all__');
                     apply_form_field_error(modal, index, value);
                 }
             });
@@ -411,12 +348,10 @@ function postEmailWorker() {
 
 $(document).on('submit', '.pw-change-form', function(event) {
     event.preventDefault();
-    console.log("form submitted!")  // sanity check
     postChangePassword();
 });
 
 function postChangePassword() {
-    // console.log('postChangePassword is working');
     var frm = $('.pw-change-form');
     clear_form_field_errors(frm);
     var modal = $('.modal');
@@ -437,11 +372,7 @@ function postChangePassword() {
             $.each(errors, function(index, value) {
                 if (index === '__all__') {
                     console.log('index == __all__');
-                    // apply_form_field_error(index, value);
-                    // alert(error);
-                    // django_message(value[0], 'error');
                 } else {
-                    console.log('index != __all__');
                     apply_form_field_error(modal, index, value);
                 }
             });
@@ -455,7 +386,6 @@ function postChangePassword() {
 //==========================================================================
 
 function closeThis() {
-    console.log('closeThis');
     $('#modalCrop').modal('hide');
 }
 
@@ -473,6 +403,7 @@ $(function () {
                 $('#modalCrop').modal('show');
             }
             $image = $('#image');
+            $imageSrc = $('#image').attr('src');
             reader.readAsDataURL(this.files[0]);
         }
     });
@@ -483,6 +414,7 @@ $(function () {
             viewMode: 1,
             aspectRatio: 3/4,
             movable: false,
+            rotatable: true,
             zoomOnWheel: false,
             // minCropBoxWidth: 200,
             // minCropBoxHeight: 200,
@@ -492,7 +424,6 @@ $(function () {
             }
         });
     }).on('hidden.bs.modal', '#modalCrop', function () {
-        console.log('modal hidden');
         cropBoxData = $image.cropper('getCropBoxData');
         canvasData = $image.cropper('getCanvasData');
         $image.cropper('destroy');
@@ -505,6 +436,7 @@ $(function () {
         $('#id_y').val(cropData['y']);
         $('#id_height').val(cropData['height']);
         $('#id_width').val(cropData['width']);
+        $('#id_rotate').val(cropData['rotate']);
         closeThis();
     });
 
@@ -515,41 +447,4 @@ $(function () {
     $(document).on('click', '.js-zoom-out', function () {
         $image.cropper('zoom', -0.1);
     });
-
-    $(document).on('click', '.js-rotate-rt', function () {
-        $image.cropper('rotate', 90);
-    });
-
-    $(document).on('click', '.js-rotate-lf', function () {
-        $image.cropper('rotate', -90);
-    });
 });
-
-
-
-
-//=====================================
-//         DELETE CHECKBOX           //
-//=====================================
-
-// $(document).on('click', '#mugshot-clear_id', function() {
-//     console.log("mugshot clear was clicked");
-//     var frm = $('#person_detail');
-//     var modal = $('#personModal');
-//     $.ajax({
-//         url: $(frm).attr('action'),
-//         type: $(frm).attr('method'),
-//         data: $(frm).serialize(),
-//         success: function (data) {
-//             console.log("success");
-//             $(modal).modal('hide');
-//             $(modal).modal('show');
-//             newHTML = "<p> The picture has been deleted.</p>";
-//             $("label[for='id_mugshot']").after(newHTML);
-//
-//         },
-//         error: function (data) {
-//             console.log("error");
-//         }
-//     });
-// });

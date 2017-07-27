@@ -62,6 +62,7 @@ class PersonEditForm(forms.ModelForm):
     y = forms.FloatField(widget=forms.HiddenInput(), required=False)
     width = forms.FloatField(widget=forms.HiddenInput(), required=False)
     height = forms.FloatField(widget=forms.HiddenInput(), required=False)
+    rotate = forms.FloatField(widget=forms.HiddenInput(), required=False)
 
     def __init__(self, *args, **kwargs):
         super(PersonEditForm, self).__init__(*args, **kwargs)
@@ -85,6 +86,7 @@ class PersonEditForm(forms.ModelForm):
             'y',
             'width',
             'height',
+            'rotate',
         ]
         help_texts = {
             'birthday': _('YYYY-MM-DD - used only to assign correct chores to younger workers.'),
@@ -98,8 +100,13 @@ class PersonEditForm(forms.ModelForm):
         y = self.cleaned_data.get('y')
         w = self.cleaned_data.get('width')
         h = self.cleaned_data.get('height')
+        r = self.cleaned_data.get('rotate')
 
         image = Image.open(self.cleaned_data['mugshot'])
         cropped_image = image.crop((x, y, w+x, h+y))
+
+
+
+
         resized_image = cropped_image.resize((300, 400), Image.ANTIALIAS)
         return resized_image

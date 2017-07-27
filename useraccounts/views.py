@@ -95,6 +95,15 @@ class HomeView(TemplateView):
     model = User
     template_name = 'home.html'
 
+    def get(self, request):
+        user = self.request.user
+        if user.is_authenticated():
+            # self.profiled()
+            return render(request, self.template_name, self.get_context_data())
+        else:
+            messages.warning(request, "Please log in or create an account.")
+            return HttpResponseRedirect(reverse('landing'))
+
     def profiled(self):
         theUser = Person.objects.filter(
             user = self.request.user
@@ -102,8 +111,10 @@ class HomeView(TemplateView):
             email__exact=self.request.user.email
         )
         if len(theUser):
+            print("BINGO")
             return theUser[0].name
         else:
+            print("BONGO")
             return self.request.user.email
 
     def get_context_data(self, **kwargs):

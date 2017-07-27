@@ -184,25 +184,11 @@ class ChoreCreateView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
     form_class = ChoreEditForm
     template_name_suffix = '_create_form'
 
-    # def get_context_data(self, **kwargs):
-    #     print("get context data")
-    #     context = super().get_context_data(**kwargs)
-    #
-    #     included_extensions = ['png']
-    #     choices = [fn for fn in os.listdir('/Users/HOME/Developer/WAC/whatachore/wac/static/wac/styles/images/Icons/cream_icons')
-    #                if any(fn.endswith(ext) for ext in included_extensions)]
-    #
-    #     print(choices)
-    #     context['paths'] = choices
-    #
-    #     return context
-
-
     def get(self, request, *args, **kwargs):
         # print('get get get')
-        form = ChoreEditForm()
+        form = ChoreEditForm(initial={'chore_icon_location': '/Users/HOME/Developer/WAC/whatachore/wac/static/wac/styles/images/Icons/cream_icons/00_Default.png'})
         included_extensions = ['png']
-        choices = [fn for fn in os.listdir('/Users/HOME/Developer/WAC/whatachore/wac/static/wac/styles/images/Icons/cream_icons')
+        choices = [fn for fn in os.listdir('/Users/HOME/Developer/WAC/whatachore/wac/static/wac/styles/images/Icons/red_icons')
                    if any(fn.endswith(ext) for ext in included_extensions)]
         # print("get's choices {}".format(choices))
         paths = choices
@@ -268,7 +254,7 @@ class ChoreDetailView(LoginRequiredMixin, FormMixin, DetailView):
 
     def get(self, request, *args, **kwargs):
         included_extensions = ['png']
-        choices = [fn for fn in os.listdir('/Users/HOME/Developer/WAC/whatachore/wac/static/wac/styles/images/Icons/cream_icons')
+        choices = [fn for fn in os.listdir('/Users/HOME/Developer/WAC/whatachore/wac/static/wac/styles/images/Icons/red_icons')
                    if any(fn.endswith(ext) for ext in included_extensions)]
 
         print(choices)
@@ -322,41 +308,46 @@ class PeopleListView(LoginRequiredMixin, ListView):
 
 class PersonCreateView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
     model = Person
-    # success_url = '/success/'
-    # success_message = "%(name)s was created successfully"
     form_class = PersonEditForm
     template_name_suffix = '_create_form'
 
+    def post(self, request, *args, **kwargs):
+        form = PersonEditForm(request.POST, request.FILES)
+
+        if form.is_valid():
+            return self.form_valid(form)
+        else:
+            return self.form_invalid(form)
+
     def form_valid(self, form):
-        self.object = form.save(commit=False)
-        self.object.user = self.request.user
-
+        user = self.request.user
+        new_person = form.save(commit=False)
+        new_person.user = user
+        new_person.mugshot = ''
+        new_person.save()
         if form.cleaned_data['x'] is not None:
-            self.object.mugshot = ""
-            self.object.save()
-
             image = form.crop_image()
             f= BytesIO()
-            try:
-                image.save(f, format='png')
-                self.object.mugshot.save(self.object.name + '.png', ContentFile(f.getvalue()))
-            finally: f.close()
+            image.save(f, format='png')
+            new_person.mugshot.save(new_person.name + '.png', ContentFile(f.getvalue()))
+            f.close()
 
-        self.object.save()
+        new_person.save()
 
         chores = Chore.objects.filter(
-            user = self.object.user
+            user = user
         )
 
-        if self.request.user.welcomed:
+        if user.welcomed:
             print("wac.views.PersonCreateView.form_valid: welcomed is True")
-            messages.success(self.request, self.object.name + " was added successfully!")
+            messages.success(self.request, new_person.name + " was added successfully!")
             return HttpResponseRedirect(reverse('people-list'))
         else:
             print("wac.views.PersonCreateView.form_valid: welcomed is False")
             return HttpResponseRedirect(reverse('welcome-new2'))
 
-    # def form_invalid(self, form):
+    def form_invalid(self, form):
+        pass
 
 
 class PersonDetailView(LoginRequiredMixin, FormMixin, DetailView):
@@ -393,16 +384,19 @@ class PersonDetailView(LoginRequiredMixin, FormMixin, DetailView):
 
     def form_valid(self, form):
         current_image = self.object.mugshot.name
+        print("current_image = {}".format(current_image))
         self.object = form.save(commit=False)
         if form.cleaned_data['x'] is not None:
             image = form.crop_image()
             f= BytesIO()
+            image.save(f, format='png')
             try:
-                image.save(f, format='png')
-                if self.object.mugshot == self.object.name + '.png':
-                    os.remove(settings.MEDIA_ROOT + current_image)
+                os.remove(settings.MEDIA_ROOT + current_image)
+            except OSError:
+                pass
+            finally:
                 self.object.mugshot.save(self.object.name + '.png', ContentFile(f.getvalue()))
-            finally: f.close()
+                f.close()
 
         self.object.save()
         messages.success(self.request, self.object.name + " was updated successfully!")
