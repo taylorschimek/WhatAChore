@@ -64,9 +64,10 @@ ROOT_URLCONF = 'whatachore.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates'),
-                 '/Users/HOME/Developer/WAC/whatachore/useraccounts/templates/useraccounts',
-                 '/Users/HOME/Developer/WAC/whatachore/whatachore/templates'
+        'DIRS': [os.path.join(BASE_DIR, 'whatachore/templates'),
+                 os.path.join(BASE_DIR, 'useraccounts/templates/useraccounts'),
+                #  '/Users/HOME/Developer/WAC/whatachore/useraccounts/templates/useraccounts',
+                #  '/Users/HOME/Developer/WAC/whatachore/whatachore/templates'
         ],
         'APP_DIRS': True,
         'OPTIONS': {
