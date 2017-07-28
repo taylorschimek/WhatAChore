@@ -1,1 +1,1 @@
-web: gunicorn whatachore:app
+web: gunicorn whatachore.wsgi --log-file -

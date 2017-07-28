@@ -7,3 +7,6 @@ db.sqlite3
 tmp
 htmlcov
 whatachore/media/people_mugs
+WACenv
+*.pyc
+staticfiles
