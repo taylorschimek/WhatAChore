@@ -28,7 +28,7 @@ SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', ')1=gk_qb7_adb+t#95vxv+g3n-3_k0
 # DEBUG = True
 DEBUG = bool(os.environ.get('DJANGO_DEBUG', True))
 
-ALLOWED_HOSTS = ['what-a-chore.herokuapp.com', 'localhost']
+ALLOWED_HOSTS = ['whatachore.herokuapp.com', 'localhost']
 
 AUTH_USER_MODEL = 'useraccounts.User'
 
