@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 """
 
 import os
+import dj_database_url
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -20,10 +21,12 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = ')1=gk_qb7_adb+t#95vxv+g3n-3_k0^83@5_&!@lpa^84564ee'
+# SECRET_KEY = ')1=gk_qb7_adb+t#95vxv+g3n-3_k0^83@5_&!@lpa^84564ee'
+SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', ')1=gk_qb7_adb+t#95vxv+g3n-3_k0^83@5_&!@lpa^84564ee')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+# DEBUG = True
+DEBUG = bool(os.environ.get('DJANGO_DEBUG', True))
 
 ALLOWED_HOSTS = ['what-a-chore.herokuapp.com', 'localhost']
 
@@ -92,16 +95,19 @@ WSGI_APPLICATION = 'whatachore.wsgi.application'
 #     }
 # }
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'wac_db',
-        'USER': 'postgres',
-        'PASSWORD': 'monugget1',
-        'HOST': 'localhost',
-        'PORT': '5432',
-    }
-}
+db_from_env = dj_database_url.config(conn_max_age=500)
+DATABASES['default'].update(db_from_env)
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'wac_db',
+#         'USER': 'postgres',
+#         'PASSWORD': 'monugget1',
+#         'HOST': 'localhost',
+#         'PORT': '5432',
+#     }
+# }
 
 
 # Password validation
@@ -181,3 +187,5 @@ STATICFILES_DIRS = [
 ]
 
 FIXTURE_DIRS = (os.path.join(PROJECT_ROOT, 'fixtures'),)
+
+STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
