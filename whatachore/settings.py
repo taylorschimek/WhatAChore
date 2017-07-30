@@ -186,6 +186,7 @@ STATIC_URL = '/static/'
 
 STATICFILES_DIRS = [
     os.path.join(PROJECT_ROOT, 'static'),
+    os.path.join(BASE_DIR, '/wac/static')
     # '/Users/HOME/Developer/WAC/whatachore/wac'
 ]
 

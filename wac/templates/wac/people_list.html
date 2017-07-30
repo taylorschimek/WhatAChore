@@ -37,6 +37,10 @@
 
           <img src="{{ BASE_DIR }}/media/{{ person.mugshot }}" alt="{{ person.mugshot.url }}" />
 
+          {% else %}
+
+          <img src="{% static 'wac/styles/images/people/No-Current-Image.png' %}" alt="No Current User Image" />
+
           {% endif %}
           <div class="card-block text-center">
             <h3 class="card-title">{{ person.name }}</h3>
