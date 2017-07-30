@@ -63,6 +63,9 @@ function assignmentDone(theAssPK) {
 function find_modal(theUrl) {
     var modal = $('.modal');
     var url = window.location.href;
+    console.log("modal = " + modal);
+    console.log("url = " + url);
+    console.log("theUrl = " + theUrl);
     $.ajax({
         url: theUrl,
         context: document.body
