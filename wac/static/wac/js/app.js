@@ -63,9 +63,6 @@ function assignmentDone(theAssPK) {
 function find_modal(theUrl) {
     var modal = $('.modal');
     var url = window.location.href;
-    console.log("modal = " + modal);
-    console.log("url = " + url);
-    console.log("theUrl = " + theUrl);
     $.ajax({
         url: theUrl,
         context: document.body
@@ -77,7 +74,7 @@ function find_modal(theUrl) {
     });
 
     // For Chore Modal only
-    if (url === 'http://localhost:8000/wac/chores/') {
+    if (url === 'https://whatachore.herokuapp.com/wac/chores') {
         checkDOMChange();
     }
 }
