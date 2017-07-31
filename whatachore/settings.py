@@ -180,13 +180,16 @@ MEDIA_ROOT = os.path.join(PROJECT_ROOT, 'media/')
 
 MEDIA_URL = 'media/'
 
-STATIC_ROOT = os.path.join(PROJECT_ROOT, 'staticfiles')
+if DEBUG:
+    STATIC_ROOT = os.path.join(BASE_DIR, 'wac/static')
+else:
+    STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 STATIC_URL = '/static/'
 
 STATICFILES_DIRS = [
     os.path.join(PROJECT_ROOT, 'static'),
-    os.path.join(BASE_DIR, 'wac/static')
+    # os.path.join(BASE_DIR, 'wac/static')
     # '/Users/HOME/Developer/WAC/whatachore/wac'
 ]
 
