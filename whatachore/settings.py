@@ -182,17 +182,20 @@ MEDIA_URL = 'media/'
 
 if DEBUG:
     STATIC_ROOT = os.path.join(BASE_DIR, 'wac/static')
+    STATICFILES_DIRS = [
+        os.path.join(PROJECT_ROOT, 'static'),
+        # os.path.join(BASE_DIR, 'wac/static')
+        # '/Users/HOME/Developer/WAC/whatachore/wac'
+    ]
 else:
     STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+    STATICFILES_DIRS = [
+        os.path.join(PROJECT_ROOT, 'static'),
+        os.path.join(BASE_DIR, 'wac/static')
+        # '/Users/HOME/Developer/WAC/whatachore/wac'
+    ]
+    STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
 
 STATIC_URL = '/static/'
 
-STATICFILES_DIRS = [
-    os.path.join(PROJECT_ROOT, 'static'),
-    # os.path.join(BASE_DIR, 'wac/static')
-    # '/Users/HOME/Developer/WAC/whatachore/wac'
-]
-
 FIXTURE_DIRS = (os.path.join(PROJECT_ROOT, 'fixtures'),)
-
-STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
