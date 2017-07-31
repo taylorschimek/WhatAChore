@@ -254,7 +254,9 @@ body {
         border: 1px solid $cream;
         position: relative;
         top: 50%;
-        transform: translateY(-50%);
+        -webkit-transform: translateY(-50%);
+            -ms-transform: translateY(-50%);
+                transform: translateY(-50%);
         @media screen and (min-width: 767px) {
             border: none;
         }
