@@ -188,7 +188,7 @@ if DEBUG:
         # '/Users/HOME/Developer/WAC/whatachore/wac'
     ]
 else:
-    STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+    STATIC_ROOT = os.path.join(POJECT_ROOT, 'staticfiles')
     STATICFILES_DIRS = [
         os.path.join(PROJECT_ROOT, 'static'),
         os.path.join(BASE_DIR, 'wac/static')
