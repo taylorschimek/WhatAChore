@@ -22,17 +22,16 @@
                     </div>
                 </div>
             </div>
-        <div class="modal-footer">
+        <div class="modal-footer container">
             <div class="float-left mr-auto">
                 <button type="button"
-                        class="btn btn-warning float-left mr-auto"
+                        class="btn btn-warning float-left mr-auto chg-pass-button"
                         onclick='find_modal("{% url 'password_change' %}")'>Change Password</button>
                 <button type="button"
-                        class="btn btn-warning ml-2"
+                        class="btn btn-warning chg-email-button"
                         onclick='alert("Change Email")'>Change Email</button>
             </div>
             <button type="submit" class="d-inline btn btn-primary">Save Changes</button>
-            <button type="button" class="btn btn-info" data-dismiss="modal">Close</button>
         </div>
         </form>
     </div>

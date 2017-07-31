@@ -99,14 +99,14 @@
 </section>
 
 <section id="home-control" class="container p-0">
-    <div class="container bg-info p-3" style="height: 50px;">
+    <div class="home-control2 container bg-info p-3">
         <!-- Email Workers -->
-        <div class="dropdown d-inline float-left">
+        <div class="home-control-sub email-section dropup">
             <button class="btn btn-secondary dropdown-toggle" type="button" id="workerEmailDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 Email Workers
             </button>
 
-            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <div class="dropup dropdown-menu" aria-labelledby="dropdownMenuButton">
                 {% for person in people %}
                 <a id="person_{{ person.pk }}" class="dropdown-item email_worker" data-toggle="modal" data-target="#homeModal" onclick="find_modal('{% url "email-to-worker" %}?person={{ person.pk }}')">{{ person.name }}</a>
                 {% endfor %}
@@ -115,8 +115,8 @@
         </div>
 
         <!-- Passed Weeks -->
-        <div class="dropdown d-inline float-left ml-2">
-            <button class="btn btn-secondary dropdown-toggle" type="button" id="passedWeeksDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <div class="home-control-sub passed-section dropup">
+            <button class=" btn btn-secondary dropdown-toggle" type="button" id="passedWeeksDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 View Passed Weeks
             </button>
 
@@ -131,9 +131,9 @@
         </div>
 
         <!-- Account Settings -->
-        <div class="dropdown d-inline float-right">
+        <div class="home-control-sub account-section dropdown">
             <button id="acctSettings" class="btn btn-secondary" data-toggle="modal" data-target="#homeModal" onclick="find_modal('{% url "account-settings" user.pk %}')" type="button">
-                Account Settings
+                Settings
             </button>
         </div>
     </div>

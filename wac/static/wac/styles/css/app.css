@@ -7101,4 +7101,52 @@ input[id^="id_chore_icon_location"] {
   color: #3B3738;
   cursor: pointer; }
 
+.home-control {
+  height: auto; }
+
+.home-control-sub {
+  display: block; }
+
+#workerEmailDropdown,
+#passedWeeksDropdown {
+  width: 100%;
+  float: none; }
+
+#acctSettings {
+  width: 100%;
+  float: none; }
+
+.passed-section {
+  margin-left: 0px; }
+
+.chg-pass-button,
+.chg-email-button {
+  margin: none; }
+
+/* larger than 440px */
+@media only screen and (min-width: 440px) {
+  #workerEmailDropdown,
+  #passedWeeksDropdown {
+    width: auto;
+    float: left; }
+
+  #acctSettings {
+    width: auto;
+    float: right; }
+
+  .home-control {
+    text-align: center; }
+
+  .home-control2 {
+    height: 50px; }
+
+  .home-control-sub {
+    display: inline; }
+
+  .passed-section {
+    margin-left: 0.5rem; }
+
+  .chg-email-button {
+    margin-left: 0.5rem; } }
+
 /*# sourceMappingURL=app.css.map */
