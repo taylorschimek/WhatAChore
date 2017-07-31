@@ -258,7 +258,8 @@ class ChoreDetailView(LoginRequiredMixin, FormMixin, DetailView):
 
     def get(self, request, *args, **kwargs):
         included_extensions = ['png']
-        choices = [fn for fn in os.listdir('/Users/HOME/Developer/WAC/whatachore/wac/static/wac/styles/images/Icons/red_icons')
+        icon_locations = settings.STATIC_ROOT + '/wac/styles/images/Icons/red_icons'
+        choices = [fn for fn in os.listdir(icon_locations)
                    if any(fn.endswith(ext) for ext in included_extensions)]
 
         print(choices)
