@@ -7018,10 +7018,12 @@ body {
   @media screen and (min-width: 767px) {
     #chores img {
       border: none; } }
-#chores .imgDiv {
+#chores .imgDiv,
+#chores .crdblk {
   display: inline; }
 @media only screen and (min-width: 440px) {
-  #chores .imgDiv {
+  #chores .imgDiv,
+  #chores .crdblk {
     display: block; } }
 #chores .card {
   cursor: pointer; }
