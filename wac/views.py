@@ -186,9 +186,13 @@ class ChoreCreateView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
 
     def get(self, request, *args, **kwargs):
         # print('get get get')
-        form = ChoreEditForm(initial={'chore_icon_location': '/Users/HOME/Developer/WAC/whatachore/wac/static/wac/styles/images/Icons/cream_icons/00_Default.png'})
+        print(settings.STATIC_ROOT)
+        print(settings.STATIC_URL)
+        initial_icon_location = settings.STATIC_ROOT + '/wac/styles/images/Icons/cream_icons/00_Default.png'
+        form = ChoreEditForm(initial={'chore_icon_location': initial_icon_location})
         included_extensions = ['png']
-        choices = [fn for fn in os.listdir('/Users/HOME/Developer/WAC/whatachore/wac/static/wac/styles/images/Icons/red_icons')
+        icon_locations = settings.STATIC_ROOT + '/wac/styles/images/Icons/red_icons'
+        choices = [fn for fn in os.listdir(icon_locations)
                    if any(fn.endswith(ext) for ext in included_extensions)]
         # print("get's choices {}".format(choices))
         paths = choices
