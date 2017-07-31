@@ -260,6 +260,16 @@ body {
         }
     }
 
+    .imgDiv {
+        display: inline;
+    }
+
+    @media only screen and (min-width: 440px) {
+        .imgDiv {
+            display: block;
+        }
+    }
+
     .card {
         cursor: pointer;
     }
