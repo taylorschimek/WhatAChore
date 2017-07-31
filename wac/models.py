@@ -51,6 +51,8 @@ DAY_OFF_CHOICES = [
     ('Sat', 'Saturday')
 ]
 
+icon_locations = settings.STATIC_ROOT + '/wac/styles/images/icons/cream_icons'
+
 
 class Chore(models.Model):
 
@@ -72,7 +74,7 @@ class Chore(models.Model):
     age_restriction = models.IntegerField()
     chore_icon_location = models.FilePathField(default='00_Default.png',
                                       match=".\.png",
-                                      path='/Users/HOME/Developer/WAC/whatachore/wac/static/wac/styles/images/Icons/cream_icons',
+                                      path=icon_locations,
                                       max_length=255
     )
 

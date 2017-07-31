@@ -188,13 +188,13 @@ class ChoreCreateView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
         # print('get get get')
         print(settings.STATIC_ROOT)
         print(settings.STATIC_URL)
-        initial_icon_location = settings.STATIC_ROOT + '/wac/styles/images/icons/cream_icons/00_Default.png'
+        initial_icon_location = settings.STATIC_ROOT + '/wac/styles/images/icons/red_icons/00_Default.png'
         form = ChoreEditForm(initial={'chore_icon_location': initial_icon_location})
         included_extensions = ['png']
         icon_locations = settings.STATIC_ROOT + '/wac/styles/images/icons/red_icons'
         choices = [fn for fn in os.listdir(icon_locations)
                    if any(fn.endswith(ext) for ext in included_extensions)]
-        # print("get's choices {}".format(choices))
+        print("get's choices {}".format(choices))
         paths = choices
 
         return render(request, 'wac/chore_create_form.html', {'form': form, 'paths': paths})
