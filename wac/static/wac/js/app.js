@@ -436,7 +436,7 @@ $(function () {
         $('#id_y').val(cropData['y']);
         $('#id_height').val(cropData['height']);
         $('#id_width').val(cropData['width']);
-        $('#id_rotate').val(cropData['rotate']);
+        // $('#id_rotate').val(cropData['rotate']);
         closeThis();
     });
 
