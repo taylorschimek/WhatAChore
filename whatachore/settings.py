@@ -188,6 +188,7 @@ if DEBUG:
         # os.path.join(BASE_DIR, 'wac/static')
         # '/Users/HOME/Developer/WAC/whatachore/wac'
     ]
+    STATIC_URL = '/static/'
 else:
     STATIC_ROOT = os.path.join(PROJECT_ROOT, 'staticfiles')
     STATICFILES_DIRS = [
@@ -195,8 +196,7 @@ else:
         os.path.join(BASE_DIR, 'wac/static')
         # '/Users/HOME/Developer/WAC/whatachore/wac'
     ]
+    STATIC_URL = '/staticfiles/'
     STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
-
-STATIC_URL = '/static/'
 
 FIXTURE_DIRS = (os.path.join(PROJECT_ROOT, 'fixtures'),)
