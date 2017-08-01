@@ -18,29 +18,6 @@ body {
     font-family: myFirstFont;
 }
 
-// Below is font stuff for maybe later
-// html {
-//   font-size: 14px
-// }
-//
-// @include media-breakpoint-up(sm) {
-//   html {
-//     font-size: 16px;
-//   }
-// }
-//
-// @include media-breakpoint-up(md) {
-//   html {
-//     font-size: 20px;
-//   }
-// }
-//
-// @include media-breakpoint-up(lg) {
-//   html {
-//     font-size: 28px;
-//   }
-// }
-
 
 /* ----------------------
     Navigation
@@ -247,20 +224,46 @@ body {
     Chores Page
 -----------------------*/
 #chores {
+    h3 {
+        font-size: 2vw;
+        @media screen and (max-width: 767px) {
+            font-size: 4vw;
+        }
+    }
+
     a {
         text-decoration: none;
     }
     img {
-        border: 1px solid $cream;
-        position: relative;
-        top: 50%;
-        -webkit-transform: translateY(-50%);
-            -ms-transform: translateY(-50%);
-                transform: translateY(-50%);
-        @media screen and (min-width: 767px) {
-            border: none;
+        width: 80%;
+        display: block;
+        margin: 2rem auto 0;
+        border-radius: 1rem;
+        @media screen and (max-width: 401px) {
+            margin: .25rem auto;
         }
     }
+    // img {
+    //     border: 1px solid $cream;
+    //     position: relative;
+    //     top: 50%;
+    //     -webkit-transform: translateY(-50%);
+    //         -ms-transform: translateY(-50%);
+    //             transform: translateY(-50%);
+    //     @media screen and (min-width: 767px) {
+    //         border: none;
+    //     }
+    // }
+
+    // .row {
+    //     &:before {
+    //         content: none;
+    //     }
+    //
+    //     &:after {
+    //         content: '';
+    //     }
+    // }
 
     // .imgDiv,
     // .crdblk {
@@ -287,7 +290,7 @@ body {
         opacity: 0.5;
     }
 
-    @media screen and (min-width: 767px) {
+    @media only screen and (min-width: 767px) {
         .cardTitle {
             height: 65px;
         }
@@ -304,12 +307,6 @@ body {
         background: $cream;
         border: 2px solid $red;
         color: $red;
-
-        h3 {
-            position: relative;
-            top: 50%;
-            transform: translateY(-50%);
-        }
     }
 }
 

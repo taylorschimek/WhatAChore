@@ -82,7 +82,7 @@ class AssignmentListView(LoginRequiredMixin, TemplateView):
         weeks = Week.objects.filter(
             user = self.request.user
         )
-        if len(weeks) == 0:
+        if len(weeks) == 0 and user.welcomed:
             new_week = Week.create(current_user=self.request.user)
 
         # all subsequent calls to Assignment page
