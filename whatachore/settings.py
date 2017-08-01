@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'djcelery',
     'widget_tweaks',
+    'storages',
     'useraccounts',
     'wac',
 ]
@@ -86,17 +87,6 @@ TEMPLATES = [
 
 
 WSGI_APPLICATION = 'whatachore.wsgi.application'
-
-
-# Database
-# https://docs.djangoproject.com/en/1.11/ref/settings/#databases
-
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-#     }
-# }
 
 db_from_env = dj_database_url.config(conn_max_age=500)
 
@@ -169,6 +159,15 @@ USE_L10N = True
 
 USE_TZ = True
 
+S3_BUCKET_NAME = 'whatachore-assets'
+AWS_ACCESS_KEY = 'AKIAILIYYMDXWMVE2DDQ'
+AWS_SECRET_ACCESS_KEY = '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'
+AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.come' % S3_BUCKET_NAME
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+
+MEDIAFILES_LOCATION = 'media'
+DEFAULT_FILE_STORAGE = 'custom_storages.MediaStorage'
+
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
@@ -179,7 +178,7 @@ PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 
 MEDIA_ROOT = os.path.join(PROJECT_ROOT, 'media/')
 
-MEDIA_URL = 'media/'
+
 
 if DEBUG:
     STATIC_ROOT = os.path.join(BASE_DIR, 'wac/static')
@@ -189,6 +188,7 @@ if DEBUG:
         # '/Users/HOME/Developer/WAC/whatachore/wac'
     ]
     STATIC_URL = '/static/'
+    MEDIA_URL = 'media/'
 else:
     STATIC_ROOT = os.path.join(PROJECT_ROOT, 'staticfiles')
     STATICFILES_DIRS = [
@@ -198,5 +198,6 @@ else:
     ]
     STATIC_URL = '/staticfiles/'
     STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
+    MEDIA_URL = "https://%s/%s/" % (AWS_S3_CUSTOM_DOMAIN, MEDIAFILES_LOCATION)
 
 FIXTURE_DIRS = (os.path.join(PROJECT_ROOT, 'fixtures'),)

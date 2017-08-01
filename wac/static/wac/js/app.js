@@ -72,10 +72,10 @@ function find_modal(theUrl) {
             $(modal).find('#id_fromUrl').val(url);
         }
     });
-    console.log("find_modal went");
+    // console.log("find_modal went");
     // For Chore Modal only
     if (url.indexOf("wac/chores") !== -1) {
-        console.log("if check is true");
+        // console.log("if check is true");
         checkDOMChange();
     }
 }
