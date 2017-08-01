@@ -72,9 +72,10 @@ function find_modal(theUrl) {
             $(modal).find('#id_fromUrl').val(url);
         }
     });
-
+    console.log("find_modal went");
     // For Chore Modal only
     if (url === 'https://whatachore.herokuapp.com/wac/chores') {
+        console.log("if check is true");
         checkDOMChange();
     }
 }
