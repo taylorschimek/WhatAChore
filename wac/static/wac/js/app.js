@@ -74,7 +74,7 @@ function find_modal(theUrl) {
     });
     console.log("find_modal went");
     // For Chore Modal only
-    if (url === 'https://whatachore.herokuapp.com/wac/chores') {
+    if (url.indexOf("wac/chores") !== -1) {
         console.log("if check is true");
         checkDOMChange();
     }
