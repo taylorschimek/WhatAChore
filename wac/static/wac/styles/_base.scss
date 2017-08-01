@@ -225,9 +225,9 @@ body {
 -----------------------*/
 #chores {
     h3 {
-        font-size: 2vw;
+        font-size: 150%;
         @media screen and (max-width: 767px) {
-            font-size: 4vw;
+            font-size: 100%;
         }
     }
 
@@ -236,24 +236,18 @@ body {
     }
     img {
         width: 80%;
-        display: block;
         margin: 2rem auto 0;
         border-radius: 1rem;
-        @media screen and (max-width: 401px) {
+        @media screen and (max-width: 767px) {
             margin: .25rem auto;
+            // position: relative;
+            // top: 50%;
+            // -webkit-transform: translateY(-50%);
+            //     -ms-transform: translateY(-50%);
+            //         transform: translateY(-50%);
         }
     }
-    // img {
-    //     border: 1px solid $cream;
-    //     position: relative;
-    //     top: 50%;
-    //     -webkit-transform: translateY(-50%);
-    //         -ms-transform: translateY(-50%);
-    //             transform: translateY(-50%);
-    //     @media screen and (min-width: 767px) {
-    //         border: none;
-    //     }
-    // }
+
 
     // .row {
     //     &:before {
