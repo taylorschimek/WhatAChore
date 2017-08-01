@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'djcelery',
     'widget_tweaks',
     'storages',
+    'whatachore',
     'useraccounts',
     'wac',
 ]
@@ -166,7 +167,7 @@ AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.come' % S3_BUCKET_NAME
 DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 
 MEDIAFILES_LOCATION = 'media'
-DEFAULT_FILE_STORAGE = 'custom_storages.MediaStorage'
+DEFAULT_FILE_STORAGE = 'whatachore.custom_storages.MediaStorage'
 
 
 # Static files (CSS, JavaScript, Images)
