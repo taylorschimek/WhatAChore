@@ -51,7 +51,7 @@ class ChoreEditForm(forms.ModelForm):
         ]
         help_texts = {
             'duration': _('in minutes, please.'),
-            'age_restriction': _('the youngest a worker can be to do this task.'),
+            'age_restriction': _('youngest to do task.'),
         }
         widgets = {'chore_icon_location': forms.RadioSelect}
 
