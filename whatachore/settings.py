@@ -13,7 +13,7 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 import os
 import dj_database_url
 
-from whatachore.aws.conf import *
+
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -27,7 +27,6 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', ')1=gk_qb7_adb+t#95vxv+g3n-3_k0^83@5_&!@lpa^84564ee')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-# DEBUG = True
 DEBUG = bool(os.environ.get('DJANGO_DEBUG', True))
 
 ALLOWED_HOSTS = ['whatachore.herokuapp.com', 'localhost']
@@ -197,14 +196,15 @@ if DEBUG:
     STATIC_URL = '/static/'
     MEDIA_URL = 'media/'
 else:
-    STATIC_ROOT = os.path.join(PROJECT_ROOT, 'staticfiles')
-    STATICFILES_DIRS = [
-        os.path.join(PROJECT_ROOT, 'static'),
-        os.path.join(BASE_DIR, 'wac/static')
-        # '/Users/HOME/Developer/WAC/whatachore/wac'
-    ]
-    STATIC_URL = '/staticfiles/'
-    STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
+    from whatachore.aws.conf import *
+    # STATIC_ROOT = os.path.join(PROJECT_ROOT, 'staticfiles')
+    # STATICFILES_DIRS = [
+    #     os.path.join(PROJECT_ROOT, 'static'),
+    #     os.path.join(BASE_DIR, 'wac/static')
+    #     # '/Users/HOME/Developer/WAC/whatachore/wac'
+    # ]
+    # STATIC_URL = '/staticfiles/'
+    # STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
     # MEDIA_URL = "https://%s/%s/" % (AWS_S3_CUSTOM_DOMAIN, MEDIAFILES_LOCATION)
 
 FIXTURE_DIRS = (os.path.join(PROJECT_ROOT, 'fixtures'),)
