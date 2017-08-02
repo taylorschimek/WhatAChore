@@ -13,6 +13,8 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 import os
 import dj_database_url
 
+from whatachore.aws.conf import *
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -160,14 +162,18 @@ USE_L10N = True
 
 USE_TZ = True
 
-S3_BUCKET_NAME = os.environ.get('AWS_STORAGE_BUCKET_NAME')
-AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY')
-AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
-AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.come' % S3_BUCKET_NAME
-DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-
-MEDIAFILES_LOCATION = 'media'
-DEFAULT_FILE_STORAGE = 'whatachore.custom_storages.MediaStorage'
+# S3_BUCKET_NAME = os.environ.get('AWS_STORAGE_BUCKET_NAME')
+# AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY')
+# AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
+# AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.come' % S3_BUCKET_NAME
+# AWS_SE_OBJECT_PARAMETERS = {
+#     'name': 'client',
+# }
+#
+# # DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+#
+# MEDIAFILES_LOCATION = 'media'
+# DEFAULT_FILE_STORAGE = 'whatachore.custom_storages.MediaStorage'
 
 
 # Static files (CSS, JavaScript, Images)
@@ -177,7 +183,7 @@ LOGIN_URL = '/useraccounts/login-page/'
 
 PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 
-MEDIA_ROOT = os.path.join(PROJECT_ROOT, 'media/')
+# MEDIA_ROOT = os.path.join(PROJECT_ROOT, 'media/')
 
 
 
@@ -199,6 +205,6 @@ else:
     ]
     STATIC_URL = '/staticfiles/'
     STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
-    MEDIA_URL = "https://%s/%s/" % (AWS_S3_CUSTOM_DOMAIN, MEDIAFILES_LOCATION)
+    # MEDIA_URL = "https://%s/%s/" % (AWS_S3_CUSTOM_DOMAIN, MEDIAFILES_LOCATION)
 
 FIXTURE_DIRS = (os.path.join(PROJECT_ROOT, 'fixtures'),)
