@@ -95,7 +95,8 @@ class Person(models.Model):
 
     def get_image_path(instance, filename):
         new_name = str(instance.id) + '_' + filename
-        return os.path.join('people_mugs', new_name)
+        theUrl = os.path.join(settings.MEDIA_URL, 'people_mugs')
+        return os.path.join(theUrl, new_name)
 
     def get_age(self):
         today = date.today()
