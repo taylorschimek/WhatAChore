@@ -160,9 +160,9 @@ USE_L10N = True
 
 USE_TZ = True
 
-S3_BUCKET_NAME = 'whatachore-assets'
-AWS_ACCESS_KEY_ID = 'AKIAILIYYMDXWMVE2DDQ'
-AWS_SECRET_ACCESS_KEY = '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'
+S3_BUCKET_NAME = os.environ.get('AWS_STORAGE_BUCKET_NAME')
+AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY')
+AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
 AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.come' % S3_BUCKET_NAME
 DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 
