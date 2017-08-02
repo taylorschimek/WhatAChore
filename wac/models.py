@@ -126,6 +126,7 @@ class Person(models.Model):
 
     @property
     def person_pic(self):
+        print("models property")
         remove = settings.BASE_DIR + '/wac/static'
         # return '/wac/styles/images/Icons/cream_icons/' + self.chore_icon_location.replace(settings.BASE_DIR, '')
         return self.pic_location.replace(remove, '')
