@@ -385,6 +385,11 @@ def single_chore_added(chore, week):
             print(method_name)
             assigning_methods[method_name](chore)
 
+    all_asses = Assignment.objects.filter(week__user=chore.user).filter(week__exact=THIS_WEEK)
+    global TOTAL_MINUTES_GATHERED
+    for ass in all_asses:
+        TOTAL_MINUTES_GATHERED += ass.what.duration
+
     assign_people_to_chores()
 
 
@@ -394,7 +399,6 @@ def assign_people_to_chores():
     people = Person.objects.filter(user__exact=THIS_WEEK.user)
     if len(people) > 0:
         to_dos = Assignment.objects.filter(week__exact=THIS_WEEK).filter(who__isnull = True)
-        global TOTAL_MINUTES_GATHERED
         minute_limit = (TOTAL_MINUTES_GATHERED / len(people)) + (TOTAL_MINUTES_GATHERED / len(to_dos))
 
         for person in people:

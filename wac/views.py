@@ -82,7 +82,7 @@ class AssignmentListView(LoginRequiredMixin, TemplateView):
         weeks = Week.objects.filter(
             user = self.request.user
         )
-        if len(weeks) == 0 and user.welcomed:
+        if len(weeks) == 0 and self.request.user.welcomed:
             new_week = Week.create(current_user=self.request.user)
 
         # all subsequent calls to Assignment page
@@ -221,7 +221,13 @@ class ChoreCreateView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
                 weeks = Week.objects.filter(
                     user = self.request.user
                 )
-                if len(weeks):
+                people = Person.objects.filter(
+                    user = self.request.user
+                )
+                asses = Assignment.objects.filter(
+                    week__user = self.request.user
+                )
+                if len(weeks) and len(people) and len(asses):
                     this_week = weeks.filter(is_current=True)[0]
                     if this_week:
                         single_chore_added(new_chore, this_week)
