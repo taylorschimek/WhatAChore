@@ -10,3 +10,4 @@ whatachore/media/people_mugs
 WACenv
 *.pyc
 staticfiles
+.env

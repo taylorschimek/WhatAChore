@@ -51,8 +51,6 @@ DAY_OFF_CHOICES = [
     ('Sat', 'Saturday')
 ]
 
-icon_locations = settings.STATIC_ROOT + '/wac/styles/images/icons/cream_icons'
-
 
 class Chore(models.Model):
 
@@ -74,7 +72,7 @@ class Chore(models.Model):
     age_restriction = models.IntegerField()
     chore_icon_location = models.FilePathField(default='00_Default.png',
                                       match=".\.png",
-                                      path=icon_locations,
+                                      path='wac/filepaths',
                                       max_length=255
     )
 
@@ -83,8 +81,8 @@ class Chore(models.Model):
 
     @property
     def chore_icon(self):
-        remove = settings.BASE_DIR + '/wac/static'
-        return self.chore_icon_location.replace(remove, '')
+        remove = 'filepaths'
+        return self.chore_icon_location.replace(remove, '/styles/images/icons/cream_icons/')
 
 
 
@@ -95,8 +93,7 @@ class Person(models.Model):
 
     def get_image_path(instance, filename):
         new_name = str(instance.id) + '_' + filename
-        theUrl = os.path.join(settings.MEDIA_URL, 'people_mugs')
-        return os.path.join(theUrl, new_name)
+        return os.path.join('people_mugs', new_name)
 
     def get_age(self):
         today = date.today()

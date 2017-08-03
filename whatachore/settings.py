@@ -13,6 +13,8 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 import os
 import dj_database_url
 
+from whatachore.aws.conf import *
+from decouple import config, Csv
 
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -24,12 +26,12 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # SECURITY WARNING: keep the secret key used in production secret!
 # SECRET_KEY = ')1=gk_qb7_adb+t#95vxv+g3n-3_k0^83@5_&!@lpa^84564ee'
-SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', ')1=gk_qb7_adb+t#95vxv+g3n-3_k0^83@5_&!@lpa^84564ee')
+SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = bool(os.environ.get('DJANGO_DEBUG', True))
+DEBUG = config('DEBUG', default=True, cast=bool)
 
-ALLOWED_HOSTS = ['whatachore.herokuapp.com', 'localhost']
+ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=Csv())
 
 AUTH_USER_MODEL = 'useraccounts.User'
 
@@ -95,11 +97,11 @@ db_from_env = dj_database_url.config(conn_max_age=500)
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'wac_db',
-        'USER': 'postgres',
-        'PASSWORD': 'monugget1',
-        'HOST': 'localhost',
-        'PORT': '5432',
+        'NAME': config('DB_NAME'),
+        'USER': config('DB_USER'),
+        'PASSWORD': config('DB_PASSWORD'),
+        'HOST': config('DB_HOST'),
+        'PORT': config('DB_PORT'),
     }
 }
 
@@ -147,7 +149,6 @@ DEFAULT_FROM_EMAIL = 'noreply@taylorschimek.com'
 TEMPLATED_EMAIL_BACKEND = 'templated_email.backends.vanilla_django'
 
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/1.11/topics/i18n/
 
@@ -165,16 +166,12 @@ LOGIN_URL = '/useraccounts/login-page/'
 
 PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 
-if DEBUG:
-    STATIC_ROOT = os.path.join(BASE_DIR, 'wac/static')
-    STATICFILES_DIRS = [
-        os.path.join(PROJECT_ROOT, 'static'),
-        # os.path.join(BASE_DIR, 'wac/static')
-        # '/Users/HOME/Developer/WAC/whatachore/wac'
-    ]
-    STATIC_URL = '/static/'
-    MEDIA_URL = 'media/'
-else:
-    from whatachore.aws.conf import *
 
 FIXTURE_DIRS = (os.path.join(PROJECT_ROOT, 'fixtures'),)
+
+
+print("1 = {}".format(AWS_ACCESS_KEY_ID))
+print("2 = {}".format(ALLOWED_HOSTS))
+print("3 = {}".format(AWS_SECRET_ACCESS_KEY))
+print("4 = {}".format(STATIC_URL))
+print("5 = {}".format(ICON_NAMES))

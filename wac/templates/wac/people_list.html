@@ -35,7 +35,7 @@
           <a id="{{person.name}}-link" data-toggle="modal" data-target="#myModal" onclick="find_modal('{% url "person-detail" person.pk %}')">
           {% if person.mugshot %}
 
-          <img src="{{ BASE_DIR }}/media/{{ person.mugshot }}" alt="{{ person.mugshot.url }}" />
+          <img src="{{ MEDIA_URL }}{{ person.mugshot }}" alt="{{ person.mugshot.url }}" />
 
           {% else %}
 

@@ -26,6 +26,9 @@ from wac.signals.handlers import single_chore_added
 
 from PIL import Image
 
+from django.forms.fields import FilePathField
+
+
 
 
 #=============== LINEUP ==================#
@@ -174,6 +177,7 @@ class ChoreListView(LoginRequiredMixin, ListView):
     model = Chore
 
     def get_queryset(self):
+        print("CHORELISTVIEW get_queryset method")
         order = ['Daily', 'Every 2 Days', 'Every 3 Days', 'Weekly', 'Every 2 Weeks', 'Monthly', 'Every 2 Months', 'Quarterly', 'Yearly']
         return sorted(Chore.objects.filter(user=self.request.user).order_by('task'), key = lambda c: order.index(c.interval))
 
@@ -185,15 +189,11 @@ class ChoreCreateView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
     template_name_suffix = '_create_form'
 
     def get(self, request, *args, **kwargs):
-        # print('get get get')
-        print(settings.STATIC_ROOT)
         print(settings.STATIC_URL)
-        initial_icon_location = settings.STATIC_ROOT + '/wac/styles/images/icons/red_icons/00_Default.png'
+        initial_icon_location = 'https:' + settings.STATIC_URL + 'wac/styles/images/icons/red_icons/00_Default.png'
         form = ChoreEditForm(initial={'chore_icon_location': initial_icon_location})
-        included_extensions = ['png']
-        icon_locations = settings.STATIC_ROOT + '/wac/styles/images/icons/red_icons'
-        choices = [fn for fn in os.listdir(icon_locations)
-                   if any(fn.endswith(ext) for ext in included_extensions)]
+        # icon_locations = 'https:' + settings.STATIC_URL + 'wac/styles/images/icons/red_icons'
+        choices = settings.ICON_NAMES
         print("get's choices {}".format(choices))
         paths = choices
 
@@ -264,9 +264,9 @@ class ChoreDetailView(LoginRequiredMixin, FormMixin, DetailView):
 
     def get(self, request, *args, **kwargs):
         included_extensions = ['png']
-        icon_locations = settings.STATIC_ROOT + '/wac/styles/images/icons/red_icons'
-        choices = [fn for fn in os.listdir(icon_locations)
-                   if any(fn.endswith(ext) for ext in included_extensions)]
+        choices = settings.ICON_NAMES
+        # choices = [fn for fn in os.listdir(icon_locations)
+        #            if any(fn.endswith(ext) for ext in included_extensions)]
 
         print(choices)
 
@@ -401,13 +401,9 @@ class PersonDetailView(LoginRequiredMixin, FormMixin, DetailView):
             image = form.crop_image()
             f= BytesIO()
             image.save(f, format='png')
-            try:
-                os.remove(settings.MEDIA_ROOT + current_image)
-            except OSError:
-                pass
-            finally:
-                self.object.mugshot.save(self.object.name + '.png', ContentFile(f.getvalue()))
-                f.close()
+
+            self.object.mugshot.save(self.object.name + '.png', ContentFile(f.getvalue()))
+            f.close()
 
         self.object.save()
         messages.success(self.request, self.object.name + " was updated successfully!")
