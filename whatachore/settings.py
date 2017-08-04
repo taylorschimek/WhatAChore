@@ -139,17 +139,17 @@ CELERYBEAT_SCHEDULER = 'djcelery.schedulers.DatabaseScheduler'
 if BROKER_URL == 'django://':
     INSTALLED_APPS += ('kombu.transport.django',)
 
-# SendGrid Stuff - needs to be secured with Python Decouple
-# EMAIL_HOST = 'smtp.sendgrid.net'
-# EMAIL_PORT = 587
-# EMAIL_HOST_USER = 'wac_app'
-# EMAIL_HOST_PASSWORD = 'PeLa478*'
-# EMAIL_USE_TLS = True
+# SendGrid Stuff -
+EMAIL_HOST = config(EMAIL_HOST)
+EMAIL_PORT = config(EMAIL_PORT, cast=int)
+EMAIL_HOST_USER = config(EMAIL_HOST_USER)
+EMAIL_HOST_PASSWORD = config(EMAIL_HOST_PASSWORD)
+EMAIL_USE_TLS = config(EMAIL_USE_TLS, cast=bool)
 
 # temp for development
-EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
-EMAIL_FILE_PATH = 'tmp/email-messages/'
-DEFAULT_FROM_EMAIL = 'noreply@taylorschimek.com'
+# EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
+# EMAIL_FILE_PATH = 'tmp/email-messages/'
+# DEFAULT_FROM_EMAIL = 'noreply@taylorschimek.com'
 
 TEMPLATED_EMAIL_BACKEND = 'templated_email.backends.vanilla_django'
 
