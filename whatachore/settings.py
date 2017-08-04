@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 
 import os
 import dj_database_url
+import djcelery
 
 from whatachore.aws.conf import *
 from decouple import config, Csv
@@ -116,13 +117,27 @@ AUTH_PASSWORD_VALIDATORS = [
 # AWS S3 Stuff
 
 
-# Celery Stuff
-BROKER_URL = "amqp://ruof:monugget1@localhost:5672/wachost"
-CELERY_ACCEPT_CONTENT = ['json']
+# Celery Stuff from before.
+# BROKER_URL = "amqp://ruof:monugget1@localhost:5672/wachost"
+# CELERY_ACCEPT_CONTENT = ['json']
+# CELERY_TASK_SERIALIZER = 'json'
+# CELERY_RESULT_SERIALIZER = 'json'
+# CELERY_RESULT_BACKEND = 'djcelery.backends.database:DatabaseBackend'
+# CELERYBEAT_SCHEDULER = 'djcelery.schedulers.DatabaseScheduler'
+
+# Celery stuff from Heroku
+djcelery.setup_loader()
+
+BROKER_URL = config('CLOUDAMQP_URL', 'django://')
+BROKER_POOL_LIMIT = 1
+BROKER_CONNECTION_MAX_RETRIES = None
+
 CELERY_TASK_SERIALIZER = 'json'
-CELERY_RESULT_SERIALIZER = 'json'
-CELERY_RESULT_BACKEND = 'djcelery.backends.database:DatabaseBackend'
+CELERY_ACCEPT_CONTENT = ['json', 'msgpack']
 CELERYBEAT_SCHEDULER = 'djcelery.schedulers.DatabaseScheduler'
+
+if BROKER_URL == 'django://':
+    INSTALLED_APPS += ('kombu.transport.django',)
 
 # SendGrid Stuff - needs to be secured with Python Decouple
 # EMAIL_HOST = 'smtp.sendgrid.net'
