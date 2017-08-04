@@ -53,7 +53,9 @@ class ChoreEditForm(forms.ModelForm):
             'duration': _('in minutes, please.'),
             'age_restriction': _('youngest to do task.'),
         }
-        widgets = {'chore_icon_location': forms.RadioSelect}
+        widgets = {'description': forms.Textarea(attrs={'rows': 2}),
+                   'chore_icon_location': forms.RadioSelect
+        }
 
 
 class PersonEditForm(forms.ModelForm):

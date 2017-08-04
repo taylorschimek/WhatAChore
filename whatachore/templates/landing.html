@@ -5,97 +5,95 @@
 
     <!-- Jumbotron -->
     <div class="jumbotron">
-      <div class="container">
-      <div id="jumboRow" class="row">
-        <div class="col-lg-6 text-center m-0 p-0">
-          <img class="img-fluid hidden-sm-down" src="{% static 'wac/styles/images/temp_landing_laptop.png' %}" alt="What A Chore screen shots on laptop and ipad" />
+        <div class="container">
+            <div id="jumboRow" class="row">
+                <div class="col-lg-6 text-center m-0 p-0">
+                    <img class="img-fluid hidden-sm-down" src="{% static 'wac/styles/images/temp_landing_laptop.png' %}" alt="What A Chore screen shots on laptop and ipad" />
+                </div>
+                <div class="col-lg-6">
+                    <h1 class="display-3">Blame It On Us</h1>
+                    <p><i>Dad! Why do I have to do the dishes tonight?</i></p>
+                    <p><i>Tell it to the computer, sweety.</i></p>
+                    <p class="lead">We're the perfect scapegoat.</p>
+                    <hr class="my-4">
 
+                    <p class="lead">
+                        <a id="instructionsButton" class="btn btn-secondary btn-lg text-success" role="button" href="#instructions">Learn More</a>
+                    </p>
+                </div>
+            </div>
         </div>
-        <div class="col-lg-6">
-          <h1 class="display-3">Blame It On Us</h1>
-          <p><i>Dad! Why do I have to do the dishes tonight?</i></p>
-          <p><i>Tell it to the computer, sweety.</i></p>
-          <p class="lead">We're the perfect scapegoat.</p>
-          <hr class="my-4">
-
-          <p class="lead">
-            <a id="instructionsButton" class="btn btn-secondary btn-lg text-success" role="button" href="#instructions">Learn More</a>
-          </p>
-        </div>
-        </div>
-      </div>
-
     </div> <!-- /Jumbotron -->
 
     {% if messages %}
     <div class="container text-center">
-      <div class="row">
-        <div class="col-sm-8 offset-sm-2">
-          {% for message in messages %}
-          <div class="alert alert-{{ message.tags }}" role="alert" >
-            <h4>{{ message }}</h4>
-          </div>
-          {% endfor %}
+        <div class="row">
+            <div class="col-sm-8 offset-sm-2">
+                {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}" role="alert" >
+                    <h4>{{ message }}</h4>
+                </div>
+                {% endfor %}
+            </div>
         </div>
-      </div>
     </div>
     {% endif %}
 
     <!-- Pictures and Simple Instructions / Back and Forth -->
     <section id="instructions" class="container">
-      <h1 class="text-center mt-4">As easy as...</h1>
+        <h1 class="text-center mt-4">As easy as...</h1>
 
-      <div id="step1" class="row">
-        <div class="col-md-2"></div>
-        <div class="col-md-4 text-center">
-          <img class="img-fluid mt-5 hidden-sm-down" src="{% static 'wac/styles/images/ReadyToWork.png' %}" alt="Silhouette of idle people"/>
+        <div id="step1" class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-4 text-center">
+                <img class="img-fluid mt-5 hidden-sm-down" src="{% static 'wac/styles/images/ReadyToWork.png' %}" alt="Silhouette of idle people"/>
+            </div>
+            <div class="col-md-4 px-3">
+                <h2>1. Build Your Team</h2>
+                <p>We at What A Chore believe housework should be team work. Add age and days off for more detail.</p>
+            </div>
+            <div class="col-md-2"></div>
         </div>
-        <div class="col-md-4 px-3">
-          <h2>1. Build Your Team</h2>
-          <p>We at What A Chore believe housework should be team work. Add age and days off for more detail.</p>
-        </div>
-        <div class="col-md-2"></div>
-      </div>
 
-      <div id="step2" class="row">
-        <div class="col-md-2"></div>
-        <div class="col-md-4 px-3">
-          <h2>2. Enter Chores</h2>
-          <p>Designate age limits, typical durations, frequencies and other details to assure each task gets done correctly and timely.</p>
+        <div id="step2" class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-4 px-3">
+                <h2>2. Enter Chores</h2>
+                <p>Designate age limits, typical durations, frequencies and other details to assure each task gets done correctly and timely.</p>
+            </div>
+            <div class="col-md-4 text-center">
+                <img class="img-fluid mt-5 hidden-sm-down" src="{% static 'wac/styles/images/WorkToDo.png' %}" alt="Cleaning supplies and tools"/>
+            </div>
+            <div class="col-md-2"></div>
         </div>
-        <div class="col-md-4 text-center">
-          <img class="img_fluid mt-5 hidden-sm-down" src="{% static 'wac/styles/images/WorkToDo.png' %}" alt="Cleaning supplies and tools"/>
-        </div>
-        <div class="col-md-2"></div>
-      </div>
 
-      <div id="step3" class="row">
-        <div class="col-md-2"></div>
-        <div class="col-md-4 text-center">
-          <img class="img_fluid mt-5 hidden-sm-down" src="{% static 'wac/styles/images/GetToWork.png' %}" alt="Silhouette of people with cleaning supplies in hand"/>
+        <div id="step3" class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-4 text-center">
+                <img class="img-fluid mt-5 hidden-sm-down" src="{% static 'wac/styles/images/GetToWork.png' %}" alt="Silhouette of people with cleaning supplies in hand"/>
+            </div>
+            <div class="col-md-4 px-3">
+                <h2>3. Get to Work</h2>
+                <p>Let What A Chore dish out assignments. We'll make sure no one person has to do more than the rest.</p>
+            </div>
+            <div class="col-md-2"></div>
         </div>
-        <div class="col-md-4 px-3">
-          <h2>3. Get to Work</h2>
-          <p>Let What A Chore dish out assignments. We'll make sure no one person has to do more than the rest.</p>
-        </div>
-        <div class="col-md-2"></div>
-      </div>
     </section> <!-- /Pictures and Simple Instructions / Back and Forth -->
 
     <!-- Register Form -->
     <section id="registration" class="register">
-      <div class="container">
-        <div class="col-sm-10 offset-sm-1 pt-5">
-          <h3>Start today</h3>
-          <p>Get your family moving</p>
-        </div>
+        <div class="container">
+            <div class="col-sm-10 offset-sm-1 pt-5">
+                <h3>Start today</h3>
+                <p>Get your family moving</p>
+            </div>
 
         <form action="{% url 'register-user' %}#registration" method="POST" class="col-sm-4 offset-sm-4">
             {% if form.errors %}
                 {% for field in form %}
                     {% for error in field.errors %}
                         <div class="alert alert-danger">
-                            <strong>{{ error|escape }}</strong>
+                        <strong>{{ error|escape }}</strong>
                         </div>
                     {% endfor %}
                 {% endfor %}
@@ -105,25 +103,22 @@
                     </div>
                 {% endfor %}
             {% endif %}
-          <div class="form-group">
+            <div class="form-group">
             {% csrf_token %}
-            {{ field.errors }}{{ form.email }}
-            <!-- <input type="email" class="form-control" id="email" aria-describedby="emailHelp" placeholder="Enter email"> -->
-            <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
-          </div>
-          <div class="form-group">
-            {{ field.errors }}{{ form.password }}
-            <!-- <input type="password" class="form-control" id="passsword" placeholder="Password"> -->
-          </div>
-           <button type="submit" class="btn btn-secondary">SIGN UP FOR FREE</button>
-
+                {{ field.errors }}{{ form.email }}
+                <!-- <input type="email" class="form-control" id="email" aria-describedby="emailHelp" placeholder="Enter email"> -->
+                <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+            </div>
+            <div class="form-group">
+                {{ field.errors }}{{ form.password }}
+                <!-- <input type="password" class="form-control" id="passsword" placeholder="Password"> -->
+            </div>
+            <button type="submit" class="btn btn-secondary">SIGN UP FOR FREE</button>
         </form>
 
-      </div>
+        </div>
     </section> <!-- /Register Form -->
 
     <div class="modal" id="myModal"></div>
-    <!-- <div class="modal" id="passResetModal"></div>
-    <div class="modal" id="passResetDoneModal"></div> -->
 
 {% endblock %}
