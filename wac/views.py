@@ -190,11 +190,9 @@ class ChoreCreateView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
 
     def get(self, request, *args, **kwargs):
         print(settings.STATIC_URL)
-        initial_icon_location = 'https:' + settings.STATIC_URL + 'wac/styles/images/icons/red_icons/00_Default.png'
+        initial_icon_location = 'wac/filepaths/00_Default.png'
         form = ChoreEditForm(initial={'chore_icon_location': initial_icon_location})
-        # icon_locations = 'https:' + settings.STATIC_URL + 'wac/styles/images/icons/red_icons'
         choices = settings.ICON_NAMES
-        print("get's choices {}".format(choices))
         paths = choices
 
         return render(request, 'wac/chore_create_form.html', {'form': form, 'paths': paths})
@@ -206,15 +204,12 @@ class ChoreCreateView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
         new_chore = form.save(commit=False)
         new_chore.user = user
         new_chore.last_assigned = datetime.date.today()
-        # new_chore.chore_icon_location = '/Users/HOME/Developer/WAC/whatachore/wac/static/wac/styles/images/Icons/cream_icons/' + form.cleaned_data['chore_icon_location']
         new_chore.save()
 
         response_data = {}
         response_data['status'] = 'success'
 
         if user.welcomed:
-            print("wac.views.ChoreCreateView.form_valid: welcomed is True")
-
             # Make assignment if chore.interval is Every 3 Days or more often:
             weekly_or_less = ['Every 3 Days', 'Every 2 Days', 'Daily']
             if new_chore.interval in weekly_or_less:
@@ -237,7 +232,6 @@ class ChoreCreateView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
             messages.success(self.request, new_chore.task + " was added successfully!")
 
         else:
-            print("wac.views.ChoreCreateView.form_valid: welcomed is False")
             user.welcomed = True
             user.save(update_fields=['welcomed'])
             response_data = {}
@@ -265,10 +259,7 @@ class ChoreDetailView(LoginRequiredMixin, FormMixin, DetailView):
     def get(self, request, *args, **kwargs):
         included_extensions = ['png']
         choices = settings.ICON_NAMES
-        # choices = [fn for fn in os.listdir(icon_locations)
-        #            if any(fn.endswith(ext) for ext in included_extensions)]
-
-        print(choices)
+        print("chore_icon_location = {}".format(self.chore.chore_icon_location))
 
         form = ChoreEditForm(instance=self.chore,
                              initial={'task': self.chore.task,
