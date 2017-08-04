@@ -92,22 +92,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'whatachore.wsgi.application'
 
-
-# if DEBUG:
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': config('DB_NAME'),
-#         'USER': config('DB_USER'),
-#         'PASSWORD': config('DB_PASSWORD'),
-#         'HOST': config('DB_HOST'),
-#         'PORT': config('DB_PORT'),
-#     }
-# }
-
-# db_from_env = dj_database_url.config(conn_max_age=500)
-# DATABASES['default'].update(db_from_env)
-local_db = config('DB_URL')
+local_db = config('DATABASE_URL')
 DATABASES = {'default': dj_database_url.config(default=local_db)}
 
 # Password validation
@@ -127,6 +112,9 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
+# AWS S3 Stuff
+
 
 # Celery Stuff
 BROKER_URL = "amqp://ruof:monugget1@localhost:5672/wachost"
@@ -168,12 +156,4 @@ LOGIN_URL = '/useraccounts/login-page/'
 
 PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 
-
 FIXTURE_DIRS = (os.path.join(PROJECT_ROOT, 'fixtures'),)
-
-
-print("1 = {}".format(AWS_ACCESS_KEY_ID))
-print("2 = {}".format(ALLOWED_HOSTS))
-print("3 = {}".format(AWS_SECRET_ACCESS_KEY))
-print("4 = {}".format(STATIC_URL))
-print("5 = {}".format(ICON_NAMES))
