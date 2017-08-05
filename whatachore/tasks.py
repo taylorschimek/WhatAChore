@@ -20,6 +20,24 @@ from useraccounts.models import User
 
 from wac.models import Assignment, Chore, Person, Week
 
+#-SENDGRID-########################################
+import sendgrid
+import os
+from sendgrid.helpers.mail import *
+
+# sg = sendgrid.SendGridAPIClient(apikey=os.environ.get('SENDGRID_API_KEY'))
+# from_email = Email("test@example.com")
+# to_email = Email("test@example.com")
+# subject = "Sending with SendGrid is Fun"
+# content = Content("text/plain", "and easy to do anywhere, even with Python")
+# mail = Mail(from_email, subject, to_email, content)
+# response = sg.client.mail.send.post(request_body=mail.get())
+# print(response.status_code)
+# print(response.body)
+# print(response.headers)
+###################################################
+
+
 
 app = Celery('tasks')
 
@@ -100,22 +118,34 @@ def pw_email(email, token):
         except AttributeError:
             print("attributeerror")
 
+
+# OLD EMAIL CONFIGURATION
+# @app.task
+# def user_to_worker(rec_list, subject, message):
+#     ctx = {
+#         'subject': subject,
+#         'message': message
+#     }
+#     from_email = 'noreply@taylorschimek.com'
+#     try:
+#         send_templated_mail(
+#             template_name='user_worker',
+#             from_email=from_email,
+#             recipient_list=rec_list,
+#             context=ctx
+#         )
+#     except AttributeError:
+#         print('attributeerror')
+
 @app.task
 def user_to_worker(rec_list, subject, message):
-    ctx = {
-        'subject': subject,
-        'message': message
-    }
-    from_email = 'noreply@taylorschimek.com'
-    try:
-        send_templated_mail(
-            template_name='user_worker',
-            from_email=from_email,
-            recipient_list=rec_list,
-            context=ctx
-        )
-    except AttributeError:
-        print('attributeerror')
+    sg = sendgrid.SendGridAPIClient(apikey='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')
+    from_email = Email('noreply@taylorschimek.com')
+    to_email = Email(rec_list[0])
+    subject = subject
+    content = Content('text/plain', message)
+    mail = Mail(from_email, subject, to_email, content)
+    response = sg.client.mail.send.post(request_body=mail.get())
 
 
 # MONDAY assignings....
