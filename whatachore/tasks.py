@@ -160,6 +160,7 @@ def gather_users_for_new_assignments():
 @periodic_task(run_every=(crontab(hour="*", minute="*/30", day_of_week="*")))
 def ping_self():
     logger.info("test logger on ping_self")
+    print("BLAHing")
     r = requests.get("whatachore.herokuapp.com", **kwargs)
     return (r.status_code)
 
