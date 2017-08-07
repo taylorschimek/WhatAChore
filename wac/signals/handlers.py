@@ -25,10 +25,19 @@ def person_delete(sender, instance, **kwargs):
 
 @receiver(pre_save, sender=Week)
 def obsolete_old_weeks(sender, instance, **kwargs):
+    """
+        When new week is created this changes current week to not
+        current and deletes all but 4 most recent passed weeks.
+    """
     if not instance.pk:
         old_weeks = Week.objects.filter(
             user__exact=instance.user
         )
+
+        people = Person.objects.filter(user__exact=instance.user)
+        for person in people:
+            person.weekly_minutes = 0
+            person.save(update_fields=['weekly_minutes'])
 
         if len(old_weeks) != 0:
             old_weeks.update(is_current=False)
@@ -381,10 +390,6 @@ def assign_people_to_chores():
     if len(people) > 0:
         to_dos = Assignment.objects.filter(week__exact=THIS_WEEK).filter(who__isnull = True)
         minute_limit = (TOTAL_MINUTES_GATHERED / len(people)) + (TOTAL_MINUTES_GATHERED / len(to_dos))
-
-        for person in people:
-            person.weekly_minutes = 0
-            person.save(update_fields=['weekly_minutes'])
 
         for to_do in to_dos:
             working = True
