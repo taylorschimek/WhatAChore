@@ -266,7 +266,7 @@
                         <a data-toggle="modal" data-target="#myModal" onclick="find_modal('{% url "assignment-detail" ass.pk %}')">
                         <li class="list-group-item">
                             <div>
-                              <p class="mb-0">{{ ass.what }}</p>
+                              <p class="d-inline mb-0">{{ ass.what }}</p>                    
                             </div>
                         </a>
                             {% if ass.done is True %}

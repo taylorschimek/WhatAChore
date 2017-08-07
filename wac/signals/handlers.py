@@ -371,26 +371,7 @@ def get_chores_for_this_week():
     else:
         print('You have no chores to assign!')
 
-def single_chore_added(chore, week):
-    """
-        if a new chore is created after a week exists,
-        and new chore's interval is weekly or less:
-        this creates an assignment for the current week.
-    """
-    global THIS_WEEK
-    THIS_WEEK = week
-    for choice in INTERVAL_CHOICES:
-        if chore.interval == choice[0]:
-            method_name = choice[0].replace(' ', '').lower()
-            print(method_name)
-            assigning_methods[method_name](chore)
 
-    all_asses = Assignment.objects.filter(week__user=chore.user).filter(week__exact=THIS_WEEK)
-    global TOTAL_MINUTES_GATHERED
-    for ass in all_asses:
-        TOTAL_MINUTES_GATHERED += ass.what.duration
-
-    assign_people_to_chores()
 
 
 
@@ -427,6 +408,31 @@ def assign_people_to_chores():
             people[choice].save(update_fields=['weekly_minutes'])
     else:
         print('You have no people to whom you may assign chores.')
+
+
+def single_chore_added(chore, week):
+    """
+        if a new chore is created after a week exists,
+        and new chore's interval is weekly or less:
+        this creates an assignment for the current week.
+    """
+    global THIS_WEEK
+    THIS_WEEK = week
+    for choice in INTERVAL_CHOICES:
+        if chore.interval == choice[0]:
+            method_name = choice[0].replace(' ', '').lower()
+            print(method_name)
+            assigning_methods[method_name](chore)
+
+    all_asses = Assignment.objects.filter(week__user=chore.user).filter(week__exact=THIS_WEEK)
+    global TOTAL_MINUTES_GATHERED
+    for ass in all_asses:
+        TOTAL_MINUTES_GATHERED += ass.what.duration
+
+    week.total_time = TOTAL_MINUTES_GATHERED
+    week.save(update_fields=['total_time'])
+
+    assign_people_to_chores()
 
 
 #========================================================================

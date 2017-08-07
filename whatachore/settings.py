@@ -114,16 +114,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-# AWS S3 Stuff
-
-
-# Celery Stuff from before.
-# BROKER_URL = "amqp://ruof:monugget1@localhost:5672/wachost"
-# CELERY_ACCEPT_CONTENT = ['json']
-# CELERY_TASK_SERIALIZER = 'json'
-# CELERY_RESULT_SERIALIZER = 'json'
-# CELERY_RESULT_BACKEND = 'djcelery.backends.database:DatabaseBackend'
-# CELERYBEAT_SCHEDULER = 'djcelery.schedulers.DatabaseScheduler'
 
 # Celery stuff from Heroku
 djcelery.setup_loader()
@@ -138,13 +128,6 @@ CELERYBEAT_SCHEDULER = 'djcelery.schedulers.DatabaseScheduler'
 
 if BROKER_URL == 'django://':
     INSTALLED_APPS += ('kombu.transport.django',)
-
-# SendGrid Stuff -
-# EMAIL_HOST = config(EMAIL_HOST)
-# EMAIL_PORT = config(EMAIL_PORT, cast=int)
-# EMAIL_HOST_USER = config(EMAIL_HOST_USER)
-# EMAIL_HOST_PASSWORD = config(EMAIL_HOST_PASSWORD)
-# EMAIL_USE_TLS = config(EMAIL_USE_TLS, cast=bool)
 
 # temp for development
 EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'

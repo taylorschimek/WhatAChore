@@ -1,4 +1,5 @@
 import datetime
+import requests
 
 from celery import Celery
 from celery.decorators import periodic_task
@@ -106,7 +107,6 @@ def pw_email(email, token):
             'token': token,  # default_token_generator.make_token(user),
             'protocol': 'http',
         }
-        logger.info("pw_email happened")
         from_email = 'noreply@taylorschimek.com'
         try:
             send_templated_mail(
@@ -118,24 +118,6 @@ def pw_email(email, token):
         except AttributeError:
             print("attributeerror")
 
-
-# OLD EMAIL CONFIGURATION
-# @app.task
-# def user_to_worker(rec_list, subject, message):
-#     ctx = {
-#         'subject': subject,
-#         'message': message
-#     }
-#     from_email = 'noreply@taylorschimek.com'
-#     try:
-#         send_templated_mail(
-#             template_name='user_worker',
-#             from_email=from_email,
-#             recipient_list=rec_list,
-#             context=ctx
-#         )
-#     except AttributeError:
-#         print('attributeerror')
 
 @app.task
 def user_to_worker(rec_list, subject, message):
@@ -167,13 +149,18 @@ def user_assignments(user):
 # below is real line
 @periodic_task(run_every=(crontab(hour=0, minute=0, day_of_week="Monday")))
 def gather_users_for_new_assignments():
-    logger.info("Starting gufna at {}".format(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')))
+    # logger.info("Starting gufna at {}".format(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')))
     results = periodic.get_users()
     for user in results:
         user_assignments(user)
     for user in results:
         special_email_user(user, 'assigned')
-    logger.info("Task finished at {}: week = {}".format(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'), results))
+    # logger.info("Task finished at {}: week = {}".format(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'), results))
+
+@periodic_task(run_every=(crontab(hour="*", minute="30", day_of_week="*")))
+def ping_self():
+    r = requests.get("whatachore.herokuapp.com", **kwargs)
+    return (r.status_code)
 
 
 
