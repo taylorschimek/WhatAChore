@@ -7,6 +7,6 @@
 {% endfor %}
   <tr>
     <th scope="row">Total</th>
-    <td><span class="badge badge-info">blah</span></td>
+    <td><span class="badge badge-info">{{ undone|length }}</span></td>
     <td><span class="badge badge-info">{{ week.total_time }}</span></td>
   </tr>

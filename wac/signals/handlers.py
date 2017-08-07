@@ -9,14 +9,34 @@ from wac.models import Assignment, Chore, Person, Week
 
 
 # Concerning Person Images
-
 @receiver(pre_delete, sender=Person)
 def person_delete(sender, instance, **kwargs):
-    print('='*20)
-    print('handlers - person_delete')
-    print('='*20)
     if instance.mugshot:
         instance.mugshot.delete(False)
+
+@receiver(pre_delete, sender=Chore)
+def chore_delete(sender, instance, **kwargs):
+    print(instance.user)
+    user = instance.user
+    week = Week.objects.filter(user=user).filter(is_current=True)[0]
+    asses = Assignment.objects.filter(week=week).filter(what=instance)
+    print("# of asses = {}".format(len(asses)))
+    for ass in asses:
+        ass.who.weekly_minutes -= ass.what.duration
+        ass.who.number_of_chores -= 1
+        ass.who.save(update_fields=['weekly_minutes', 'number_of_chores'])
+        week.total_time -= ass.what.duration
+    week.save(update_fields=['total_time'])
+
+
+
+    # if instance.week == week:
+    #     print('if damnit')
+    #     person.weekly_minutes -= instance.what.duration
+    #     person.save(update_fields=['weekly_minutes'])
+    #     week.total_time -= instance.what.duration
+
+
 
 
 
@@ -37,7 +57,8 @@ def obsolete_old_weeks(sender, instance, **kwargs):
         people = Person.objects.filter(user__exact=instance.user)
         for person in people:
             person.weekly_minutes = 0
-            person.save(update_fields=['weekly_minutes'])
+            person.number_of_chores = 0
+            person.save(update_fields=['weekly_minutes', 'number_of_chores'])
 
         if len(old_weeks) != 0:
             old_weeks.update(is_current=False)
@@ -410,7 +431,11 @@ def assign_people_to_chores():
             to_do.who = people[choice]
             to_do.save(update_fields=['who'])
             people[choice].weekly_minutes += to_do.what.duration
-            people[choice].save(update_fields=['weekly_minutes'])
+            if not people[choice].number_of_chores:
+                people[choice].number_of_chores = 1
+            else:
+                people[choice].number_of_chores += 1
+            people[choice].save(update_fields=['weekly_minutes', 'number_of_chores'])
     else:
         print('You have no people to whom you may assign chores.')
 
@@ -422,17 +447,14 @@ def single_chore_added(chore, week):
         this creates an assignment for the current week.
     """
     global THIS_WEEK
+    global TOTAL_MINUTES_GATHERED
     THIS_WEEK = week
+    TOTAL_MINUTES_GATHERED = week.total_time
     for choice in INTERVAL_CHOICES:
         if chore.interval == choice[0]:
             method_name = choice[0].replace(' ', '').lower()
             print(method_name)
             assigning_methods[method_name](chore)
-
-    all_asses = Assignment.objects.filter(week__user=chore.user).filter(week__exact=THIS_WEEK)
-    global TOTAL_MINUTES_GATHERED
-    for ass in all_asses:
-        TOTAL_MINUTES_GATHERED += ass.what.duration
 
     week.total_time = TOTAL_MINUTES_GATHERED
     week.save(update_fields=['total_time'])

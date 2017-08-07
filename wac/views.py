@@ -39,22 +39,36 @@ def lineup(request):
 
         # Update done field on assignment
         assignment = Assignment.objects.get(pk=request.POST['pk'])
-        people = Person.objects.filter(user=assignment.week.user)
+        people = Person.objects.filter(user=assignment.week.user).order_by('name')
         person = people.get(
             name=assignment.who
         )
+        week = assignment.week
 
         if assignment.done is True:
             assignment.done = False
             person.weekly_minutes += assignment.what.duration
-            # person.number_of_chores += 1
+            person.number_of_chores += 1
+            week.total_time += assignment.what.duration
         else:
             assignment.done = True
             person.weekly_minutes -= assignment.what.duration
-            # person.number_of_chores -= 1
+            person.number_of_chores -= 1
+            week.total_time -= assignment.what.duration
+
         assignment.save(update_fields=['done'])
-        person.save(update_fields=['weekly_minutes'])
-        html = render_to_string('wac/assignments_list_sub.html', {'people': people, 'week': assignment.week})
+        person.save(update_fields=['weekly_minutes', 'number_of_chores'])
+        week.save(update_fields=['total_time'])
+
+        assignments = Assignment.objects.filter(
+            week__user=request.user
+        ).filter(
+            week__is_current=True
+        )
+
+        undone_assignments = assignments.filter(done=False)
+
+        html = render_to_string('wac/assignments_list_sub.html', {'people': people, 'week': week, 'assignments': assignments, 'undone': undone_assignments})
         return HttpResponse(html)
     else:
         try:
@@ -113,6 +127,8 @@ class AssignmentListView(LoginRequiredMixin, TemplateView):
             ).filter(
                 week__is_current=True
             )
+
+            context['undone'] = context['assignments'].filter(done=False)
 
             context['dates'] = dates
             context['week'] = current_week[0]
