@@ -119,15 +119,24 @@ def pw_email(email, token):
             print("attributeerror")
 
 
+# @app.task
+# def user_to_worker(rec_list, subject, message):
+#     sg = sendgrid.SendGridAPIClient(apikey='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')
+#     from_email = Email('noreply@taylorschimek.com')
+#     to_email = Email(rec_list[0])
+#     subject = subject
+#     content = Content('text/plain', message)
+#     mail = Mail(from_email, subject, to_email, content)
+#     response = sg.client.mail.send.post(request_body=mail.get())
 @app.task
 def user_to_worker(rec_list, subject, message):
-    sg = sendgrid.SendGridAPIClient(apikey='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')
-    from_email = Email('noreply@taylorschimek.com')
-    to_email = Email(rec_list[0])
-    subject = subject
-    content = Content('text/plain', message)
-    mail = Mail(from_email, subject, to_email, content)
-    response = sg.client.mail.send.post(request_body=mail.get())
+    mail = EmailMultiAlternatives(
+        subject=subject,
+        body=message,
+        from_email=noreply@taylorschimek.com,
+        to=rec_list,
+    )
+    mail.send()
 
 
 # MONDAY assignings....
@@ -148,7 +157,7 @@ def user_assignments(user):
 
 # below is real line
 # @periodic_task(run_every=(crontab(hour=0, minute=0, day_of_week="Monday")))
-@periodic_task(run_every=(crontab(hour="23", minute="30", day_of_week="sunday")))
+@periodic_task(run_every=(crontab(hour="22", minute="55", day_of_week="sunday")))
 def gather_users_for_new_assignments():
     # logger.info("Starting gufna at {}".format(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')))
     results = periodic.get_users()
@@ -159,7 +168,7 @@ def gather_users_for_new_assignments():
     # logger.info("Task finished at {}: week = {}".format(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'), results))
 
 # @periodic_task(run_every=(crontab(hour="5-23", minute="*/15", day_of_week="*")))
-@periodic_task(run_every=(crontab(hour="10", minute="*/5", day_of_week="*")))
+@periodic_task(run_every=(crontab(hour="6-23", minute="*/15", day_of_week="*")))
 def ping_self():
     logger.info("test logger on ping_self")
     print("BLAHing")
