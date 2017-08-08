@@ -136,7 +136,7 @@ if BROKER_URL == 'django://':
 
 # with sendgrid-django
 EMAIL_BACKEND = 'sgbackend.SendGridBackend'
-SENDGRID_API_KEY = config(SENDGRID_API_KEY)
+SENDGRID_API_KEY = config('SENDGRID_API_KEY')
 
 TEMPLATED_EMAIL_BACKEND = 'templated_email.backends.vanilla_django'
 
