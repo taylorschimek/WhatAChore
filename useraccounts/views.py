@@ -38,10 +38,10 @@ def my_password_reset(request):
     if request.is_ajax() and request.method == 'POST':
         form = PasswordResetRequestForm(data=request.POST)
         if form.is_valid():
-            email.append(form.cleaned_data['email'])
+            email = form.cleaned_data['email']
             user = User.objects.get(email=email)
             token = default_token_generator.make_token(user)
-            pw_email.delay((email,), token)
+            pw_email.delay(email, token)
             messages.success(request, 'An email has been sent to ' + email +".  Please check your inbox to continue resetting your password.")
 
             response_data = {}
