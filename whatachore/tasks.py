@@ -122,10 +122,10 @@ def special_email_user(user, type):
 def pw_email(email, token):
     print("THIS IS HAPPENING")
     user = User.objects.get(email=email)
-    print(user)
+    uid = urlsafe_base64_encode(force_bytes(user.pk))
     if user:
         message = "To initiate password reset for " + email + ", click the link below:\n"
-        message += 'https://whatachore.herokuapp.com/reset/' + urlsafe_base64_encode(force_bytes(user.pk)).decode("utf-8") + '/' + token
+        message += 'https://whatachore.herokuapp.com/' + reverse('password_reset_confirm', {'uid': uid, 'token': token})
         message += '\n\n\nSincerely,\nTheWhat A Chore Team'
         email_list = [email,]
 
