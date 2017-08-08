@@ -157,7 +157,7 @@ def gather_users_for_new_assignments():
         special_email_user(user, 'assigned')
     # logger.info("Task finished at {}: week = {}".format(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'), results))
 
-@periodic_task(run_every=(crontab(hour="*", minute="*/30", day_of_week="*")))
+@periodic_task(run_every=(crontab(hour="*", minute="*/5", day_of_week="*")))
 def ping_self():
     logger.info("test logger on ping_self")
     print("BLAHing")
