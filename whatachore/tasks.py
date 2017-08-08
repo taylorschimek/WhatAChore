@@ -127,12 +127,13 @@ def pw_email(email, token):
         message = "To initiate password reset for " + email + ", click the link below:\n"
         message += 'https://whatachore.herokuapp.com/reset/' + urlsafe_base64_encode(force_bytes(user.pk)).decode("utf-8") + '/' + token
         message += '\n\n\nSincerely,\nTheWhat A Chore Team'
+        email_list = [email,]
 
         mail = EmailMultiAlternatives(
             subject='What A Chore - Password Reset',
             body=message,
             from_email='noreply@taylorschimek.com',
-            to=email
+            to=email_list
         )
         print(message)
         mail.send()
