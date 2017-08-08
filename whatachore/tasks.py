@@ -125,7 +125,7 @@ def pw_email(email, token):
     print(user)
     if user:
         message = "To initiate password reset for " + email + ", click the link below:\n"
-        message += 'https://whatachore.herokuapp.com/reset/' + urlsafe_base64_encode(force_bytes(user.pk)) + '/' + token
+        message += 'https://whatachore.herokuapp.com/reset/' + urlsafe_base64_encode(force_bytes(user.pk)).decode("utf-8") + '/' + token
         message += '\n\n\nSincerely,\nTheWhat A Chore Team'
 
         mail = EmailMultiAlternatives(
