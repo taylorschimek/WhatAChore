@@ -133,7 +133,7 @@ def user_to_worker(rec_list, subject, message):
     mail = EmailMultiAlternatives(
         subject=subject,
         body=message,
-        from_email=noreply@taylorschimek.com,
+        from_email="noreply@taylorschimek.com",
         to=rec_list,
     )
     mail.send()
