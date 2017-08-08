@@ -145,9 +145,10 @@ def user_assignments(user):
     logger.info("user_assignment finished = {}".format(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')))
 
 # below is testing line
-# @periodic_task(run_every=(crontab(hour="*", minute="*/2", day_of_week="Thursday")))
+
 # below is real line
-@periodic_task(run_every=(crontab(hour=0, minute=0, day_of_week="Monday")))
+# @periodic_task(run_every=(crontab(hour=0, minute=0, day_of_week="Monday")))
+@periodic_task(run_every=(crontab(hour="*", minute="*/2", day_of_week="*")))
 def gather_users_for_new_assignments():
     # logger.info("Starting gufna at {}".format(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')))
     results = periodic.get_users()
@@ -157,7 +158,7 @@ def gather_users_for_new_assignments():
         special_email_user(user, 'assigned')
     # logger.info("Task finished at {}: week = {}".format(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'), results))
 
-@periodic_task(run_every=(crontab(hour="*", minute="*/5", day_of_week="*")))
+@periodic_task(run_every=(crontab(hour="3", minute="*/5", day_of_week="*")))
 def ping_self():
     logger.info("test logger on ping_self")
     print("BLAHing")
