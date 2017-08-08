@@ -95,39 +95,48 @@ def special_email_user(user, type):
             context=ctx
         )
 
+# @app.task
+# def pw_email(email, token):
+#     user = User.objects.get(email=email)
+#     if user:
+#         ctx = {
+#             'email': email,
+#             'domain': 'localhost:8000',
+#             'site_name': 'What A Chore',
+#             'uid': urlsafe_base64_encode(force_bytes(user.pk)),
+#             'token': token,  # default_token_generator.make_token(user),
+#             'protocol': 'http',
+#         }
+#         from_email = 'noreply@taylorschimek.com'
+#         try:
+#             send_templated_mail(
+#                 template_name='reset_pass',
+#                 from_email=from_email,
+#                 recipient_list=[email],
+#                 context=ctx
+#             )
+#         except AttributeError:
+#             print("attributeerror")
+
 @app.task
 def pw_email(email, token):
+    print("THIS IS HAPPENING")
     user = User.objects.get(email=email)
+    print(user)
     if user:
-        ctx = {
-            'email': email,
-            'domain': 'localhost:8000',
-            'site_name': 'What A Chore',
-            'uid': urlsafe_base64_encode(force_bytes(user.pk)),
-            'token': token,  # default_token_generator.make_token(user),
-            'protocol': 'http',
-        }
-        from_email = 'noreply@taylorschimek.com'
-        try:
-            send_templated_mail(
-                template_name='reset_pass',
-                from_email=from_email,
-                recipient_list=[email],
-                context=ctx
-            )
-        except AttributeError:
-            print("attributeerror")
+        message = "To initiate password reset for " + email + ", click the link below:\n"
+        message += 'https://whatachore.herokuapp.com/reset/' + urlsafe_base64_encode(force_bytes(user.pk)) + '/' + token
+        message += '\n\n\nSincerely,\nTheWhat A Chore Team'
 
+        mail = EmailMultiAlternatives(
+            subject='What A Chore - Password Reset',
+            body=message,
+            from_email='noreply@taylorschimek.com',
+            to=email
+        )
+        print(message)
+        mail.send()
 
-# @app.task
-# def user_to_worker(rec_list, subject, message):
-#     sg = sendgrid.SendGridAPIClient(apikey='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')
-#     from_email = Email('noreply@taylorschimek.com')
-#     to_email = Email(rec_list[0])
-#     subject = subject
-#     content = Content('text/plain', message)
-#     mail = Mail(from_email, subject, to_email, content)
-#     response = sg.client.mail.send.post(request_body=mail.get())
 @app.task
 def user_to_worker(rec_list, subject, message):
     mail = EmailMultiAlternatives(
