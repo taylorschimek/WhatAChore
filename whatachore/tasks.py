@@ -126,7 +126,7 @@ def pw_email(email, token):
     uid = urlsafe_base64_encode(force_bytes(user.pk))
     if user:
         message = "To initiate password reset for " + email + ", click the link below:\n"
-        message += reverse('useraccounts/registration/password_reset_confirm', args={'uid': uid, 'token': token})
+        message += "https://whatachore.herokuapp.com" + reverse('password_reset_confirm', kwargs={'uidb64': uid, 'token': token})
         message += '\n\n\nSincerely,\nTheWhat A Chore Team'
         email_list = [email,]
 

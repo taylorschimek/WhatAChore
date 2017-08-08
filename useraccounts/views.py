@@ -33,6 +33,8 @@ from wac.views import PersonCreateView, ChoreCreateView
 from wac.models import Assignment, Person, User, Week
 from .models import User
 
+# from django.utils.http import urlsafe_base64_encode
+# from django.utils.encoding import force_bytes
 
 def my_password_reset(request):
     if request.is_ajax() and request.method == 'POST':
@@ -43,6 +45,9 @@ def my_password_reset(request):
             token = default_token_generator.make_token(user)
             pw_email.delay(email, token)
             messages.success(request, 'An email has been sent to ' + email +".  Please check your inbox to continue resetting your password.")
+
+            # uid = urlsafe_base64_encode(force_bytes(user.pk))
+            # print("https://whatachore.herokuapp.com" + reverse('password_reset_confirm', kwargs={'uidb64': uid, 'token': token}))
 
             response_data = {}
             response_data['status'] = 'success'
