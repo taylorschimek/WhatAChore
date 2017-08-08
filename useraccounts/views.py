@@ -178,7 +178,7 @@ def email_to_worker(request):
             response_data['status'] = 'fail'
             return HttpResponseBadRequest(json.dumps(form.errors), content_type="application/json")
     else:
-        recipient_list = []
+        recipient_list = ''
         person_pk = request.GET.get('person')
         if person_pk:
             print(person_pk)
@@ -206,7 +206,7 @@ def email_to_worker(request):
             )
             print(workers)
             for worker in workers:
-                recipient_list.append(worker.email)
+                recipient_list += worker.email + ', '
 
             # set recipient email field to list of all emails.
             form = EmailWorkerForm(initial={'recipient_email': recipient_list})
