@@ -161,7 +161,7 @@ def gather_users_for_new_assignments():
 def ping_self():
     logger.info("test logger on ping_self")
     print("BLAHing")
-    r = requests.get("whatachore.herokuapp.com")
+    r = requests.get("https://whatachore.herokuapp.com")
     return (r.status_code)
 
 
