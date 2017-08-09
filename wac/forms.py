@@ -80,7 +80,7 @@ class PersonEditForm(forms.ModelForm):
         fields = [
             'name',
             'birthday',
-            'phone_number',
+            # 'phone_number',
             'email',
             'day_off',
             'mugshot',

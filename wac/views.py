@@ -385,7 +385,7 @@ class PersonDetailView(LoginRequiredMixin, FormMixin, DetailView):
         form = PersonEditForm(instance=self.person,
                               initial={'name': self.person.name,
                                        'birthday': self.person.birthday,
-                                       'phone_number': self.person.phone_number,
+                                    #    'phone_number': self.person.phone_number,
                                        'email': self.person.email,
                                        'day_off': self.person.day_off,
                                        'mugshot': self.person.mugshot})

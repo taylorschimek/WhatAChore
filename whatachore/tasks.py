@@ -27,17 +27,6 @@ import sendgrid
 import os
 from sendgrid.helpers.mail import *
 
-# sg = sendgrid.SendGridAPIClient(apikey=os.environ.get('SENDGRID_API_KEY'))
-# from_email = Email("test@example.com")
-# to_email = Email("test@example.com")
-# subject = "Sending with SendGrid is Fun"
-# content = Content("text/plain", "and easy to do anywhere, even with Python")
-# mail = Mail(from_email, subject, to_email, content)
-# response = sg.client.mail.send.post(request_body=mail.get())
-# print(response.status_code)
-# print(response.body)
-# print(response.headers)
-###################################################
 
 
 
@@ -61,7 +50,7 @@ logger = get_task_logger(__name__)
 # after monday assignments
 @app.task
 def email_user(user, type):
-    send_mail('Monday Assigning Test', 'testing this nonsense', 'noreply@taylorschimek.com', [user.email])
+    send_mail('What A Chore - This weeks assignments', 'Your assignments have been generated for this week.  Get to Work! \n \n \n Thanks,\nWhat A Chore Team', 'noreply@taylorschimek.com', [user.email])
 
 @app.task
 def special_email_user(user, type):
@@ -96,28 +85,6 @@ def special_email_user(user, type):
             context=ctx
         )
 
-# @app.task
-# def pw_email(email, token):
-#     user = User.objects.get(email=email)
-#     if user:
-#         ctx = {
-#             'email': email,
-#             'domain': 'localhost:8000',
-#             'site_name': 'What A Chore',
-#             'uid': urlsafe_base64_encode(force_bytes(user.pk)),
-#             'token': token,  # default_token_generator.make_token(user),
-#             'protocol': 'http',
-#         }
-#         from_email = 'noreply@taylorschimek.com'
-#         try:
-#             send_templated_mail(
-#                 template_name='reset_pass',
-#                 from_email=from_email,
-#                 recipient_list=[email],
-#                 context=ctx
-#             )
-#         except AttributeError:
-#             print("attributeerror")
 
 @app.task
 def pw_email(email, token):
