@@ -135,7 +135,7 @@ def user_assignments(user):
 
 # below is real line
 # @periodic_task(run_every=(crontab(hour=0, minute=0, day_of_week="Monday")))
-@periodic_task(run_every=(crontab(hour="22", minute="55", day_of_week="sunday")))
+@periodic_task(run_every=(crontab(hour="0", minute="15", day_of_week="monday")))
 def gather_users_for_new_assignments():
     # logger.info("Starting gufna at {}".format(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')))
     results = periodic.get_users()
