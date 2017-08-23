@@ -159,22 +159,27 @@ class AssignmentDetailView(LoginRequiredMixin, FormMixin, DetailView):
         return render(request, 'wac/assignment_detail.html', {'form': form, 'assignment': self.assignment})
 
     def post(self, request, *args, **kwargs):
-        print(self.args)
-        print(self.kwargs)
         self.object = self.get_object()
-        print(self.object.who)
+        current_who = self.object.who
+        chore_duration = self.object.what.duration
         form = AssignmentForm(request.POST, request.FILES, instance=self.assignment)
 
         if form.is_valid():
-            return self.form_valid(form)
+            return self.form_valid(form, current_who, chore_duration)
         else:
             return self.from_invalid(form)
 
-    def form_valid(self, form):
-        print('form_valid_damnit')
-        print(self.assignment.who)
-        print(form.cleaned_data)
-        print(self.assignment.who)
+    def form_valid(self, form, prior_who, duration):
+        new_who = form.cleaned_data['who']
+        if prior_who != new_who:
+            prior_who.number_of_chores -= 1
+            prior_who.weekly_minutes -= duration
+            prior_who.save(update_fields=['number_of_chores', 'weekly_minutes'])
+
+            new_who.number_of_chores += 1
+            new_who.weekly_minutes += duration
+            new_who.save(update_fields=['number_of_chores', 'weekly_minutes'])
+
         remove = 'http://localhost:8000/'
         nextFull = self.request.POST['fromUrl'].replace(remove, '')
         if nextFull == 'useraccounts/home/':
