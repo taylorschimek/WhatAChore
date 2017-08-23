@@ -140,6 +140,8 @@ class AssignmentDetailView(LoginRequiredMixin, FormMixin, DetailView):
     model = Assignment
     form_class = AssignmentForm
 
+
+
     def dispatch(self, request, *args, **kwargs):
         self.assignment = Assignment.objects.get(pk=self.kwargs['pk'])
         return super(AssignmentDetailView, self).dispatch(request, *args, **kwargs)
@@ -157,7 +159,10 @@ class AssignmentDetailView(LoginRequiredMixin, FormMixin, DetailView):
         return render(request, 'wac/assignment_detail.html', {'form': form, 'assignment': self.assignment})
 
     def post(self, request, *args, **kwargs):
+        print(self.args)
+        print(self.kwargs)
         self.object = self.get_object()
+        print(self.object.who)
         form = AssignmentForm(request.POST, request.FILES, instance=self.assignment)
 
         if form.is_valid():
@@ -166,6 +171,10 @@ class AssignmentDetailView(LoginRequiredMixin, FormMixin, DetailView):
             return self.from_invalid(form)
 
     def form_valid(self, form):
+        print('form_valid_damnit')
+        print(self.assignment.who)
+        print(form.cleaned_data)
+        print(self.assignment.who)
         remove = 'http://localhost:8000/'
         nextFull = self.request.POST['fromUrl'].replace(remove, '')
         if nextFull == 'useraccounts/home/':
