@@ -4,11 +4,10 @@ from django.contrib.auth import views as auth_views
 from . import views
 from .forms import EmailLoginForm
 
+
 urlpatterns = [
-    # Registration and Login URLs
     url(r'^login/$',
         views.EmailLoginView.as_view(),
-        # views.ajax_login,
         name='login',
         kwargs={"form": EmailLoginForm}),
 
@@ -30,13 +29,9 @@ urlpatterns = [
 
     url(r'^password_reset$',
         views.my_password_reset,
-        # auth_views.PasswordResetView.as_view(),
-        # auth_views.password_reset,
         name='password_reset'),
 
     url(r'^password_reset/done/$',
-        # auth_views.PasswordResetDoneView.as_view(),
-        # views.reset_password_redirect,
         auth_views.password_reset_done,
         name='password_reset_done'),
 

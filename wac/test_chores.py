@@ -6,17 +6,14 @@ import webtest
 from django.conf import settings
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from django.core.urlresolvers import reverse
-from django.test import TestCase, TransactionTestCase
 from django.test.client import Client
 
+from selenium.common.exceptions import TimeoutException, NoSuchElementException
 from selenium.webdriver.chrome.webdriver import WebDriver
-from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.select import Select
 from selenium.webdriver.support.ui import WebDriverWait
-from selenium.common.exceptions import TimeoutException, NoSuchElementException
 
 from .forms import *
 from .models import *

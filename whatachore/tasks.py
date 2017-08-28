@@ -5,22 +5,16 @@ from celery import Celery
 from celery.decorators import periodic_task
 from celery.task.schedules import crontab
 from celery.utils.log import get_task_logger
-from django.conf import settings
-from django.contrib.auth.tokens import default_token_generator
 from django.core.mail import send_mail, EmailMultiAlternatives
-from django.template.loader import get_template
-from django.template import Context
 from django.urls import reverse
 from django.utils.encoding import force_bytes
-from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
-
-from templated_email import send_templated_mail, get_templated_mail
+from django.utils.http import urlsafe_base64_encode
 
 from whatachore.utils import periodic
 
 from useraccounts.models import User
 
-from wac.models import Assignment, Chore, Person, Week
+from wac.models import Person, Week
 
 #-SENDGRID-########################################
 import sendgrid
@@ -33,12 +27,6 @@ from sendgrid.helpers.mail import *
 app = Celery('tasks')
 
 app.config_from_object('django.conf:settings')
-
-@app.task
-def add(x, y):
-    print("this is the sum of {} and {}".format(x, y))
-    return x + y
-
 
 logger = get_task_logger(__name__)
 
@@ -88,7 +76,6 @@ def special_email_user(user, type):
 
 @app.task
 def pw_email(email, token):
-    print("THIS IS HAPPENING")
     user = User.objects.get(email=email)
     uid = urlsafe_base64_encode(force_bytes(user.pk))
     if user:
@@ -103,7 +90,6 @@ def pw_email(email, token):
             from_email='noreply@taylorschimek.com',
             to=email_list
         )
-        print(message)
         mail.send()
 
 @app.task
@@ -149,7 +135,6 @@ def gather_users_for_new_assignments():
 @periodic_task(run_every=(crontab(hour="6-23", minute="*/15", day_of_week="*")))
 def ping_self():
     logger.info("test logger on ping_self")
-    print("BLAHing")
     r = requests.get("https://whatachore.herokuapp.com")
     return (r.status_code)
 

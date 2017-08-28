@@ -2,8 +2,8 @@ import calendar
 import datetime
 from random import randint
 
-from django.dispatch import receiver
 from django.db.models.signals import post_save, pre_delete, pre_save
+from django.dispatch import receiver
 
 from wac.models import Assignment, Chore, Person, Week
 
@@ -27,17 +27,6 @@ def chore_delete(sender, instance, **kwargs):
         ass.who.save(update_fields=['weekly_minutes', 'number_of_chores'])
         week.total_time -= ass.what.duration
     week.save(update_fields=['total_time'])
-
-
-
-    # if instance.week == week:
-    #     print('if damnit')
-    #     person.weekly_minutes -= instance.what.duration
-    #     person.save(update_fields=['weekly_minutes'])
-    #     week.total_time -= instance.what.duration
-
-
-
 
 
 #########################################################################
@@ -160,7 +149,6 @@ def monday(chore):
     number_of_days = 0
     date = THIS_WEEK.start_date + datetime.timedelta(days=number_of_days)
     return date
-
 
 def tuesday(chore):
     number_of_days = 1
@@ -303,8 +291,6 @@ def monthly(chore):
             create_assignment(chore, new_date)
     else:
         if THIS_WEEK.start_date - chore.last_assigned >= datetime.timedelta(days=28):
-        # difference = new_date - chore.last_assigned
-        # if difference > datetime.timedelta(weeks=4, days=1):
             chore.last_assigned = new_date
             chore.save(update_fields=['last_assigned'])
             create_assignment(chore, new_date)
@@ -470,13 +456,6 @@ def week_post_save(sender, instance, created, **kwargs):
         TOTAL_MINUTES_GATHERED = 0
         global THIS_WEEK
         THIS_WEEK = instance
-
-        # # TEMP - delete all assignments per user.
-        # Assignment.objects.filter(
-        #     week__user = instance.user
-        # ).exclude(
-        #     week=THIS_WEEK
-        # ).delete()
 
         get_chores_for_this_week()
         assign_people_to_chores()

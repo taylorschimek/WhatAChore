@@ -9,7 +9,6 @@ from useraccounts.fields import CommaSeparatedEmailField
 
 
 class RegistrationForm(forms.ModelForm):
-
     error_messages = {
         'duplicate_email': _("A user with that email already exists."),
     }
@@ -29,7 +28,6 @@ class RegistrationForm(forms.ModelForm):
     class Meta:
         model = get_user_model()
         fields = ('email',)
-
 
     def save(self, commit=True):
         user = super(RegistrationForm, self).save(commit=False)
@@ -52,8 +50,10 @@ class EmailLoginForm(AuthenticationForm):
 class PasswordResetRequestForm(forms.Form):
     email = forms.CharField(max_length=254)
 
+
 class AccountSettingsForm(forms.Form):
     no_email = forms.BooleanField(required=False)
+
 
 class EmailWorkerForm(forms.Form):
     recipient_email = CommaSeparatedEmailField()

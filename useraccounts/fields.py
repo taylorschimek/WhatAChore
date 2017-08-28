@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 from django import forms
-from django.utils.translation import ugettext_lazy as _
-from django.core.validators import validate_email, EMPTY_VALUES
+from django.core.validators import EMPTY_VALUES, validate_email
 from django.forms.fields import Field
+from django.utils.translation import ugettext_lazy as _
+
 
 class CommaSeparatedEmailField(Field):
     description = _(u"E-mail address(es)")

@@ -6,7 +6,6 @@ from django.utils.safestring import mark_safe
 
 
 class CustomClearableFileInput(FileInput):
-    # clear_checkbox_label = ugettext_lazy('Delete')
     initial_text = ugettext_lazy('Currently')
     input_text = ugettext_lazy('Change')
 

@@ -3,14 +3,8 @@ import datetime
 from datetime import date
 
 from django.conf import settings
-from django.contrib.auth import get_user_model
 from django.core.validators import RegexValidator
 from django.db import models
-from django.db.models.signals import pre_delete, post_save
-from django.dispatch.dispatcher import receiver
-
-from wac.get_username import get_username
-from useraccounts.models import User
 
 
 INTERVAL_CHOICES = [

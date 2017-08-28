@@ -3,38 +3,29 @@ import datetime
 import json
 import os
 
-from whatachore.tasks import add
+from django.http import HttpResponse, HttpResponseRedirect, HttpResponseBadRequest
 from django.conf import settings
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib import messages
 from django.core.files.base import ContentFile
-from django.core.mail import send_mail
-from django.http import HttpResponse, HttpResponseRedirect, HttpResponseBadRequest
-from django.shortcuts import get_object_or_404, render, render_to_response, redirect
+from django.shortcuts import render
 from django.template.loader import render_to_string
 from django.urls import reverse, reverse_lazy
 from django.views.generic import CreateView, DetailView, ListView, TemplateView, DeleteView
 from django.views.generic.edit import FormMixin
 from io import BytesIO
 
-from wac.models import Assignment, Chore, Person, Week
-
+from .models import Assignment, Chore, Person, Week
 from .forms import AssignmentForm, ChoreEditForm, PersonEditForm
-
-from wac.signals.handlers import single_chore_added
-
-from PIL import Image
-
-from django.forms.fields import FilePathField
-
+from .signals.handlers import single_chore_added
+from whatachore.tasks import email_user
 
 
 
 #=============== LINEUP ==================#
 #=========================================#
 def lineup(request):
-    # add.delay(3, 5)
     if request.is_ajax():
 
         # Update done field on assignment
@@ -74,7 +65,7 @@ def lineup(request):
         try:
             if len(Person.objects.filter(user = request.user)) and len(Chore.objects.filter(user = request.user)):
                 new_week = Week.create(current_user=request.user)
-                send_mail('test', 'testing this nonsense', 'noreply@taylorschimek.com', ['ruof@yahoo.com'])
+                email_user('test', 'testing this nonsense', 'noreply@taylorschimek.com', ['ruof@yahoo.com'])
             else:
                 messages.warning(request, '''You either: \n
                                              1. have no chores or \n
