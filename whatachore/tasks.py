@@ -106,32 +106,23 @@ def user_to_worker(rec_list, subject, message):
 # MONDAY assignings....
 @app.task
 def user_assignments(user):
-    # logger.info("user_assignment called for {}".format(user))
     try:
         new_week = Week.create(current_user=user)
-        # logger.info("Try succeeded")
-        # email user assignments?
+        email_user(user, None)
     except ZeroDivisionError:  # the user has no workers or no chores
         pass
-        # logger.info("Try failed")
-        # email user that they're missing either workers or chores and assignments cannot be made.
     logger.info("user_assignment finished = {}".format(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')))
 
-# below is testing line
 
-# below is real line
-# @periodic_task(run_every=(crontab(hour=0, minute=0, day_of_week="Monday")))
 @periodic_task(run_every=(crontab(hour="0", minute="15", day_of_week="monday")))
 def gather_users_for_new_assignments():
-    # logger.info("Starting gufna at {}".format(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')))
     results = periodic.get_users()
     for user in results:
         user_assignments(user)
     for user in results:
         special_email_user(user, 'assigned')
-    # logger.info("Task finished at {}: week = {}".format(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'), results))
 
-# @periodic_task(run_every=(crontab(hour="5-23", minute="*/15", day_of_week="*")))
+
 @periodic_task(run_every=(crontab(hour="6-23", minute="*/15", day_of_week="*")))
 def ping_self():
     logger.info("test logger on ping_self")

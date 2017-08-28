@@ -27,7 +27,6 @@ from whatachore.tasks import email_user
 #=========================================#
 def lineup(request):
     if request.is_ajax():
-
         # Update done field on assignment
         assignment = Assignment.objects.get(pk=request.POST['pk'])
         people = Person.objects.filter(user=assignment.week.user).order_by('name')
@@ -65,7 +64,6 @@ def lineup(request):
         try:
             if len(Person.objects.filter(user = request.user)) and len(Chore.objects.filter(user = request.user)):
                 new_week = Week.create(current_user=request.user)
-                email_user('test', 'testing this nonsense', 'noreply@taylorschimek.com', ['ruof@yahoo.com'])
             else:
                 messages.warning(request, '''You either: \n
                                              1. have no chores or \n
@@ -130,8 +128,6 @@ class AssignmentListView(LoginRequiredMixin, TemplateView):
 class AssignmentDetailView(LoginRequiredMixin, FormMixin, DetailView):
     model = Assignment
     form_class = AssignmentForm
-
-
 
     def dispatch(self, request, *args, **kwargs):
         self.assignment = Assignment.objects.get(pk=self.kwargs['pk'])
