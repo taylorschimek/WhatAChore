@@ -76,11 +76,12 @@ class UseraccountsTests(StaticLiveServerTestCase):
         # birthday.clear()
         birthday.send_keys('01011990')
         driver.find_element_by_xpath("//select[@id='id_day_off']/option[text()='Friday']").click()
-        button = try_xpath(dirver, 2, "//input[@value='Save']")
+        button = try_xpath(driver, 2, "//input[@value='Next']")
         button.click()
         # driver.find_element_by_xpath("//input[@value='Save']").click()
 
-        self.assertIn('wac/people/', driver.current_url)
+        self.assertIn('useraccounts/welcome2', driver.current_url)
+        driver.get('{}{}'.format(self.live_server_url, reverse('people-list')))
         card_title = try_class_name(driver, 3, 'card-title')
         actual_card_title = card_title.text
         self.assertEqual(actual_card_title, 'John')

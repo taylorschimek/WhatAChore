@@ -158,4 +158,4 @@ LOGIN_URL = '/useraccounts/login-page/'
 
 PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 
-FIXTURE_DIRS = (os.path.join(PROJECT_ROOT, 'fixtures'),)
+# FIXTURE_DIRS = (os.path.join(PROJECT_ROOT, 'fixtures'),)

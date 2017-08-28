@@ -18,15 +18,18 @@ def person_delete(sender, instance, **kwargs):
 def chore_delete(sender, instance, **kwargs):
     print(instance.user)
     user = instance.user
-    week = Week.objects.filter(user=user).filter(is_current=True)[0]
-    asses = Assignment.objects.filter(week=week).filter(what=instance)
-    print("# of asses = {}".format(len(asses)))
-    for ass in asses:
-        ass.who.weekly_minutes -= ass.what.duration
-        ass.who.number_of_chores -= 1
-        ass.who.save(update_fields=['weekly_minutes', 'number_of_chores'])
-        week.total_time -= ass.what.duration
-    week.save(update_fields=['total_time'])
+    try:
+        week = Week.objects.filter(user=user).filter(is_current=True)[0]
+        asses = Assignment.objects.filter(week=week).filter(what=instance)
+        print("# of asses = {}".format(len(asses)))
+        for ass in asses:
+            ass.who.weekly_minutes -= ass.what.duration
+            ass.who.number_of_chores -= 1
+            ass.who.save(update_fields=['weekly_minutes', 'number_of_chores'])
+            week.total_time -= ass.what.duration
+        week.save(update_fields=['total_time'])
+    except IndexError:
+        pass
 
 
 #########################################################################

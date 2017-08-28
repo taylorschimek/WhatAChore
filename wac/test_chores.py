@@ -77,7 +77,7 @@ class ChoreTests(WebTest):
                            duration=20,
                            interval='Daily',
                            age_restriction=14,
-                           chore_icon_location='/Users/HOME/Developer/WAC/whatachore/wac/static/wac/styles/images/Icons/cream_icons/)1_Broom.png'
+                           chore_icon_location='wac/styles/images/Icons/cream_icons/1_Broom.png'
     ):
         return Chore.objects.create(user_id=self.user.id,
                                     task=task,
@@ -112,7 +112,7 @@ class ChoreTests(WebTest):
         self.client.login(email='test@example.com', password='password1')
         resp = self.client.get(reverse('chore-list'))
 
-        self.assertEqual(resp.status_code, 200) # we have  redirect here
+        self.assertEqual(resp.status_code, 200) # we have redirect here
         self.assertIn(c1.task, str(resp.content))
         self.assertIn(c2.task, str(resp.content))
 
@@ -181,14 +181,12 @@ class PersonTests(WebTest):
 
     def create_person(self, name='tester',
                             birthday=date(1977, 5, 22),
-                            phone_number=5128675309,
                             email='person_test@example.com',
                             day_off='Thur'
     ):
         return Person.objects.create(user_id=self.user.id,
                                      name=name,
                                      birthday=birthday,
-                                     phone_number=phone_number,
                                      email=email,
                                      day_off=day_off
         )
@@ -213,7 +211,6 @@ class PersonTests(WebTest):
         data = {'user_id': p.user_id,
                 'name': p.name,
                 'birthday': p.birthday,
-                'phone_number': p.phone_number,
                 'email': p.email,
                 'day_off': p.day_off}
         form = PersonEditForm(data=data)
@@ -285,7 +282,7 @@ class SeleniumTestViews(StaticLiveServerTestCase):
 
     # TESTS --------------
     def test_chore_detail_and_edit_views(self):
-        delay = 2
+        delay = 4
         browser = self.selenium
 
         browser.get('{}{}'.format(self.live_server_url, reverse('landing')))
@@ -296,9 +293,10 @@ class SeleniumTestViews(StaticLiveServerTestCase):
         password_input = browser.find_element_by_id('id_password')
         password_input.send_keys('password1')
         browser.find_element_by_xpath('//input[@value="Login"]').click()
-        sleep(1)
+        sleep(30)
 
         browser.get('{}{}'.format(self.live_server_url, reverse('chore-list')))
+        sleep(30)
         # wait for page to load and then click on chore_30
         spec_chore = try_name(browser, delay, 'chore_30')
         spec_chore.click()

@@ -194,7 +194,7 @@ class ChoreListView(LoginRequiredMixin, ListView):
     model = Chore
 
     def get_queryset(self):
-        print("CHORELISTVIEW get_queryset method")
+        # print("CHORELISTVIEW get_queryset method")
         order = ['Daily', 'Every 2 Days', 'Every 3 Days', 'Weekly', 'Every 2 Weeks', 'Monthly', 'Every 2 Months', 'Quarterly', 'Yearly']
         return sorted(Chore.objects.filter(user=self.request.user).order_by('task'), key = lambda c: order.index(c.interval))
 
