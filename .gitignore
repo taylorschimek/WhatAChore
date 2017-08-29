@@ -5,7 +5,6 @@ db.sqlite3
 00notes
 .DS_Store
 tmp
-htmlcov
 whatachore/media/people_mugs
 WACenv
 *.pyc
