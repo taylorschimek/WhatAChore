@@ -1,3 +1,4 @@
 htmlcov/* linguist-vendored
 useraccounts/fixtures/* linguist-vendored
 wac/fixtures/* linguist-vendored
+Utils/cropper-master/* linguist-vendored
