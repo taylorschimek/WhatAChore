@@ -1,1 +1,3 @@
 htmlcov/* linguist-vendored
+useraccounts/fixtures/* linguist-vendored
+wac/fixtures/* linguist-vendored
