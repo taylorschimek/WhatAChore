@@ -227,38 +227,59 @@ def create_assignment(chore, date):
     TOTAL_MINUTES_GATHERED += chore.duration
     new_assignment.save()
 
-def create_repeating_assignments(chore, week_start_date, increment):
+def create_repeating_assignments(chore, alter_start, increment):
     today = datetime.date.today()
-    max = ((week_start_date+datetime.timedelta(days=7)) - today).days
-    for d in range(0, max, increment):
+    max = ((THIS_WEEK.start_date+datetime.timedelta(days=7)) - today).days - 1
+    print("max = {}".format(max))
+    start = 0 + alter_start
+    for d in range(start, max, increment):
+        print("d = {}".format(d))
         create_assignment(chore, today)
         today = today + datetime.timedelta(days=increment)
     chore.last_assigned = today
     chore.save(update_fields=['last_assigned'])
 
 def daily(chore):
-    create_repeating_assignments(chore, THIS_WEEK.start_date, 1)
+    create_repeating_assignments(chore, 0, 1)
 
 def every2days(chore):
-    since = THIS_WEEK.start_date - chore.last_assigned
-    between = datetime.timedelta(days=2)
-    if since == between:
-        create_repeating_assignments(chore, THIS_WEEK.start_date, 2)
+    if THIS_WEEK.start_date > chore.last_assigned:
+        since = (THIS_WEEK.start_date - chore.last_assigned).days
     else:
-        date = THIS_WEEK.start_date + datetime.timedelta(days=1)
-        create_repeating_assignments(chore, date, 2)
+        since = 1
+    between = 2
+    print('='*20)
+    print(THIS_WEEK.start_date)
+    print("every 2 days")
+    print(since)
+    print(between)
+    if since == between:
+        print("since = between")
+        create_repeating_assignments(chore, 0, 2)
+    else:
+        print("since != between")
+        create_repeating_assignments(chore, 1, 2)
 
 def every3days(chore):
-    since = THIS_WEEK.start_date - chore.last_assigned
-    between = datetime.timedelta(days=3)
-    if since == between:
-        create_repeating_assignments(chore, THIS_WEEK.start_date, 3)
-    elif since - between == 1:
-        date = THIS_WEEK.start_date + datetime.timedelta(days=1)
-        create_repeating_assignments(chore, date, 3)
+    if THIS_WEEK.start_date > chore.last_assigned:
+        since = (THIS_WEEK.start_date - chore.last_assigned).days
     else:
-        date = THIS_WEEK.start_date + datetime.timedelta(days=2)
-        create_repeating_assignments(chore, date, 3)
+        since = 1
+    between = 3
+    print('='*20)
+    print(THIS_WEEK.start_date)
+    print("every 3 days")
+    print(since)
+    print(between)
+    if since == between:
+        print("since = between")
+        create_repeating_assignments(chore, 0, 3)
+    elif between - since == 1:
+        print("between - since = 1")
+        create_repeating_assignments(chore, 1, 3)
+    else:
+        print("else")
+        create_repeating_assignments(chore, 2, 3)
 
 def weekly(chore):
     # need to check last_assigned and make sure new date is at least 5 days later
@@ -281,9 +302,6 @@ def every2weeks(chore):
         chore.last_assigned = new_date
         chore.save(update_fields=['last_assigned'])
         create_assignment(chore, new_date)
-    else:
-        print('{} should not be assigned this week'.format(chore.task))
-
 
 def monthly(chore):
     new_date = get_date_from_subInterval(chore)
@@ -297,8 +315,6 @@ def monthly(chore):
             chore.last_assigned = new_date
             chore.save(update_fields=['last_assigned'])
             create_assignment(chore, new_date)
-        else:
-            print('{} should not be assigned this week'.format(chore.task))
 
 def every2months(chore):
     new_date = get_date_from_subInterval(chore)
@@ -358,8 +374,6 @@ def yearly(chore):
             chore.last_assigned = new_date
             chore.save(update_fields=['last_assigned'])
             create_assignment(chore, new_date)
-        else:
-            print('{} should not be assigned this week'.format(chore.task))
 
 
 #========================================================================
@@ -399,7 +413,9 @@ def assign_people_to_chores():
     people = Person.objects.filter(user__exact=THIS_WEEK.user)
     if len(people) > 0:
         to_dos = Assignment.objects.filter(week__exact=THIS_WEEK).filter(who__isnull = True)
-        minute_limit = (TOTAL_MINUTES_GATHERED / len(people)) + (TOTAL_MINUTES_GATHERED / len(to_dos))
+        age_for_all = 12
+        people_for_minute_limit = [x for x in people if x.age >= age_for_all]
+        minute_limit = (TOTAL_MINUTES_GATHERED / len(people_for_minute_limit)) + (TOTAL_MINUTES_GATHERED / len(to_dos))
 
         for to_do in to_dos:
             working = True

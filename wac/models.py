@@ -40,7 +40,7 @@ DAY_OFF_CHOICES = [
     ('Mon', 'Monday'),
     ('Tue', 'Tuesday'),
     ('Wed', 'Wednesday'),
-    ('Thur', 'Thursday'),
+    ('Thu', 'Thursday'),
     ('Fri', 'Friday'),
     ('Sat', 'Saturday')
 ]
