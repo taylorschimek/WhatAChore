@@ -229,10 +229,10 @@ def create_assignment(chore, date):
 
 def create_repeating_assignments(chore, alter_start, increment):
     today = datetime.date.today()
-    max = ((THIS_WEEK.start_date+datetime.timedelta(days=7)) - today).days - 1
-    print("max = {}".format(max))
+    maximum = ((THIS_WEEK.start_date+datetime.timedelta(days=7)) - today).days
+    print("maximum = {}".format(maximum))
     start = 0 + alter_start
-    for d in range(start, max, increment):
+    for d in range(start, maximum, increment):
         print("d = {}".format(d))
         create_assignment(chore, today)
         today = today + datetime.timedelta(days=increment)
