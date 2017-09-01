@@ -230,6 +230,7 @@ def create_assignment(chore, date):
 def create_repeating_assignments(chore, alter_start, increment):
     today = datetime.date.today()
     maximum = ((THIS_WEEK.start_date+datetime.timedelta(days=7)) - today).days
+    today = today + datetime.timedelta(days=alter_start)
     print("maximum = {}".format(maximum))
     start = 0 + alter_start
     for d in range(start, maximum, increment):
