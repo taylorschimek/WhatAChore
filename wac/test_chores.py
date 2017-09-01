@@ -182,7 +182,7 @@ class PersonTests(WebTest):
     def create_person(self, name='tester',
                             birthday=date(1977, 5, 22),
                             email='person_test@example.com',
-                            day_off='Thur'
+                            day_off='Thu'
     ):
         return Person.objects.create(user_id=self.user.id,
                                      name=name,
@@ -221,7 +221,7 @@ class PersonTests(WebTest):
         person.save()
         self.assertEqual(person.name, 'tester')
         self.assertEqual(person.email, 'person_test@example.com')
-        self.assertEqual(person.day_off, 'Thur')
+        self.assertEqual(person.day_off, 'Thu')
 
 
 
@@ -293,10 +293,10 @@ class SeleniumTestViews(StaticLiveServerTestCase):
         password_input = browser.find_element_by_id('id_password')
         password_input.send_keys('password1')
         browser.find_element_by_xpath('//input[@value="Login"]').click()
-        sleep(30)
+        # sleep(30)
 
         browser.get('{}{}'.format(self.live_server_url, reverse('chore-list')))
-        sleep(30)
+        # sleep(30)
         # wait for page to load and then click on chore_30
         spec_chore = try_name(browser, delay, 'chore_30')
         spec_chore.click()
@@ -353,7 +353,7 @@ class SeleniumTestViews(StaticLiveServerTestCase):
 
         # Check to make sure the change stuck
         display_dayoff = browser.find_element_by_id('Floyd-daysoff').text
-        self.assertEqual(display_dayoff, 'Thur')
+        self.assertEqual(display_dayoff, 'Thu')
 
     def test_person_image_selection(self):
         delay = 2
