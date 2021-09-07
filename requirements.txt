@@ -28,7 +28,7 @@ jmespath==0.9.3
 kombu==3.0.37
 olefile==0.44
 packaging==16.8
-Pillow==4.1.1
+Pillow==8.3.2
 psycopg2==2.7.1
 pyparsing==2.2.0
 python-dateutil==2.6.0
